@@ -17,8 +17,10 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<List<User>> findUserByRole(UserRole role);
 
+    Boolean checkByUsernameAndPassword(String username , String password);
+
     Optional<User> findByUsername(String username);
 
-    Optional<User>findUserByVerificationToken(String verificationToken);
+
 
 }
