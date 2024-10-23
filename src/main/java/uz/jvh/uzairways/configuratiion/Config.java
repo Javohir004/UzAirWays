@@ -2,14 +2,12 @@ package uz.jvh.uzairways.configuratiion;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
-@EnableJpaAuditing(auditorAwareRef = "myAuditing")
-public class    Config {
+public class Config {
 
     @Bean
     public ModelMapper modelMapper() {

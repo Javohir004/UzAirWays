@@ -5,16 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import uz.jvh.uzairways.domain.enumerators.RolePermission;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
-
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -22,7 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 @Setter
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity{
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -45,22 +37,14 @@ public class User extends BaseEntity implements UserDetails {
 
     private boolean enabled;
 
+    private float balance;
+
     private String address;
 
     @Column(unique = true)
     private String verificationToken;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    private List<RolePermission> permissions;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = permissions.stream().map(permisison -> new SimpleGrantedAuthority((permisison.name())))
-                .collect(Collectors.toList());
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
-        return authorities;
-    }
 
 
 }

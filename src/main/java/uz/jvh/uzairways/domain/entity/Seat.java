@@ -1,18 +1,15 @@
 package uz.jvh.uzairways.domain.entity;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uz.jvh.uzairways.domain.enumerators.ClassType;
 
 
-
-//@Entity
-//@Table(name = "seats")
+@Entity
+@Table(name = "seats")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

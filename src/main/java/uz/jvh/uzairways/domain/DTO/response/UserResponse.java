@@ -1,17 +1,14 @@
-package uz.jvh.uzairways.domain.DTO.request;
-
+package uz.jvh.uzairways.domain.DTO.response;
 import lombok.*;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
-
-
 import java.time.LocalDate;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
-public class UserCreateDTO {
+public class UserResponse {
     private String username;
     private String surname;
     private String password;
@@ -20,7 +17,5 @@ public class UserCreateDTO {
     private LocalDate birthDate;
     private String phoneNumber;
     private boolean enabled;
-    private float balance = 0;
     private String address;
-
 }

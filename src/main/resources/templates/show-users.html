@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User List</title>
+  <link rel="stylesheet" href="/css/show-users.css"> <!-- Link to external CSS -->
+</head>
+<body>
+
+<!-- Return Button in Top-Right Corner -->
+<button class="return-button" onclick="window.location.href='/user/return'">Return</button>
+
+
+<div class="user-table-container">
+  <table>
+    <thead>
+    <tr>
+      <th>Num</th> <!-- New Sort Number Header -->
+      <th>Username</th>
+      <th>Surname</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Birth Date</th>
+      <th>Phone Number</th>
+      <th>Balance</th>
+      <th>Address</th>
+      <th>Created Date</th>
+      <th>Actions</th> <!-- New Actions Header -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user, iterStat : ${users}">
+      <td th:text="${iterStat.index + 1}"></td> <!-- Display Sort Number -->
+      <td th:text="${user.username}"></td>
+      <td th:text="${user.surname}"></td>
+      <td th:text="${user.email}"></td>
+      <td th:text="${user.role}"></td>
+      <td th:text="${user.birthDate}"></td>
+      <td th:text="${user.phoneNumber}"></td>
+      <td th:text="${user.balance}"></td>
+      <td th:text="${user.address}"></td>
+      <td th:text="${user.formattedCreatedDate}"></td>
+      <td>
+        <!-- Update Button -->
+        <button class="action-button update-button" onclick="window.location.href='/user/update/${user.id}'">Update</button>
+        <!-- Delete Button -->
+        <button class="action-button delete-button" onclick="confirmDelete('${user.id}')">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div th:if="${#lists.isEmpty(users)}">
+    <p>No users found.</p>
+  </div>
+</div>
+
+<!-- Optional: Script to confirm deletion -->
+<script>
+  function confirmDelete(userId) {
+    if (confirm('Are you sure you want to delete this user?')) {
+      window.location.href = '/user/delete/' + userId; // Redirect to delete user action
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,8 +1,6 @@
 package uz.jvh.uzairways.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-//@Entity
-//@Table(name = "payments")
+@Entity
+@Table(name = "payments")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

@@ -1,9 +1,6 @@
 package uz.jvh.uzairways.domain.entity;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +10,8 @@ import uz.jvh.uzairways.domain.enumerators.BookingStatus;
 
 import java.time.LocalDateTime;
 
-//@Entity
-//@Table(name = "bookings")
+@Entity
+@Table(name = "bookings")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

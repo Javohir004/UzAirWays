@@ -10,8 +10,8 @@ import uz.jvh.uzairways.domain.enumerators.FlightStatues;
 
 import java.time.LocalDateTime;
 
-//@Entity
-//@Table(name = "flights")
+@Entity
+@Table(name = "flights")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

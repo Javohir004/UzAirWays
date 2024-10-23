@@ -27,15 +27,15 @@ public class JwtService {
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .subject(user.getUsername())
-                .claims(Map.of("authorities", getRoles(user)))
+                .claims(Map.of("authorities", user.getRole()))
                 .compact();
     }
 
-    public List<String> getRoles(User user) {
+    /*public List<String> getRoles(User user) {
         return user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-    }
+    }*/
 
     public Map<String, Object> validateToken(String token){
         Claims payload = Jwts.parser()

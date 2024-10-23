@@ -10,11 +10,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uz.jvh.uzairways.Views.UserView;
 import uz.jvh.uzairways.domain.DTO.request.UserCreateDTO;
+import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.domain.entity.User;
+import uz.jvh.uzairways.domain.enumerators.UserRole;
 import uz.jvh.uzairways.respository.UserRepository;
 
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -31,10 +35,6 @@ public class UserService {
     private ModelMapper modelMapper;
 
 
-    @Autowired
-    private JavaMailSender mailSender;
-
-
 
     public User findByUsername(String username) {
         User userEntity = userRepository.findByUsername(username)
@@ -46,7 +46,7 @@ public class UserService {
     public String create(UserCreateDTO userCreateDTO) {
         User user = modelMapper.map(userCreateDTO, User.class);
 
-        if(userRepository.checkByUsernameAndPassword(user.getUsername(), user.getPassword())) {
+        if(userRepository.existsByUsernameAndPassword(user.getUsername(), user.getPassword())) {
             return "This user already exists";
         };
 
@@ -56,16 +56,27 @@ public class UserService {
         return "success";
     }
 
-
-
     public Boolean checkByUsernameAndEmail(String username , String email) {
-       return userRepository.CheckByUsernameAndEmail(username, email);
+       return userRepository.existsByUsernameAndPassword(username, email);
     }
 
 
+    public List<UserView> findByRole(UserRole role) {
+       return userRepository.findByRole(role);
+    }
 
 
+    public User deleteUser(UUID userId) {
+        User user = userRepository.findById(userId).
+                orElseThrow(() -> new UsernameNotFoundException("Username " + userId + " not found"));
 
+        user.setActive(false);
+        userRepository.save(user);
+        return user;
+    }
 
-
+    public User findById(UUID id) {
+        return userRepository.findById(id).
+                orElseThrow(() -> new UsernameNotFoundException("User with " + id + " not found"));
+    }
 }

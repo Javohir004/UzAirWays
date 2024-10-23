@@ -1,0 +1,225 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #e0e0e0; /* Light text color for readability */
+    margin: 0;
+    padding: 0;
+    background-size: cover; /* Make the image cover the entire background */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent repeating the image */
+}
+
+.container {
+    width: 100%;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background: transparent;
+}
+
+/* home */
+.home {
+    position: relative;
+    font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
+    height: 100vh; /* Ensure the container takes full viewport height */
+}
+
+.home::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../photo/2023-Porsche-911-GT3-RS-in-motion-3.jpg');
+    filter: blur(8px);
+    z-index: -1; /* Send the background image to the back */
+    background-size: cover; /* Make sure the image covers the entire background */
+    background-position: center; /* Ensure the image is centered */
+    background-repeat: no-repeat; /* Prevent repeating */
+}
+
+
+.home .container {
+    position: relative;
+    z-index: 1; /* Ensure content is on top */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.home .container .card {
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    animation: cardAnimation 5s infinite alternate;
+}
+
+@keyframes backgroundAnimation {
+    0% { filter: brightness(0.7); }
+    100% { filter: brightness(1); }
+}
+
+@keyframes cardAnimation {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+.home h1 {
+    font-size: 3rem;
+    margin: 0;
+}
+
+.home p {
+    font-size: 1.2rem;
+    margin: 10px 0 20px;
+}
+
+.home .button {
+    padding: 10px 20px;
+    background: #00ffcc;
+    color: #1c1c1c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+.home .button:hover {
+    transform: scale(1.1);
+}
+
+.home .menu {
+    position: fixed;
+    top: 20px; /* Distance from the top */
+    right: 20px; /* Distance from the right */
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    z-index: 2; /* Keep menu buttons on top */
+}
+
+.home .menu .button {
+    background: rgba(0, 255, 204, 0.7); /* Semi-transparent background */
+    color: #1c1c1c; /* Dark text for contrast */
+}
+
+.home .menu .button:hover {
+    background: rgba(0, 204, 153, 1); /* Darker hover effect */
+}
+
+/* sign in */
+.signin {
+    background-image: url('../photo/dawn-pair-flight-russia-videoconferencing-russia-hd-wallpaper-preview.jpg');
+}
+
+.signin .container {
+    max-width: 400px;
+    background-color: #2c2c2c00; /* Darker container background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Slightly stronger shadow */
+}
+
+/* sign up */
+.signup {
+    background-image: url('../photo/passenger-airplane-landing-sunset-runway-airport-passenger-airplane-landing-sunset-runway-328743733 (1).webp');
+}
+
+.signup .container {
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Slightly stronger shadow */
+}
+
+.signup .form-group {
+    margin-bottom: 15px; /* Space between form groups */
+}
+
+.signup .form-group label {
+    display: block; /* Make label take full width */
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+.signup .form-group input,
+.signup .form-group select {
+    width: 100%; /* Full width */
+    padding: 8px; /* Padding inside input fields */
+    border: 1px solid #ccc; /* Border for input fields */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.signup button {
+    background-color: #00ff99; /* Button color */
+    color: white; /* Text color */
+    padding: 10px 15px; /* Padding for button */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+}
+
+.signup button:hover {
+    background-color: #00ad68; /* Darker blue on hover */
+}
+
+.signup p {
+    margin-top: 15px; /* Space above paragraph */
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00ff99; /* Green accent color */
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #ffffff; /* Change label color to white for visibility */
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444; /* Darker input border */
+    background-color: #ffffff; /* Change background to white */
+    color: #1a1a1a; /* Dark text for readability */
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #00ff99; /* Green focus border */
+    background-color: #f0f0f0; /* Slightly darker white background on focus */
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #00ff99; /* Green button background */
+    border: none;
+    border-radius: 4px;
+    color: #1a1a1a; /* Dark text for contrast on green button */
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #00cc77; /* Darker green on hover */
+}
+
+p {
+    text-align: center;
+    color: #bfbfbf; /* Light gray for secondary text */
+}
+
+a {
+    color: #00ff99; /* Green links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

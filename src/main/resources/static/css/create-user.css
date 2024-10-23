@@ -1,0 +1,106 @@
+/* General body styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('../photo/2023-Porsche-911-GT3-RS-in-motion-3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Form container styling */
+form {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adds shadow */
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Two-column layout */
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Each column */
+.form-column {
+    flex: 1;
+}
+
+/* Input fields and labels styling */
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Full-width address field */
+#address {
+    width: 100%;
+}
+
+/* Button container for aligning buttons side by side */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Button styling */
+button {
+    width: 48%; /* Make buttons take equal width */
+    background-color: #4CAF50; /* Green background for Create button */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="button"] {
+    background-color: #f44336; /* Red background for Return button */
+}
+
+button:hover {
+    opacity: 0.9; /* Slight opacity change on hover */
+}
+
+/* Adjustments for mobile view */
+@media screen and (max-width: 600px) {
+    .form-container {
+        flex-direction: column;
+    }
+
+    form {
+        padding: 15px;
+        width: 90%;
+    }
+
+    .button-container {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%; /* Make buttons full-width on small screens */
+    }
+}

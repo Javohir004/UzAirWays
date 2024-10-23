@@ -11,24 +11,23 @@ import uz.jvh.uzairways.filter.JwtFilter;
 
 @Configuration
 public class SecurityConfig {
-    private final String[] WHITE_LIST = {"/register", "/login", "api/v1/"};
+
+    private final String[] WHITE_LIST = {"/auth/register", "/auth/login", "api/v1/"};
 
     @Autowired
     private JwtFilter jwtFilter;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorizeHttpRequestsConfigurer) -> {
-                    authorizeHttpRequestsConfigurer
-                            .requestMatchers("/css/**", "/js/**").permitAll()
-                            .requestMatchers(WHITE_LIST).permitAll()
-                            .anyRequest().authenticated();
-                })
-                .addFilterBefore(jwtFilter,
+
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http
+            .csrf(AbstractHttpConfigurer::disable) // CSRFni o'chirish
+            .authorizeHttpRequests((authz) -> authz
+                    .anyRequest().permitAll() // Hamma so'rovlar ochiq bo'ladi
+            ) .addFilterBefore(jwtFilter,
                         UsernamePasswordAuthenticationFilter.class)
                 .build();
-    }
+
+}
 
 }
