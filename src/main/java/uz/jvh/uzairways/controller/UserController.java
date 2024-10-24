@@ -37,19 +37,12 @@ public class UserController {
 
     @GetMapping("/show-users-by-role")
     public String getUsersByRole(@RequestParam("role") UserRole role, Model model) {
-
         List<UserView> users = userService.findByRole(role);
         model.addAttribute("users", users);
         return "show-users";
 
     }
 
-
-//    @PostMapping("/show-users-by-role")
-//    public String getUsers(Model model , UserRole userRole) {
-//        model.getAttribute("users");
-//        return "show-users";
-//    }
 
 
     @PostMapping("/create-user")
@@ -59,14 +52,32 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/delete/{userId}")
-    public String deleteUser(@PathVariable("userId") UUID userId, Model model) {
+    @GetMapping("/delete")
+    public String deleteUser(@RequestParam("userId") UUID userId, Model model) {
         User user = userService.deleteUser(userId);
         List<UserView> users = userService.findByRole(user.getRole());
         model.addAttribute("users", users);
-        return "owner-page";
+        return "show-users";
     }
 
+
+
+    ///user/update-user
+    @GetMapping("/update-user")
+    public String update(@RequestParam(name = "userId") UUID userID , Model model) {
+        User user = userService.findById(userID);
+        model.addAttribute("user", user);
+        return "update-user";
+    }
+
+
+    @PostMapping( "/update-user")
+    public String update(@RequestParam(name = "userId") UUID userID , UserCreateDTO updatedUser, Model model) {
+        userService.updateUser(updatedUser,userID);
+        List<UserView> byRole = userService.findByRole(updatedUser.getRole());
+        model.addAttribute("users", byRole);
+        return "show-users";
+    }
 
 
 }

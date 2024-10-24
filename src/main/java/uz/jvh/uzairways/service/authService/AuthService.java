@@ -1,4 +1,4 @@
-package uz.jvh.uzairways.service;
+package uz.jvh.uzairways.service.authService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.LoginDto;
 import uz.jvh.uzairways.domain.DTO.response.JwtResponse;
 import uz.jvh.uzairways.domain.entity.User;
+import uz.jvh.uzairways.service.UserService;
 
 
 @Service

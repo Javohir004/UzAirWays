@@ -5,8 +5,10 @@ import uz.jvh.uzairways.domain.enumerators.UserRole;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public interface UserView {
+    UUID getId();
     String getUsername();
     String getSurname();
     String getPassword();

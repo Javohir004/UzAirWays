@@ -18,9 +18,10 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Boolean existsByEnabledTrueAndUsernameOrEmail(String username, String email);
 
-    List<UserView> findByRole(UserRole role);
+    List<UserView> findByRoleAndIsActiveTrue(UserRole role);
 
     Optional<User> findByUsername(String username);
 
     Optional<User>findById(UUID id);
+
 }

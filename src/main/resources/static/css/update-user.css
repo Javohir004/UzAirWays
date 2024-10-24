@@ -1,0 +1,102 @@
+/* General body styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('../photo/2023-Porsche-911-GT3-RS-in-motion-3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Form container styling */
+form {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque background */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Enhanced shadow */
+    max-width: 800px; /* Increased width */
+    margin: auto; /* Center the form */
+}
+
+/* Two-column layout */
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Each column */
+.form-column {
+    flex: 1; /* Allow columns to grow equally */
+}
+
+/* Input fields and labels styling */
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px; /* Increased padding for better touch */
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Button container for aligning buttons side by side */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Button styling */
+button {
+    width: 48%; /* Equal width for buttons */
+    background-color: #4CAF50; /* Green background for Update button */
+    color: white;
+    padding: 12px; /* Increased padding for better touch */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Cancel button styling */
+.btn-secondary {
+    background-color: #f44336; /* Red background for Cancel button */
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #e53935; /* Darker red on hover */
+}
+
+/* Adjustments for mobile view */
+@media screen and (max-width: 600px) {
+    .form-container {
+        flex-direction: column; /* Stack columns on small screens */
+    }
+
+    form {
+        padding: 20px; /* Reduce padding */
+        width: 90%; /* Make form take more width on small screens */
+    }
+
+    .button-container {
+        flex-direction: column; /* Stack buttons on small screens */
+    }
+
+    button {
+        width: 100%; /* Full-width buttons on small screens */
+    }
+}

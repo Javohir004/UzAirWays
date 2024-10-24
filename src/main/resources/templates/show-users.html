@@ -43,9 +43,13 @@
       <td th:text="${user.formattedCreatedDate}"></td>
       <td>
         <!-- Update Button -->
-        <button class="action-button update-button" onclick="window.location.href='/user/update/${user.id}'">Update</button>
-        <!-- Delete Button -->
-        <button class="action-button delete-button" onclick="confirmDelete('${user.id}')">Delete</button>
+
+        <a th:href="@{/user/update-user(userId=${user.id})}">Update</a>
+        <a th:href="@{/user/delete(userId=${user.id})}">Delete</a>
+<!--        <button class="action-button update-button" onclick=window.location.href="/user/update-user?userId=${user.id}">Update</button>-->
+<!--        &lt;!&ndash; Delete Button &ndash;&gt;-->
+<!--        <button class="action-button delete-button" onclick="confirmDelete('${user.id}')">Delete</button>-->
+
       </td>
     </tr>
     </tbody>

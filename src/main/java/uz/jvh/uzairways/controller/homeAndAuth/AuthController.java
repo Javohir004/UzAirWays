@@ -1,4 +1,4 @@
-package uz.jvh.uzairways.controller;
+package uz.jvh.uzairways.controller.homeAndAuth;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import uz.jvh.uzairways.domain.DTO.request.LoginDto;
 import uz.jvh.uzairways.domain.DTO.request.UserCreateDTO;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
-import uz.jvh.uzairways.service.AuthService;
+import uz.jvh.uzairways.service.authService.AuthService;
 import uz.jvh.uzairways.service.UserService;
 
 @Controller

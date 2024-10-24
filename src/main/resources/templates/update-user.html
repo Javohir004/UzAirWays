@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update User</title>
+  <link rel="stylesheet" href="/css/update-user.css"> <!-- Link to your new CSS -->
+  <!-- Bootstrap for styling and form controls -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+
+  <!-- Form to update user -->
+  <form action="/user/update-user" method="post">
+    <!-- Hidden field for user ID -->
+    <input type="hidden" name="userId" th:value="${user.id}">
+
+    <!-- Two-column layout -->
+    <div class="form-container">
+      <!-- Left Column -->
+      <div class="form-column">
+        <!-- Username -->
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" name="username" th:value="${user.username}" required>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" th:value="${user.email}" required>
+        </div>
+
+        <!-- Role -->
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select class="form-control" id="role" name="role" required>
+            <option value="" disabled selected>Select a role</option>
+            <option value="USER" th:selected="${user.role == 'USER'}">USER</option>
+            <option value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
+            <option value="OWNER" th:selected="${user.role == 'OWNER'}">OWNER</option>
+          </select>
+        </div>
+
+        <!-- Balance -->
+        <div class="form-group">
+          <label for="balance">Balance</label>
+          <input type="number" step="0.01" class="form-control" id="balance" name="balance" th:value="${user.balance}">
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="form-column">
+        <!-- Surname -->
+        <div class="form-group">
+          <label for="surname">Surname</label>
+          <input type="text" class="form-control" id="surname" name="surname" th:value="${user.surname}">
+        </div>
+
+        <!-- Birth Date -->
+        <div class="form-group">
+          <label for="birthDate">Birth Date</label>
+          <input type="date" class="form-control" id="birthDate" name="birthDate" th:value="${user.birthDate}">
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group">
+          <label for="phoneNumber">Phone Number</label>
+          <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:value="${user.phoneNumber}" required>
+        </div>
+
+        <!-- Address -->
+        <div class="form-group">
+          <label for="address">Address</label>
+          <textarea class="form-control" id="address" name="address" rows="3" th:text="${user.address}"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button container -->
+    <div class="button-container">
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary">Update User</button>
+      <!-- Cancel Button -->
+      <a href="/user/return" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<!-- Include Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

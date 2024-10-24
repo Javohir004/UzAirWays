@@ -62,7 +62,7 @@ public class UserService {
 
 
     public List<UserView> findByRole(UserRole role) {
-       return userRepository.findByRole(role);
+       return userRepository.findByRoleAndIsActiveTrue(role);
     }
 
 
@@ -73,6 +73,13 @@ public class UserService {
         user.setActive(false);
         userRepository.save(user);
         return user;
+    }
+
+    @Transactional
+    public void updateUser(UserCreateDTO userCreateDTO , UUID userId) {
+        User user = modelMapper.map(userCreateDTO, User.class);
+        user.setId(userId);
+        userRepository.save(user);
     }
 
     public User findById(UUID id) {
