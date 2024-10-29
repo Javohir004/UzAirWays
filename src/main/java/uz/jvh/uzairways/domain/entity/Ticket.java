@@ -26,20 +26,20 @@ public class Ticket extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
-    private Flight flight;
+    private Flight flight;          /// qasyi parvozga tegishli
 
     private double price;
-    private String seatNumber;
+    private String seatNumber;  /// o'rindiq raqami
 
     @Enumerated(EnumType.STRING)
     private ClassType classType;
 
-    private boolean nearWindow;
+    private Boolean nearWindow; /// deraza yonidami
 
     @Enumerated(EnumType.STRING)
-    private TicketStatus ticketStatus;
+    private TicketStatus ticketStatus; /// chipta statusi
 
     @CreationTimestamp
-    private LocalDateTime bookingDate;
+    private LocalDateTime bookingDate; // chipta olingan kun
 
 }

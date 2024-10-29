@@ -16,7 +16,7 @@ public class AirPlane extends BaseEntity {
 
     private String model;
 
-    private int capacity;
+    private Integer capacity;
 
     private String manufacturer;
 
