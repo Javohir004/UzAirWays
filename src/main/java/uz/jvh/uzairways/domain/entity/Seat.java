@@ -28,4 +28,5 @@ public class Seat extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ClassType classType; /// bisnesmi yoki ekanom
 
+
 }
