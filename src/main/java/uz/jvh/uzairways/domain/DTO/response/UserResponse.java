@@ -6,7 +6,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
 public class UserResponse {
     private String username;
