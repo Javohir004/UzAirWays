@@ -23,18 +23,18 @@ public class Flight extends BaseEntity{
     private AirPlane airplane;
 
     @Column(unique = true, nullable = false)
-    private String flightNumber;
+    private String flightNumber;  /// 2 yoki 3 chi kabi  reys
 
     private LocalDateTime departureTime; // jo'nash vaqti
 
-    private LocalDateTime arrivalTime;
+    private LocalDateTime arrivalTime; /// qo'nish vaqti
 
     private String departureAirport; // uchish airaporti
 
-    private String arrivalAirport;
+    private String arrivalAirport;  // qo'nish vaqti
 
     @Enumerated(EnumType.STRING)
-    private FlightStatues status;
+    private FlightStatues status; /// parvoz statusi
 
 
 }

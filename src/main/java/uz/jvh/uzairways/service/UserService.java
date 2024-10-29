@@ -1,18 +1,12 @@
 package uz.jvh.uzairways.service;
-
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.Views.UserView;
 import uz.jvh.uzairways.domain.DTO.request.UserCreateDTO;
-import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 import uz.jvh.uzairways.respository.UserRepository;
@@ -33,8 +27,6 @@ public class UserService {
 
     @Autowired
     private ModelMapper modelMapper;
-
-
 
     public User findByUsername(String username) {
         User userEntity = userRepository.findByUsername(username)
@@ -65,11 +57,8 @@ public class UserService {
        return userRepository.findByRoleAndIsActiveTrue(role);
     }
 
-
     public User deleteUser(UUID userId) {
-        User user = userRepository.findById(userId).
-                orElseThrow(() -> new UsernameNotFoundException("Username " + userId + " not found"));
-
+        User user = findById(userId);
         user.setActive(false);
         userRepository.save(user);
         return user;
@@ -86,4 +75,12 @@ public class UserService {
         return userRepository.findById(id).
                 orElseThrow(() -> new UsernameNotFoundException("User with " + id + " not found"));
     }
+
+    public List<UserView> findAll() {
+        List<User> all = userRepository.findAll();
+        return all.stream()
+                .map(airPlane -> modelMapper.map(airPlane, UserView.class))
+                .toList();
+    }
+
 }

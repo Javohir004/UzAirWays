@@ -25,13 +25,13 @@ public class Booking extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
-    private Flight flight;
+    private Flight flight; /// parvoz
 
     @CreationTimestamp
-    private LocalDateTime bookingDate;
+    private LocalDateTime bookingDate; /// bron qilingan kun
 
     @Enumerated(EnumType.STRING)
-    private BookingStatus status;
+    private BookingStatus status; ///
 
 
 }

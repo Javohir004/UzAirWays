@@ -34,5 +34,6 @@ public abstract class BaseEntity {
     protected UUID modifiedBy;
 
     protected boolean isActive = true;
+
 }
 

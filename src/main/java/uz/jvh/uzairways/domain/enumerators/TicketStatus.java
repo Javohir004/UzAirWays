@@ -1,7 +1,7 @@
 package uz.jvh.uzairways.domain.enumerators;
 
 public enum TicketStatus {
-    BOOKED,
-    AVAILABLE,
-    CANCELLED;
+    BOOKED, /// bron qilingan
+    AVAILABLE, /// chipta bor
+    CANCELLED; /// bekor qilingan
 }

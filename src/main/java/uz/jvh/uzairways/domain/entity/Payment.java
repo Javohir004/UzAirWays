@@ -26,12 +26,12 @@ public class Payment extends BaseEntity{
     private Booking booking;
 
     @Column(nullable = false)
-    private double amount;
+    private double amount;  /// narxi
 
     @CreationTimestamp
-    private LocalDateTime paymentDate;
+    private LocalDateTime paymentDate;  /// to'lo'v qilingan kun
 
-    private String paymentMethod;  // e.g., "Credit Card", "PayPal"
+    private String paymentMethod;  // e.g., "Credit Card", "PayPal" ,
 
 
 }

@@ -34,7 +34,6 @@ public class UserController {
     }
 
 
-
     @GetMapping("/show-users-by-role")
     public String getUsersByRole(@RequestParam("role") UserRole role, Model model) {
         List<UserView> users = userService.findByRole(role);
@@ -59,8 +58,6 @@ public class UserController {
         model.addAttribute("users", users);
         return "show-users";
     }
-
-
 
     ///user/update-user
     @GetMapping("/update-user")
