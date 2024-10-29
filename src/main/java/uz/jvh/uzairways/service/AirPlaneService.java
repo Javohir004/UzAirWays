@@ -54,6 +54,4 @@ public class AirPlaneService {
                 .map(airPlane -> modelMapper.map(airPlane, AirPlaneResponse.class))
                 .toList();
     }
-
-
 }

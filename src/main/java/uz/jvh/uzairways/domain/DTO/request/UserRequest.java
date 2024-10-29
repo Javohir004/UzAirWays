@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-public class UserCreateDTO {
+public class UserRequest {
     private String username;
     private String surname;
     private String password;

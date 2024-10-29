@@ -1,10 +1,7 @@
 package uz.jvh.uzairways.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 import java.time.LocalDate;
 
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class User extends BaseEntity{
 
     @Column(unique = true, nullable = false)
