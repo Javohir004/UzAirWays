@@ -58,6 +58,8 @@ public class SecurityConfig {
                 .cors().and()  // CORS konfiguratsiyasini yoqish
                 .authorizeHttpRequests()
                 .requestMatchers("/test",
+                        "/owner/role/**",
+                        "/owner/**",
                         "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                 .permitAll()
                 .anyRequest()

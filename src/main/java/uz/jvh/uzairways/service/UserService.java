@@ -16,6 +16,7 @@ import uz.jvh.uzairways.respository.UserRepository;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -72,14 +73,26 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(UserCreateDTO userCreateDTO , UUID userId) {
+    public UserView updateUser(UserCreateDTO userCreateDTO , UUID userId) {
         User user = modelMapper.map(userCreateDTO, User.class);
         user.setId(userId);
         userRepository.save(user);
+        return modelMapper.map(user, UserView.class);
     }
 
-    public User findById(UUID id) {
-        return userRepository.findById(id).
+    public UserView findById(UUID id) {
+        User user = userRepository.findById(id).
                 orElseThrow(() -> new UsernameNotFoundException("User with " + id + " not found"));
+        UserView map = modelMapper.map(user, UserView.class);
+        return map;
     }
+
+
+    public List<UserView> findAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserView.class))
+                .collect(Collectors.toList());
+    }
+
 }
