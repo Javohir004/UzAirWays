@@ -21,10 +21,6 @@ import java.time.LocalDateTime;
 public class Ticket extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
-
-    @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
     private Flight flight;          /// qasyi parvozga tegishli
 

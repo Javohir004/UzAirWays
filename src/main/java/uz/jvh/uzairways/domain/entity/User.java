@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -38,6 +39,9 @@ public class User extends BaseEntity{
     private float balance;
 
     private String address;
+
+    @OneToMany
+    private List<Ticket> tickets;
 
     @Column(unique = true)
     private String verificationToken;

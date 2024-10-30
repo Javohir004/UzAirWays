@@ -21,6 +21,7 @@ public class AuthService {
 
     public UserResponse save(UserRequest user) {
         User user1 = userService.mapRequestToEntity(user);
+        user1.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user1);
         return userService.mapEntityToResponse(user1);
     }
@@ -28,7 +29,7 @@ public class AuthService {
 
     public JwtResponse login(LoginDto loginDto) {
         User username = userService.findByUsername(loginDto.getUsername());
-        if (!passwordEncoder.encode(loginDto.getPassword()).equals(username.getPassword())) {
+        if (!passwordEncoder.matches(loginDto.getPassword(), username.getPassword())) {
             throw new UsernameNotFoundException("Invalid username or password");
         }
        return  new JwtResponse(jwtTokenUtil.generateToken(String.valueOf(username)));

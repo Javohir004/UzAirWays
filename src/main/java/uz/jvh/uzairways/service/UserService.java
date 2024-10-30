@@ -7,7 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.Views.UserView;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;
+import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
+import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 import uz.jvh.uzairways.respository.UserRepository;
@@ -15,6 +17,7 @@ import uz.jvh.uzairways.respository.UserRepository;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -87,5 +90,32 @@ public class UserService {
                 .address(user.getAddress())
                 .createDate(user.getCreated().toLocalDate())
                 .build();
+    }
+
+    public UserResponse getProfile(UUID userId) {
+        User user = findById(userId);
+
+        List<TickedResponse> ticketHistory = user.getTickets().stream().map(ticket -> {
+            TickedResponse tickedResponse = new TickedResponse();
+            tickedResponse.setSeatNumber(ticket.getSeatNumber());
+            tickedResponse.setPrice(ticket.getPrice());
+            tickedResponse.setBookingDate(ticket.getBookingDate());
+            tickedResponse.setClassType(ticket.getClassType().toString());
+            tickedResponse.setNearWindow(ticket.getNearWindow());
+            tickedResponse.setTicketStatus(ticket.getTicketStatus().toString());
+
+            Flight flight = ticket.getFlight();
+            tickedResponse.setFlightNumber(flight.getFlightNumber());
+            tickedResponse.setDepartureTime(flight.getDepartureTime());
+            tickedResponse.setArrivalTime(flight.getArrivalTime());
+            tickedResponse.setDepartureAirport(flight.getDepartureAirport());
+            tickedResponse.setArrivalAirport(flight.getArrivalAirport());
+            tickedResponse.setFlightStatus(flight.getStatus().toString());
+            return tickedResponse;
+
+        }).toList();
+        UserResponse userResponse = mapEntityToResponse(user);
+        userResponse.setTicketHistory(ticketHistory);
+        return userResponse;
     }
 }
