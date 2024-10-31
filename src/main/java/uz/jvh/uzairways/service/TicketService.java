@@ -15,7 +15,6 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-
     /// miyyanga ... o'zincha o'chirib tashlama yoqmasa tegma kommentga olib qo'y
 
 
