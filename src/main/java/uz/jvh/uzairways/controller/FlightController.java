@@ -21,13 +21,13 @@ public class FlightController {
 
 
 
-    @PostMapping("/create")
+    @PostMapping("/create-flight")
     public ResponseEntity<Flight> createFlight(@RequestBody FlightDTO flightDto) {
         return ResponseEntity.ok(flightService.saveFlight(flightDto));
     }
 
 
-    @GetMapping("/all")
+    @GetMapping("/all-flight")
     public ResponseEntity<List<Flight>> getAllFlights() {
         List<Flight> flights = flightService.getAllFlights();
         return ResponseEntity.ok(flights);
@@ -35,7 +35,7 @@ public class FlightController {
 
 
     // 4. Parvozni ID bo‘yicha olish
-    @GetMapping("/{id}")
+    @GetMapping("/find-by-id/{id}")
     public ResponseEntity<Flight> getFlightById(@PathVariable UUID id) {
         Flight flightById = flightService.getFlightById(id);
         return ResponseEntity.ok(flightById);

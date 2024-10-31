@@ -29,7 +29,6 @@ public class Ticket extends BaseEntity {
     private double price;
 
     private String seatNumber;  /// o'rindiq raqami
-    private String seatNumber;
     /// o'rindiq raqami
 
     @Enumerated(EnumType.STRING)
@@ -45,4 +44,5 @@ public class Ticket extends BaseEntity {
     @CreationTimestamp
     private LocalDateTime bookingDate; // chipta olingan kun
 
+    private boolean isAvailable = true;
 }

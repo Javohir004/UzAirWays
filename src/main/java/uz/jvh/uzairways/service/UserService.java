@@ -121,36 +121,9 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-//
-//    public UserResponse getProfile(UUID userId) {
-//        User user = findById(userId);
-//
-//        List<TickedResponse> ticketHistory = user.getTickets().stream().map(ticket -> {
-//            TickedResponse tickedResponse = new TickedResponse();
-//            tickedResponse.setSeatNumber(ticket.getSeatNumber());
-//            tickedResponse.setPrice(ticket.getPrice());
-//            tickedResponse.setBookingDate(ticket.getBookingDate());
-//            tickedResponse.setClassType(ticket.getClassType().toString());
-//            tickedResponse.setNearWindow(ticket.getNearWindow());
-//            tickedResponse.setTicketStatus(ticket.getTicketStatus().toString());
-//
-//            Flight flight = ticket.getFlight();
-//            tickedResponse.setFlightNumber(flight.getFlightNumber());
-//            tickedResponse.setDepartureTime(flight.getDepartureTime());
-//            tickedResponse.setArrivalTime(flight.getArrivalTime());
-//            tickedResponse.setDepartureAirport(flight.getDepartureAirport());
-//            tickedResponse.setArrivalAirport(flight.getArrivalAirport());
-//            tickedResponse.setFlightStatus(flight.getStatus().toString());
-//            return tickedResponse;
-//
-//        }).toList();
-//        UserResponse userResponse = mapEntityToResponse(user);
-//        userResponse.setTicketHistory(ticketHistory);
-//        return userResponse;
-//    }
 
     public User update(UUID id, UserRequest userRequest) {
-        User user = findById(id);
+        User user = findByIdJ(id);
         user.setUsername(userRequest.getUsername() != null ? userRequest.getUsername() : user.getUsername());
         user.setSurname(userRequest.getSurname() != null ? userRequest.getSurname() : user.getSurname());
         user.setPassword(userRequest.getPassword() != null ? userRequest.getPassword() : user.getPassword());
