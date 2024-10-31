@@ -22,5 +22,7 @@ public class UserRequest {
     private boolean enabled;
     private float balance = 0;
     private String address;
+    private String passportSeries;
+
 
 }

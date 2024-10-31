@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.LoginDto;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;
 import uz.jvh.uzairways.domain.DTO.response.JwtResponse;
@@ -32,7 +31,7 @@ public class AuthService {
         if (!passwordEncoder.matches(loginDto.getPassword(), username.getPassword())) {
             throw new UsernameNotFoundException("Invalid username or password");
         }
-       return  new JwtResponse(jwtTokenUtil.generateToken(String.valueOf(username)));
+       return  new JwtResponse(jwtTokenUtil.generateToken(loginDto.getUsername()));
 
     }
 }

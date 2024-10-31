@@ -24,4 +24,5 @@ public class UserResponse {
     private String address;
     private LocalDate createDate;
     private List<TickedResponse> ticketHistory;
+    private String passportSeries;
 }

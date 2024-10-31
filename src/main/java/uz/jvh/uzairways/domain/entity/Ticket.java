@@ -20,20 +20,27 @@ import java.time.LocalDateTime;
 @Setter
 public class Ticket extends BaseEntity {
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User owner;
+
     @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
-    private Flight flight;          /// qasyi parvozga tegishli
+    private Flight flight;
+    /// qasyi parvozga tegishli
 
     private double price;
-    private String seatNumber;  /// o'rindiq raqami
+    private String seatNumber;
+    /// o'rindiq raqami
 
     @Enumerated(EnumType.STRING)
     private ClassType classType;
 
-    private Boolean nearWindow; /// deraza yonidami
+    private Boolean nearWindow;
+    /// deraza yonidami
 
     @Enumerated(EnumType.STRING)
-    private TicketStatus ticketStatus; /// chipta statusi
+    private TicketStatus ticketStatus;
+    /// chipta statusi
 
     @CreationTimestamp
     private LocalDateTime bookingDate; // chipta olingan kun
