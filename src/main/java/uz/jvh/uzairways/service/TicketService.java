@@ -1,12 +1,17 @@
 package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
+import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.Ticket;
+import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
 import uz.jvh.uzairways.domain.enumerators.TicketStatus;
+import uz.jvh.uzairways.respository.FlightRepository;
 import uz.jvh.uzairways.respository.TicketRepository;
+import uz.jvh.uzairways.respository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +23,8 @@ import java.util.UUID;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
+    private final FlightRepository flightRepository;
 
     /// miyyanga ... o'zincha o'chirib tashlama yoqmasa tegma kommentga olib qo'y
 
@@ -37,7 +44,6 @@ public class TicketService {
     }
 
 
-    // Ticket yaratish
     public List<Ticket> createTickets(TicketDTO ticketDTO, String aircraftType) {
         List<Ticket> tickets = new ArrayList<>();
 
@@ -47,72 +53,32 @@ public class TicketService {
         Float economyClassPrice = 200F;
 
         // Samolyot turi asosida o'rindiq va narxlarni belgilash
+        int[] availableSeats;
         if ("jet".equalsIgnoreCase(aircraftType)) {
-            // Jetda mavjud o'rindiqlar
-            int[] availableSeats = {20, 10, 30}; // Business, First Class, Economy
-
-            // Business sinfi
-            for (int j = 0; j < availableSeats[0]; j++) {
-                Ticket ticket = new Ticket();
-                ticket.setFlight(ticketDTO.getFlight());
-                ticket.setOwner(ticketDTO.getOwner());
-                ticket.setPrice(businessClassPrice);
-                ticket.setClassType(ClassType.BUSINESS);
-                tickets.add(ticket);
-            }
-            // Birinchi sinf
-            for (int j = 0; j < availableSeats[1]; j++) {
-                Ticket ticket = new Ticket();
-                ticket.setFlight(ticketDTO.getFlight());
-                ticket.setOwner(ticketDTO.getOwner());
-                ticket.setPrice(firstClassPrice);
-                ticket.setClassType(ClassType.FIRST);
-                tickets.add(ticket);
-            }
-            // Iqtisodiy sinf
-            for (int j = 0; j < availableSeats[2]; j++) {
-                Ticket ticket = new Ticket();
-                ticket.setFlight(ticketDTO.getFlight());
-                ticket.setOwner(ticketDTO.getOwner());
-                ticket.setPrice(economyClassPrice);
-                ticket.setClassType(ClassType.ECONOMY);
-                tickets.add(ticket);
-            }
+            availableSeats = new int[]{20, 10, 30}; // Business, First Class, Economy
         } else if ("propeller".equalsIgnoreCase(aircraftType)) {
-            // Propellerda mavjud o'rindiqlar
-            int[] availableSeats = {40, 20, 60}; // Business, First Class, Economy
-
-            // Business sinfi
-            for (int j = 0; j < availableSeats[0]; j++) {
-                Ticket ticket = new Ticket();
-                ticket.setFlight(ticketDTO.getFlight());
-                ticket.setOwner(ticketDTO.getOwner());
-                ticket.setPrice(businessClassPrice); // 20% chegirma
-                ticket.setClassType(ClassType.BUSINESS);
-                tickets.add(ticket);
-            }
-            // Birinchi sinf
-            for (int j = 0; j < availableSeats[1]; j++) {
-                Ticket ticket = new Ticket();
-                ticket.setFlight(ticketDTO.getFlight());
-                ticket.setOwner(ticketDTO.getOwner());
-                ticket.setPrice(firstClassPrice); // 20% chegirma
-                ticket.setClassType(ClassType.FIRST);
-                tickets.add(ticket);
-            }
-            // Iqtisodiy sinf
-            for (int j = 0; j < availableSeats[2]; j++) {
-                Ticket ticket = new Ticket();
-                ticket.setFlight(ticketDTO.getFlight());
-                ticket.setOwner(ticketDTO.getOwner());
-                ticket.setPrice(economyClassPrice); // 25% chegirma
-                ticket.setClassType(ClassType.ECONOMY);
-                tickets.add(ticket);
-            }
+            availableSeats = new int[]{40, 20, 60}; // Business, First Class, Economy
+        } else {
+            return tickets; // Agar samolyot turi noto'g'ri bo'lsa, bo'sh ro'yxat qaytaramiz
         }
+
+        // O'rindiqlarni yaratish
+        createTicketsByClass(tickets, ticketDTO, availableSeats, businessClassPrice, ClassType.BUSINESS);
+        createTicketsByClass(tickets, ticketDTO, availableSeats, firstClassPrice, ClassType.FIRST);
+        createTicketsByClass(tickets, ticketDTO, availableSeats, economyClassPrice, ClassType.ECONOMY);
 
         // Chiptalarni saqlash
         return ticketRepository.saveAll(tickets);
+    }
+
+    private void createTicketsByClass(List<Ticket> tickets, TicketDTO ticketDTO, int[] availableSeats, Float price, ClassType classType) {
+        int classIndex = classType.ordinal(); // ClassType dan indeks olish
+        for (int j = 0; j < availableSeats[classIndex]; j++) {
+            Ticket ticket = mapRequestToTicket(ticketDTO);
+            ticket.setPrice(price);
+            ticket.setClassType(classType);
+            tickets.add(ticket);
+        }
     }
 
 
@@ -137,13 +103,15 @@ public class TicketService {
 
     public Ticket mapRequestToTicket(TicketDTO ticketDTO) {
         Ticket ticket = new Ticket();
+        User owner = userRepository.findById(ticketDTO.getOwner()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Flight flight = flightRepository.findById(ticketDTO.getFlight()).orElseThrow(() -> new RuntimeException("Flight not found"));
         ticket.setTicketStatus(ticketDTO.getTicketStatus());
         ticket.setSeatNumber(ticketDTO.getSeatNumber());
         ticket.setTicketStatus(ticketDTO.getTicketStatus());
-        ticket.setOwner(ticketDTO.getOwner());
+        ticket.setOwner(owner);
         ticket.setPrice(ticketDTO.getPrice());
         ticket.setClassType(ticketDTO.getClassType());
-        ticket.setFlight(ticketDTO.getFlight());
+        ticket.setFlight(flight);
         ticket.setBookingDate(ticketDTO.getBookingDate());
         return ticket;
     }

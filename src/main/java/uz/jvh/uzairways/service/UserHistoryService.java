@@ -17,7 +17,6 @@ import java.util.UUID;
 public class UserHistoryService {
     private final BookingRepository bookingRepository;
     private final TicketRepository ticketRepository;
-    private final UserService userService;
 
     public List<Booking> getUserBooking(UUID userId) {
         if (userId == null) {

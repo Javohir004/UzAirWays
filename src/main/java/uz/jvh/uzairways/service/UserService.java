@@ -43,10 +43,6 @@ public class UserService {
         return userEntity;
     }
 
-//    public Boolean checkByUsernameAndEmail(String username, String email) {
-//        return userRepository.existsByUsernameAndPassword(username, email);
-//    }
-
 
     public List<UserView> findByRole(UserRole role) {
         return userRepository.findByRoleAndIsActiveTrue(role);

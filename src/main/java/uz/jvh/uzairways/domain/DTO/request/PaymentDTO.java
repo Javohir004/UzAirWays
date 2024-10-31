@@ -14,7 +14,6 @@ public class PaymentDTO {
 
     private User user;
 
-
     private Booking booking;
 
     private double amount;
