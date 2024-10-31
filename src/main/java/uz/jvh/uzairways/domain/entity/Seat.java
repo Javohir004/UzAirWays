@@ -27,4 +27,5 @@ public class Seat extends BaseEntity {
     private ClassType classType; /// bisnesmi yoki ekanom
 
 
+
 }

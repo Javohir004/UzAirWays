@@ -3,7 +3,6 @@ package uz.jvh.uzairways.respository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import uz.jvh.uzairways.Views.UserView;
-import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 
