@@ -1,10 +1,7 @@
 package uz.jvh.uzairways.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uz.jvh.uzairways.domain.enumerators.FlightStatues;
 
 
@@ -16,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Flight extends BaseEntity{
 
     @ManyToOne
