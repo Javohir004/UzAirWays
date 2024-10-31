@@ -27,7 +27,7 @@ public class FlightController {
     }
 
 
-    @GetMapping("/all")
+    @GetMapping("/get-all")
     public ResponseEntity<List<Flight>> getAllFlights() {
         List<Flight> flights = flightService.getAllFlights();
         return ResponseEntity.ok(flights);
@@ -35,13 +35,13 @@ public class FlightController {
 
 
     // 4. Parvozni ID bo‘yicha olish
-    @GetMapping("/{id}")
+    @GetMapping("/find-by-id/{id}")
     public ResponseEntity<Flight> getFlightById(@PathVariable UUID id) {
         Flight flightById = flightService.getFlightById(id);
         return ResponseEntity.ok(flightById);
     }
 
-    @GetMapping("/available-airplanes")
+    @GetMapping("/get-available-airplanes")
     public ResponseEntity<List<AirPlane>> getAvailableAirplanes(@RequestParam LocalDateTime departureTime,
                                                                 @RequestParam LocalDateTime arrivalTime) {
 

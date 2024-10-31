@@ -21,34 +21,34 @@ public class OwnerController {
     private final AuthService authService;
 
     // Barcha foydalanuvchilarni ko'rish
-    @GetMapping
+    @GetMapping("get-all")
     public ResponseEntity<List<UserView>> getAllUsers() {
         List<UserView> users = userService.findAllJ();
         return ResponseEntity.ok(users);
     }
 
     // Rol bo'yicha foydalanuvchilarni ko'rish
-    @GetMapping("/role/{role}")
+    @GetMapping("/find-by-role/{role}")
     public ResponseEntity<List<UserView>> getUsersByRole(@PathVariable UserRole role) {
         List<UserView> users = userService.findByRole(role);
         return ResponseEntity.ok(users);
     }
 
     // Foydalanuvchi yaratish
-    @PostMapping
+    @PostMapping("create-user")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userCreateDTO) {
         return ResponseEntity.ok(authService.save(userCreateDTO));
     }
 
     // Foydalanuvchini o'chirish
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("delete/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("Foydalanuvchi muvaffaqiyatli o'chirildi.");
     }
 
     // Foydalanuvchini yangilash
-    @PutMapping("/{userId}")
+    @PutMapping("/update/{userId}")
     public ResponseEntity<UserView> updateUser(@PathVariable UUID userId, @RequestBody UserRequest updatedUser) {
         UserView updatedUserInfo = userService.updateUserJ(updatedUser, userId);
         return ResponseEntity.ok(updatedUserInfo);
