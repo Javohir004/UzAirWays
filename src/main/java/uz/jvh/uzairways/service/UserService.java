@@ -1,5 +1,6 @@
 package uz.jvh.uzairways.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,8 +18,6 @@ import uz.jvh.uzairways.domain.enumerators.UserRole;
 import uz.jvh.uzairways.respository.BookingRepository;
 import uz.jvh.uzairways.respository.TicketRepository;
 import uz.jvh.uzairways.respository.UserRepository;
-
-
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,9 +43,9 @@ public class UserService {
         return userEntity;
     }
 
-    public Boolean checkByUsernameAndEmail(String username, String email) {
-        return userRepository.existsByUsernameAndPassword(username, email);
-    }
+//    public Boolean checkByUsernameAndEmail(String username, String email) {
+//        return userRepository.existsByUsernameAndPassword(username, email);
+//    }
 
 
     public List<UserView> findByRole(UserRole role) {
@@ -63,8 +62,15 @@ public class UserService {
         return user;
     }
 
+    @Transactional
+    public UserView updateUserJ(UserRequest userCreateDTO , UUID userId) {
+        User user = modelMapper.map(userCreateDTO, User.class);
+        user.setId(userId);
+        userRepository.save(user);
+        return modelMapper.map(user, UserView.class);
+    }
 
-    public User findById(UUID id) {
+    public User findByIdJ(UUID id) {
         return userRepository.findById(id).
                 orElseThrow(() -> new UsernameNotFoundException("User  not found"));
     }
@@ -99,6 +105,22 @@ public class UserService {
                 .passportSeries(user.getPassportSeries())
                 .build();
     }
+
+    public UserView findById(UUID id) {
+        User user = userRepository.findById(id).
+                orElseThrow(() -> new UsernameNotFoundException("User with " + id + " not found"));
+        UserView map = modelMapper.map(user, UserView.class);
+        return map;
+    }
+
+
+    public List<UserView> findAllJ() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserView.class))
+                .collect(Collectors.toList());
+    }
+
 //
 //    public UserResponse getProfile(UUID userId) {
 //        User user = findById(userId);

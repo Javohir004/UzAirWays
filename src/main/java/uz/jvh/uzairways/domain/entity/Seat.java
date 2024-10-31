@@ -1,10 +1,7 @@
 package uz.jvh.uzairways.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
 
 
@@ -14,6 +11,7 @@ import uz.jvh.uzairways.domain.enumerators.ClassType;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Seat extends BaseEntity {
 
     @ManyToOne

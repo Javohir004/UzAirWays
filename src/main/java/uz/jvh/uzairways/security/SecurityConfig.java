@@ -58,6 +58,9 @@ public class SecurityConfig {
                 .cors().and()  // CORS konfiguratsiyasini yoqish
                 .authorizeHttpRequests()
                 .requestMatchers("/test",
+                        "/owner/role/**",
+                        "/owner/**",
+                        "/owner/find/**",
                         "/api/auth/register/**",
                         "/api/auth/login/**",
                         "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
@@ -72,7 +75,7 @@ public class SecurityConfig {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint())
-                .accessDeniedHandler(accessDeniedHandler())
+                /*.accessDeniedHandler(accessDeniedHandler())*/
                 .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenUtil, userDetailsService),
                         UsernamePasswordAuthenticationFilter.class)
@@ -84,6 +87,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+/*    @Bean
 
     @Bean
     public AccessDeniedHandler accessDeniedHandler(){
@@ -99,7 +103,7 @@ public class SecurityConfig {
             ServletOutputStream outputStream = response.getOutputStream();
             objectMapper.writeValue(outputStream,appErrorDto);
         });
-    }
+    }*/
 
 //    @Bean
 //    public CorsConfigurationSource corsConfigurationSource(){

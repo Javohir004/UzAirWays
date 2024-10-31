@@ -1,6 +1,7 @@
 package uz.jvh.uzairways.service;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,13 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AirPlaneService {
 
-    @Autowired
+
     private AirPlaneRepository airPlaneRepository;
 
-    @Autowired
+
     private ModelMapper modelMapper;
 
     @Transactional

@@ -1,10 +1,7 @@
 package uz.jvh.uzairways.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
 import uz.jvh.uzairways.domain.enumerators.TicketStatus;
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Ticket extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,6 +27,8 @@ public class Ticket extends BaseEntity {
     /// qasyi parvozga tegishli
 
     private double price;
+
+    private String seatNumber;  /// o'rindiq raqami
     private String seatNumber;
     /// o'rindiq raqami
 

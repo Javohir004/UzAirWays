@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.jvh.uzairways.domain.enumerators.Airport;
+import lombok.*;
 import uz.jvh.uzairways.domain.enumerators.FlightStatues;
 
 
@@ -17,7 +18,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Flight extends BaseEntity {
+@Builder
+public class Flight extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "airplane_id", nullable = false)
