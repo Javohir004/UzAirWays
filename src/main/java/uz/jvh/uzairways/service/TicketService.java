@@ -18,18 +18,15 @@ public class TicketService {
     /// miyyanga ... o'zincha o'chirib tashlama yoqmasa tegma kommentga olib qo'y
 
 
-    // Barcha chiptalarni olish
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }
 
-    // ID bo'yicha chipta olish
     public Ticket getTicketById(UUID id) {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
     }
 
-    // Yangi chipta yaratish
     public Ticket createTicket(TicketDTO ticket) {
         Ticket ticket1 = mapRequestToTicket(ticket);
         return ticketRepository.save(ticket1);
@@ -116,7 +113,6 @@ public class TicketService {
 
 
 
-    // Chipta ma'lumotlarini yangilash
     public Ticket updateTicket(UUID id, Ticket ticket) {
         Ticket existingTicket = getTicketById(id);
         existingTicket.setId(id);
@@ -127,11 +123,9 @@ public class TicketService {
         existingTicket.setOwner(ticket.getOwner());
         existingTicket.setPrice(ticket.getPrice());
         existingTicket.setClassType(ticket.getClassType());
-        // Boshqa maydonlarni yangilang
         return ticketRepository.save(existingTicket);
     }
 
-    // Chipta o'chirish
     public void deleteTicket(UUID id) {
         Ticket existingTicket = getTicketById(id);
         existingTicket.setActive(false);

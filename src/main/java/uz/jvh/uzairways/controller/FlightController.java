@@ -20,13 +20,13 @@ public class FlightController {
     private final FlightService flightService;
 
 
-    // 2. Yangi parvoz yaratish
+
     @PostMapping("/create")
     public ResponseEntity<Flight> createFlight(@RequestBody FlightDTO flightDto) {
         return ResponseEntity.ok(flightService.saveFlight(flightDto));
     }
 
-    // 3. Parvozlarni ko'rish (misol uchun, hammasini yoki filtrlangan ma'lumotlar)
+
     @GetMapping("/all")
     public ResponseEntity<List<Flight>> getAllFlights() {
         List<Flight> flights = flightService.getAllFlights();
@@ -50,7 +50,7 @@ public class FlightController {
         return ResponseEntity.ok(availableAirplanes);
     }
 
-    // 5. Parvozni o'chirish
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteFlight(@PathVariable UUID id) {
         flightService.deleteFlight(id);

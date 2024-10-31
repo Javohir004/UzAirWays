@@ -19,36 +19,31 @@ public class TicketController {
     private final TicketService ticketService;
 
 
-    // Chiptalarni olish
     @GetMapping("/get-all")
     public ResponseEntity<List<Ticket>> getAllTickets() {
         List<Ticket> tickets = ticketService.getAllTickets();
         return ResponseEntity.ok(tickets);
     }
 
-    // Chiptani ID bo'yicha olish
-    @GetMapping("/{id}")
+    @GetMapping("/findbyId{id}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable UUID id) {
         Ticket ticket = ticketService.getTicketById(id);
         return ResponseEntity.ok(ticket);
     }
 
-    // Yangi chiptani yaratish
-    @PostMapping
+    @PostMapping("create-ticket")
     public ResponseEntity<Ticket> createTicket(@RequestBody TicketDTO ticket) {
         Ticket createdTicket = ticketService.createTicket(ticket);
         return ResponseEntity.status(201).body(createdTicket);
     }
 
-    // Chiptani yangilash
-    @PutMapping("/{id}")
+    @PutMapping("/update{id}")
     public ResponseEntity<Ticket> updateTicket(@PathVariable UUID id, @RequestBody Ticket ticket) {
         Ticket updatedTicket = ticketService.updateTicket(id, ticket);
         return ResponseEntity.ok(updatedTicket);
     }
 
-    // Chiptani o'chirish
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete{id}")
     public ResponseEntity<Void> deleteTicket(@PathVariable UUID id) {
         ticketService.deleteTicket(id);
         return ResponseEntity.noContent().build();
