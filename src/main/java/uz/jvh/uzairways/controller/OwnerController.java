@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.Views.UserView;
-import uz.jvh.uzairways.domain.DTO.request.UserCreateDTO;
+import uz.jvh.uzairways.domain.DTO.request.UserRequest;
+import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
+import uz.jvh.uzairways.service.AuthService;
 import uz.jvh.uzairways.service.UserService;
 
 import java.util.List;
@@ -17,12 +19,13 @@ import java.util.UUID;
 public class OwnerController {
 
     private final UserService userService;
+    private final AuthService authService;
 
 
     // Barcha foydalanuvchilarni ko'rish
     @GetMapping
     public ResponseEntity<List<UserView>> getAllUsers() {
-        List<UserView> users = userService.findAll();
+        List<UserView> users = userService.findAllJ();
         return ResponseEntity.ok(users);
     }
 
@@ -35,18 +38,13 @@ public class OwnerController {
 
     // Foydalanuvchi yaratish
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody UserCreateDTO userCreateDTO) {
-        return ResponseEntity.ok(userService.create(userCreateDTO));
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userCreateDTO) {
+        return ResponseEntity.ok(authService.save(userCreateDTO));
     }
 
     // Foydalanuvchini o'chirish
 
-    /**
-     *
-     * hello
-     * @param userId
-     * @return User o'chadi
-     */
+
     @DeleteMapping("/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
@@ -55,15 +53,15 @@ public class OwnerController {
 
     // Foydalanuvchini yangilash
     @PutMapping("/{userId}")
-    public ResponseEntity<UserView> updateUser(@PathVariable UUID userId, @RequestBody UserCreateDTO updatedUser) {
-        UserView updatedUserInfo = userService.updateUser(updatedUser, userId);
+    public ResponseEntity<UserView> updateUser(@PathVariable UUID userId, @RequestBody UserRequest updatedUser) {
+        UserView updatedUserInfo = userService.updateUserJ(updatedUser, userId);
         return ResponseEntity.ok(updatedUserInfo);
     }
 
     // ID bo'yicha foydalanuvchini topish
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserView> getUserById(@PathVariable UUID userId) {
-        UserView user = userService.findById(userId);
+    @GetMapping("/find{userId}")
+    public ResponseEntity<UserView> getUserById(@PathVariable String userId) {
+        UserView user = userService.findById(UUID.fromString("616c5a6f-f661-458b-bf3d-498c07d9f37c"));
         return ResponseEntity.ok(user);
     }
 }
