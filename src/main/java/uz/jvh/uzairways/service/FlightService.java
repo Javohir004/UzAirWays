@@ -65,6 +65,7 @@ public class FlightService {
         return flightRepository.findFlightById(id);
     }
 
+
     public List<AirPlane> getAvailableAircrafts(LocalDateTime departureTime, LocalDateTime arrivalTime) {
         return flightRepository.findAvailableAirplanes(departureTime, arrivalTime);
     }
