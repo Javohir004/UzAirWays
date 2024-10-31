@@ -1,7 +1,5 @@
 package uz.jvh.uzairways.controller;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
@@ -31,7 +29,7 @@ public class TicketController {
         return ResponseEntity.ok(ticket);
     }
 
-    @PostMapping("create-ticket")
+    @PostMapping("/create-ticket")
     public ResponseEntity<Ticket> createTicket(@RequestBody TicketDTO ticket) {
         Ticket createdTicket = ticketService.createTicket(ticket);
         return ResponseEntity.status(201).body(createdTicket);
