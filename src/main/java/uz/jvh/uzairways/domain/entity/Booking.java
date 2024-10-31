@@ -28,11 +28,10 @@ public class Booking extends BaseEntity {
     /// parvoz
 
     @ManyToOne
-    private Seat seat;
+    private Ticket ticket;
 
     @Column(nullable = false)
     private Double price;
-
     @CreationTimestamp
     private LocalDateTime bookingDate;
     /// bron qilingan kun

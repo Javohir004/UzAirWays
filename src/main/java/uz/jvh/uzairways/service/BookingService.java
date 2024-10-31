@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.BookingRequest;
 import uz.jvh.uzairways.domain.entity.Booking;
 import uz.jvh.uzairways.domain.entity.Flight;
-import uz.jvh.uzairways.domain.entity.Seat;
+import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.respository.*;
 
@@ -18,20 +18,26 @@ import java.util.Optional;
 public class BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
-    private final SeatRepository seatRepository;
     private final FlightRepository flightRepository;
+    private final TicketRepository ticketRepository;
 
     @Transactional
     public Booking createBooking(BookingRequest request) {
-        if (request.getUser() == null || request.getSeat() == null || request.getFlight() == null) {
+        if (request.getUser() == null || request.getSeatNumber() == null || request.getFlight() == null) {
             throw new IllegalArgumentException("User, Seat yoki Flight ID null bo'lishi mumkin emas");
         }
 
-        User user = userRepository.findById(request.getUser()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        Seat seat = seatRepository.findById(request.getSeat()).orElseThrow(() -> new UsernameNotFoundException("Seat not found"));
-        Flight flight = flightRepository.findById(request.getFlight()).orElseThrow(() -> new UsernameNotFoundException("Flight not found"));
+        User user = userRepository.findById(request.getUser())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if (!seat.isAvailable()) {
+        Flight flight = flightRepository.findById(request.getFlight()).
+                orElseThrow(() -> new UsernameNotFoundException("Flight not found"));
+
+        Ticket ticket = ticketRepository.findByFlightAndSeatNumber(flight, request.getSeatNumber())
+                .orElseThrow(() -> new RuntimeException("Ticket not found for the selected flight and seat number"));
+
+
+        if (!ticket.isAvailable()) {
             throw new RuntimeException("This place is already booked");
         }
         Optional<Flight> optionalFlight = flightRepository.findByDepartureAirportAndArrivalAirportAndDepartureTime(
@@ -48,7 +54,7 @@ public class BookingService {
         Booking booking = Booking.builder()
                 .user(user)
                 .flight(flight)
-                .seat(seat)
+                .ticket(ticket)
                 .price(flight.getPrice())
                 .bookingDate(request.getBookingDate())
                 .status(request.getStatus())
@@ -58,8 +64,8 @@ public class BookingService {
         user.setBalance(user.getBalance() - flight.getPrice());
         userRepository.save(user);
 
-        seat.setAvailable(false);
-        seatRepository.save(seat);
+        ticket.setAvailable(false);
+        ticketRepository.save(ticket);
 
         return bookingRepository.save(booking);
     }

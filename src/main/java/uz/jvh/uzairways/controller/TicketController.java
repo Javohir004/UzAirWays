@@ -1,4 +1,5 @@
 package uz.jvh.uzairways.controller;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +46,15 @@ public class TicketController {
     public ResponseEntity<Void> deleteTicket(@PathVariable UUID id) {
         ticketService.deleteTicket(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/cancel-ticked/{id}")
+    public ResponseEntity<String> cancelTicket(@PathVariable UUID id) {
+        try {
+            ticketService.cancelTicked(id);
+            return ResponseEntity.ok("Ticket successfully cancelled");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

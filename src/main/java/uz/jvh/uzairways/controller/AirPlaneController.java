@@ -20,7 +20,7 @@ public class AirPlaneController {
 
 
     // Create a new airplane
-    @PostMapping
+    @PostMapping("/create-plan")
     public ResponseEntity<String> create(@RequestBody AirPlaneDTO airPlaneDTO) {
         String result = airPlaneService.create(airPlaneDTO);
         return ResponseEntity.ok(result);
