@@ -45,5 +45,4 @@ public class Ticket extends BaseEntity {
 
     private boolean isAvailable = true;
 
-    private boolean isAvailable = true;
 }

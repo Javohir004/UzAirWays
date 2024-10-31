@@ -21,8 +21,7 @@ public class OwnerController {
     private final AuthService authService;
 
     // Barcha foydalanuvchilarni ko'rish
-    @GetMapping("get-all")
-    @GetMapping("/all-user")
+    @GetMapping("/get-all-user")
     public ResponseEntity<List<UserView>> getAllUsers() {
         List<UserView> users = userService.findAllJ();
         return ResponseEntity.ok(users);
@@ -30,21 +29,18 @@ public class OwnerController {
 
     // Rol bo'yicha foydalanuvchilarni ko'rish
     @GetMapping("/find-by-role/{role}")
-    @GetMapping("/User-role/{role}")
     public ResponseEntity<List<UserView>> getUsersByRole(@PathVariable UserRole role) {
         List<UserView> users = userService.findByRole(role);
         return ResponseEntity.ok(users);
     }
 
     // Foydalanuvchi yaratish
-    @PostMapping("/create-admin")
     @PostMapping("create-user")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userCreateDTO) {
         return ResponseEntity.ok(authService.save(userCreateDTO));
     }
 
     // Foydalanuvchini o'chirish
-    @DeleteMapping("delete/{userId}")
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
