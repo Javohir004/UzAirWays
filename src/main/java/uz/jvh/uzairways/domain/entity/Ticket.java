@@ -29,6 +29,7 @@ public class Ticket extends BaseEntity {
     private double price;
 
     private String seatNumber;  /// o'rindiq raqami
+    /// o'rindiq raqami
 
     @Enumerated(EnumType.STRING)
     private ClassType classType;
@@ -44,4 +45,5 @@ public class Ticket extends BaseEntity {
 
     private boolean isAvailable = true;
 
+    private boolean isAvailable = true;
 }

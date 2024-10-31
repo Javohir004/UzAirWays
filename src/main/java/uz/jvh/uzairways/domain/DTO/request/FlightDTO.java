@@ -1,6 +1,7 @@
 package uz.jvh.uzairways.domain.DTO.request;
 import lombok.*;
 import uz.jvh.uzairways.domain.entity.AirPlane;
+import uz.jvh.uzairways.domain.enumerators.Airport;
 import uz.jvh.uzairways.domain.enumerators.FlightStatues;
 
 import java.time.LocalDateTime;
@@ -19,9 +20,9 @@ public class FlightDTO {
 
     private LocalDateTime arrivalTime;
 
-    private String departureAirport; // uchish airaporti
+    private Airport departureAirport; // uchish airaporti
 
-    private String arrivalAirport;
+    private Airport arrivalAirport;
 
     private FlightStatues status;
 }

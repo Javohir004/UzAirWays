@@ -22,6 +22,7 @@ public class OwnerController {
 
     // Barcha foydalanuvchilarni ko'rish
     @GetMapping("get-all")
+    @GetMapping("/all-user")
     public ResponseEntity<List<UserView>> getAllUsers() {
         List<UserView> users = userService.findAllJ();
         return ResponseEntity.ok(users);
@@ -29,12 +30,14 @@ public class OwnerController {
 
     // Rol bo'yicha foydalanuvchilarni ko'rish
     @GetMapping("/find-by-role/{role}")
+    @GetMapping("/User-role/{role}")
     public ResponseEntity<List<UserView>> getUsersByRole(@PathVariable UserRole role) {
         List<UserView> users = userService.findByRole(role);
         return ResponseEntity.ok(users);
     }
 
     // Foydalanuvchi yaratish
+    @PostMapping("/create-admin")
     @PostMapping("create-user")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userCreateDTO) {
         return ResponseEntity.ok(authService.save(userCreateDTO));
@@ -42,6 +45,7 @@ public class OwnerController {
 
     // Foydalanuvchini o'chirish
     @DeleteMapping("delete/{userId}")
+    @DeleteMapping("/delete/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("Foydalanuvchi muvaffaqiyatli o'chirildi.");
@@ -55,7 +59,7 @@ public class OwnerController {
     }
 
     // ID bo'yicha foydalanuvchini topish
-    @GetMapping("/find{userId}")
+    @GetMapping("/find-by-id/{userId}")
     public ResponseEntity<UserView> getUserById(@PathVariable String userId) {
         UserView user = userService.findById(UUID.fromString("616c5a6f-f661-458b-bf3d-498c07d9f37c"));
         return ResponseEntity.ok(user);

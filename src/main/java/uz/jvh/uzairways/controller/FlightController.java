@@ -21,13 +21,14 @@ public class FlightController {
 
 
 
-    @PostMapping("/create")
+    @PostMapping("/create-flight")
     public ResponseEntity<Flight> createFlight(@RequestBody FlightDTO flightDto) {
         return ResponseEntity.ok(flightService.saveFlight(flightDto));
     }
 
 
     @GetMapping("/get-all")
+    @GetMapping("/all-flight")
     public ResponseEntity<List<Flight>> getAllFlights() {
         List<Flight> flights = flightService.getAllFlights();
         return ResponseEntity.ok(flights);
