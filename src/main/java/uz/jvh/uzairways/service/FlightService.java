@@ -39,14 +39,14 @@ public class FlightService {
     }
 
     public void deleteFlight(UUID id) {
-        Flight byFlightId = flightRepository.findByFlightId(id);
+        Flight byFlightId = flightRepository.findFlightById(id);
         byFlightId.setActive(false);
         flightRepository.save(byFlightId);
     }
 
     @Transactional
     public Flight updateFlight(UUID id, FlightDTO flight) {
-        Flight byFlightId = flightRepository.findByFlightId(id);
+        Flight byFlightId = flightRepository.findFlightById(id);
         byFlightId.setFlightNumber(flight.getFlightNumber());
         byFlightId.setAirplane(flight.getAirplane());
         byFlightId.setDepartureTime(flight.getDepartureTime());
@@ -62,8 +62,9 @@ public class FlightService {
     }
 
     public Flight getFlightById(UUID id) {
-        return flightRepository.findByFlightId(id);
+        return flightRepository.findFlightById(id);
     }
+
 
     public List<AirPlane> getAvailableAircrafts(LocalDateTime departureTime, LocalDateTime arrivalTime) {
         return flightRepository.findAvailableAirplanes(departureTime, arrivalTime);

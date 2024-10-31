@@ -1,5 +1,4 @@
 package uz.jvh.uzairways.controller;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ public class OwnerController {
 
     private final UserService userService;
     private final AuthService authService;
-
 
     // Barcha foydalanuvchilarni ko'rish
     @GetMapping
@@ -43,8 +41,6 @@ public class OwnerController {
     }
 
     // Foydalanuvchini o'chirish
-
-
     @DeleteMapping("/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
@@ -64,4 +60,6 @@ public class OwnerController {
         UserView user = userService.findById(UUID.fromString("616c5a6f-f661-458b-bf3d-498c07d9f37c"));
         return ResponseEntity.ok(user);
     }
+
+
 }

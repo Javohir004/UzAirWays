@@ -13,17 +13,12 @@ import java.util.UUID;
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, UUID> {
 
-    Flight findByFlightId(UUID flightId);
+    Flight findFlightById(UUID flightId);
 
-    Flight findByFlightName(String flightName);
+    Flight findFlightByDepartureTime(LocalDateTime departureTime);
 
-    Flight findByFlightCode(String flightCode);
+    Flight findByFlightNumber(String flightNumber);
 
-    Flight findByFlightDate(String flightDate);
-
-    Flight findByFlightTime(String flightTime);
-
-    Flight findByFlightDateAndFlightTime(String flightDate, String flightTime);
 
     @Query("SELECT f.airplane FROM Flight f WHERE f.departureTime > :arrivalTime OR f.arrivalTime < :departureTime")
     List<AirPlane> findAvailableAirplanes(LocalDateTime departureTime, LocalDateTime arrivalTime);
