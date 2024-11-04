@@ -19,10 +19,10 @@ import java.util.UUID;
 public class AirPlaneService {
 
 
-    private AirPlaneRepository airPlaneRepository;
+    private final AirPlaneRepository airPlaneRepository;
 
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Transactional
     public String create(AirPlaneDTO airPlane) {

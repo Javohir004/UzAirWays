@@ -1,8 +1,12 @@
 package uz.jvh.uzairways.domain.DTO.response;
 
 import lombok.*;
+import uz.jvh.uzairways.domain.enumerators.ClassType;
+import uz.jvh.uzairways.domain.enumerators.FlightStatues;
+import uz.jvh.uzairways.domain.enumerators.TicketStatus;
 
 import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -12,9 +16,9 @@ public class TickedResponse {
     private String seatNumber;
     private double price;
     private LocalDateTime bookingDate;
-    private String classType;
+    private ClassType classType;
     private Boolean nearWindow;
-    private String ticketStatus;
+    private TicketStatus ticketStatus;
 
     // Parvoz ma'lumotlari
     private String flightNumber;
@@ -22,5 +26,6 @@ public class TickedResponse {
     private LocalDateTime arrivalTime;
     private String departureAirport;
     private String arrivalAirport;
-    private String flightStatus;
+    private FlightStatues flightStatus;
+
 }

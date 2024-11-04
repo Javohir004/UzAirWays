@@ -21,10 +21,4 @@ public class UserController {
         return userService.update(id, userRequest);
     }
 
-//
-//    @GetMapping("/me")
-//    public UserResponse getProfileById(@RequestParam UUID UserId) {
-//        return userService.getProfile(UserId);
-//    }
-
 }

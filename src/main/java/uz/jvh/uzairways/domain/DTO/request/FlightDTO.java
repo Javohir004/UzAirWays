@@ -1,10 +1,12 @@
 package uz.jvh.uzairways.domain.DTO.request;
-import lombok.*;
-import uz.jvh.uzairways.domain.entity.AirPlane;
-import uz.jvh.uzairways.domain.enumerators.Airport;
-import uz.jvh.uzairways.domain.enumerators.FlightStatues;
 
+import lombok.*;
+import uz.jvh.uzairways.domain.enumerators.Airport;
+import uz.jvh.uzairways.domain.enumerators.ClassType;
+import uz.jvh.uzairways.domain.enumerators.FlightStatues;
 import java.time.LocalDateTime;
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -12,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class FlightDTO {
 
-    private AirPlane airplane;
+    private UUID airplane;
 
     private String flightNumber;
 
@@ -25,4 +27,6 @@ public class FlightDTO {
     private Airport arrivalAirport;
 
     private FlightStatues status;
+
+
 }

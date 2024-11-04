@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class UserRequest {
+
     private String username;
     private String surname;
     private String password;
@@ -19,8 +20,7 @@ public class UserRequest {
     private String email;
     private LocalDate birthDate;
     private String phoneNumber;
-    private boolean enabled;
-    private float balance = 0;
+    private Double balance = 0.0;
     private String address;
     private String passportSeries;
 

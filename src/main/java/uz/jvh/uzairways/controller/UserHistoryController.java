@@ -24,18 +24,5 @@ public class UserHistoryController {
         return userHistoryService.getUserBooking(userId);
     }
 
-    @GetMapping("/tickets/{userId}")
-    public List<Ticket> getUserTicked(@PathVariable UUID userId) {
-        return userHistoryService.getUserTicket(userId);
-    }
 
-    @GetMapping("/all-ticked/{userId}")
-    public List<Ticket> getAllUserTickets(@PathVariable UUID userId) {
-        return userHistoryService.getAllUserTickets(userId);
-    }
-
-    @GetMapping("/upcoming-tickets/{userId}")        //yaqinlashib kelayotgan parvozlari uchun  chiptalar
-    public List<Ticket> getUpcomingUserTickets(@PathVariable UUID userId) {
-        return userHistoryService.getUpcomingUserTickets(userId);
-    }
 }

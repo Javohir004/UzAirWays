@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uz.jvh.uzairways.service.UserService;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
 

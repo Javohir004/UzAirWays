@@ -17,18 +17,10 @@ public class BookingRequest {
 
     private UUID user;
 
-    private UUID flight;
-
     private LocalDateTime bookingDate;
 
     private BookingStatus status;
 
-    private ClassType classType;
-
-    private String seatNumber;
-
-    private Airport departureAirport;
-
-    private Airport arrivalAirport;
+    private Double TotalPrice;
 
 }
