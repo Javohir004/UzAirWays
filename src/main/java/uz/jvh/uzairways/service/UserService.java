@@ -7,17 +7,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.Views.UserView;
-import uz.jvh.uzairways.domain.DTO.request.UserRequest;
-import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
+import uz.jvh.uzairways.domain.DTO.request.UserRequest;;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
-import uz.jvh.uzairways.domain.entity.Booking;
-import uz.jvh.uzairways.domain.entity.Flight;
-import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 import uz.jvh.uzairways.respository.BookingRepository;
 import uz.jvh.uzairways.respository.TicketRepository;
 import uz.jvh.uzairways.respository.UserRepository;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,8 +27,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
-    private final BookingRepository bookingRepository;
-    private final TicketRepository ticketRepository;
 
     public void save(User user) {
         userRepository.save(user);
@@ -44,7 +39,7 @@ public class UserService {
     }
 
 
-    public List<UserView> findByRole(UserRole role) {
+    public List<User> findByRole(UserRole role) {
         return userRepository.findByRoleAndIsActiveTrue(role);
     }
 
@@ -59,7 +54,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserView updateUserJ(UserRequest userCreateDTO , UUID userId) {
+    public UserView updateUserJ(UserRequest userCreateDTO, UUID userId) {
         User user = modelMapper.map(userCreateDTO, User.class);
         user.setId(userId);
         userRepository.save(user);
@@ -95,7 +90,6 @@ public class UserService {
                 .email(user.getEmail())
                 .birthDate(user.getBirthDate())
                 .phoneNumber(user.getPhoneNumber())
-                .enabled(user.isEnabled())
                 .address(user.getAddress())
                 .createDate(user.getCreated().toLocalDate())
                 .passportSeries(user.getPassportSeries())
@@ -103,10 +97,9 @@ public class UserService {
     }
 
     public UserView findById(UUID id) {
-        User user = userRepository.findById(id).
+        return (UserView) userRepository.findById(id).
                 orElseThrow(() -> new UsernameNotFoundException("User with " + id + " not found"));
-        UserView map = modelMapper.map(user, UserView.class);
-        return map;
+
     }
 
 

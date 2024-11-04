@@ -22,29 +22,19 @@ public class Booking extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "flight_id", nullable = false)
-    private Flight flight;
-    /// parvoz
 
     @ManyToOne
     private Ticket ticket;
 
     @Column(nullable = false)
-    private Double price;
+    private Double totalPrice;
+
     @CreationTimestamp
     private LocalDateTime bookingDate;
-    /// bron qilingan kun
+
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
-    ///
-
-    @Enumerated(EnumType.STRING)
-    private ClassType classType;
-
-
-    private boolean isPaid = false;
 
 
 }

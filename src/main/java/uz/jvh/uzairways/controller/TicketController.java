@@ -1,17 +1,21 @@
 package uz.jvh.uzairways.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
+import uz.jvh.uzairways.domain.DTO.request.CreateTicketRequest;
 import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
 import uz.jvh.uzairways.domain.entity.Ticket;
+import uz.jvh.uzairways.domain.enumerators.AircraftType;
 import uz.jvh.uzairways.service.TicketService;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/ticket")
+@RequestMapping("/api/ticket")
 @RequiredArgsConstructor
 public class TicketController {
 
@@ -30,11 +34,6 @@ public class TicketController {
         return ResponseEntity.ok(ticket);
     }
 
-    @PostMapping("/create-ticket")
-    public ResponseEntity<Ticket> createTicket(@RequestBody TicketDTO ticket) {
-        Ticket createdTicket = ticketService.createTicket(ticket);
-        return ResponseEntity.status(201).body(createdTicket);
-    }
 
     @PutMapping("/update{id}")
     public ResponseEntity<Ticket> updateTicket(@PathVariable UUID id, @RequestBody Ticket ticket) {
@@ -48,13 +47,27 @@ public class TicketController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/cancel-ticked/{id}")
-    public ResponseEntity<String> cancelTicket(@PathVariable UUID id) {
+//    @DeleteMapping("/cancel-ticked/{id}")
+//    public ResponseEntity<String> cancelTicket(@PathVariable UUID id) {
+//        try {
+//            ticketService.cancelTicked(id);
+//            return ResponseEntity.ok("Ticket successfully cancelled");
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
+
+    @PostMapping("/get-flight-info")
+    public ResponseEntity<String> getFlightInfo(@RequestBody ByTickedRequest request) {
         try {
-            ticketService.cancelTicked(id);
-            return ResponseEntity.ok("Ticket successfully cancelled");
+            String flightInfo = ticketService.getFlightInfo(request);
+            return ResponseEntity.ok(flightInfo);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+
 }

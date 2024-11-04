@@ -7,13 +7,7 @@ import uz.jvh.uzairways.domain.enumerators.AircraftType;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-public class AirPlaneDTO {
-
-    private String model;
-
-    private String manufacturer;
-
-    private AircraftType aircraftType;  // e.g., "Jet", "Propeller"
-
+public class CreateTicketRequest {
+    private TicketDTO ticket;
+    private AircraftType aircraftType;
 }

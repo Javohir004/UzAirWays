@@ -3,30 +3,32 @@ package uz.jvh.uzairways.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
 import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
 import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.domain.entity.User;
+import uz.jvh.uzairways.domain.enumerators.AircraftType;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
-import uz.jvh.uzairways.domain.enumerators.TicketStatus;
 import uz.jvh.uzairways.respository.FlightRepository;
 import uz.jvh.uzairways.respository.TicketRepository;
 import uz.jvh.uzairways.respository.UserRepository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class TicketService {
-
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final FlightRepository flightRepository;
 
+
     /// miyyanga ... o'zincha o'chirib tashlama yoqmasa tegma kommentga olib qo'y
+    ///
+    ///
+    ///
+    /// kamroq chatjpt ishlatish kerak ......bosh , kop method chala yozilgan
 
 
     public List<Ticket> getAllTickets() {
@@ -38,58 +40,17 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
     }
 
-    public Ticket createTicket(TicketDTO ticket) {
-        Ticket ticket1 = mapRequestToTicket(ticket);
-        return ticketRepository.save(ticket1);
-    }
-
-
-    public List<Ticket> createTickets(TicketDTO ticketDTO, String aircraftType) {
-        List<Ticket> tickets = new ArrayList<>();
-
-        // O'rindiq turlariga mos narxlar
-        Float businessClassPrice = 1000F;
-        Float firstClassPrice = 500F;
-        Float economyClassPrice = 200F;
-
-        // Samolyot turi asosida o'rindiq va narxlarni belgilash
-        int[] availableSeats;
-        if ("jet".equalsIgnoreCase(aircraftType)) {
-            availableSeats = new int[]{20, 10, 30}; // Business, First Class, Economy
-        } else if ("propeller".equalsIgnoreCase(aircraftType)) {
-            availableSeats = new int[]{40, 20, 60}; // Business, First Class, Economy
-        } else {
-            return tickets; // Agar samolyot turi noto'g'ri bo'lsa, bo'sh ro'yxat qaytaramiz
-        }
-
-        // O'rindiqlarni yaratish
-        createTicketsByClass(tickets, ticketDTO, availableSeats, businessClassPrice, ClassType.BUSINESS);
-        createTicketsByClass(tickets, ticketDTO, availableSeats, firstClassPrice, ClassType.FIRST);
-        createTicketsByClass(tickets, ticketDTO, availableSeats, economyClassPrice, ClassType.ECONOMY);
-
-        // Chiptalarni saqlash
-        return ticketRepository.saveAll(tickets);
-    }
-
-    private void createTicketsByClass(List<Ticket> tickets, TicketDTO ticketDTO, int[] availableSeats, Float price, ClassType classType) {
-        int classIndex = classType.ordinal(); // ClassType dan indeks olish
-        for (int j = 0; j < availableSeats[classIndex]; j++) {
-            Ticket ticket = mapRequestToTicket(ticketDTO);
-            ticket.setPrice(price);
-            ticket.setClassType(classType);
-            tickets.add(ticket);
-        }
-    }
+//    public Ticket createTicket(TicketDTO ticket) {
+//        Ticket ticket1 = mapRequestToTicket(ticket);
+//        return ticketRepository.save(ticket1);
+//    }
 
 
     public Ticket updateTicket(UUID id, Ticket ticket) {
         Ticket existingTicket = getTicketById(id);
         existingTicket.setId(id);
         existingTicket.setFlight(ticket.getFlight());
-        existingTicket.setTicketStatus(ticket.getTicketStatus());
         existingTicket.setSeatNumber(ticket.getSeatNumber());
-        existingTicket.setNearWindow(ticket.getNearWindow());
-        existingTicket.setOwner(ticket.getOwner());
         existingTicket.setPrice(ticket.getPrice());
         existingTicket.setClassType(ticket.getClassType());
         return ticketRepository.save(existingTicket);
@@ -103,12 +64,8 @@ public class TicketService {
 
     public Ticket mapRequestToTicket(TicketDTO ticketDTO) {
         Ticket ticket = new Ticket();
-        User owner = userRepository.findById(ticketDTO.getOwner()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Flight flight = flightRepository.findById(ticketDTO.getFlight()).orElseThrow(() -> new RuntimeException("Flight not found"));
-        ticket.setTicketStatus(ticketDTO.getTicketStatus());
         ticket.setSeatNumber(ticketDTO.getSeatNumber());
-        ticket.setTicketStatus(ticketDTO.getTicketStatus());
-        ticket.setOwner(owner);
         ticket.setPrice(ticketDTO.getPrice());
         ticket.setClassType(ticketDTO.getClassType());
         ticket.setFlight(flight);
@@ -117,19 +74,86 @@ public class TicketService {
     }
 
 
-    public void cancelTicked(UUID ticketId) {
-        if (ticketId == null) {
-            throw new IllegalArgumentException("Ticket ID cannot be null");
-        }
-        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
-        LocalDateTime departureTime = ticket.getFlight().getDepartureTime();
-        LocalDateTime now = LocalDateTime.now();
+//    public void cancelTicked(UUID ticketId) {
+//        if (ticketId == null) {
+//            throw new IllegalArgumentException("Ticket ID cannot be null");
+//        }
+//        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
+//        LocalDateTime departureTime = ticket.getFlight().getDepartureTime();
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        if (departureTime.isAfter(now)) {
+//            ticket.setTicketStatus(TicketStatus.CANCELLED);
+//            ticketRepository.save(ticket);
+//        } else {
+//            throw new IllegalArgumentException("Ticket already cancelled");
+//        }
+//    }
 
-        if (departureTime.isAfter(now)) {
-            ticket.setTicketStatus(TicketStatus.CANCELLED);
-            ticketRepository.save(ticket);
-        } else {
-            throw new IllegalArgumentException("Ticket already cancelled");
+
+    public String getFlightInfo(ByTickedRequest request) {
+
+        Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
+                request.getDepartureAirport(),
+                request.getArrivalAirport(),
+                request.getDepartureTime());
+
+        if (flight == null) {
+            throw new IllegalArgumentException("Flight not found");
         }
+        List<Ticket> availableTickets = ticketRepository.findAllByIsActiveAndFlight(
+                true,
+                flight
+        );
+
+        if (request.getPassengers() > availableTickets.size()) {
+            throw new IllegalArgumentException("Passengers exceeds number of tickets");
+        }
+        return availableTickets.toString();
+    }
+
+
+    public void createTickets1(Flight flight) {
+        AircraftType aircraftType = flight.getAirplane().getAircraftType();
+        List<Ticket> tickets = new ArrayList<>();
+
+        Map<ClassType, Double> classPrices = new HashMap<>();
+        classPrices.put(ClassType.BUSINESS, 1000d);
+        classPrices.put(ClassType.FIRST, 500d);
+        classPrices.put(ClassType.ECONOMY, 200d);
+
+        Map<AircraftType, int[]> aircraftSeats = new HashMap<>();
+        aircraftSeats.put(AircraftType.JET, new int[]{20, 10, 30}); // Business, First Class, Economy
+        aircraftSeats.put(AircraftType.PROPELLER, new int[]{40, 20, 60});
+
+        if (!aircraftSeats.containsKey(aircraftType)) {
+            return;
+        }
+
+        int[] availableSeats = aircraftSeats.get(aircraftType);
+
+
+        for (ClassType classType : ClassType.values()) {
+            createTicketsByClass(tickets, flight, availableSeats, classPrices.get(classType), classType);
+        }
+        ticketRepository.saveAll(tickets);
+    }
+
+
+    private void createTicketsByClass(List<Ticket> tickets, Flight flight, int[] availableSeats, Double price, ClassType classType) {
+        int classIndex = classType.ordinal(); // ClassType dan indeks olish
+        for (int j = 0; j < availableSeats[classIndex]; j++) {
+            Ticket ticket = Ticket.builder()
+                    .flight(flight)
+                    .isBron(false)
+                    .price(price)
+                    .classType(classType)
+                    .build();
+            tickets.add(ticket);
+        }
+    }
+
+    public List<Ticket> findAllByFlightIdAndClassTypeAndIsActiveTrue(UUID flightId, ClassType classType) {
+        return ticketRepository.findAllByFlightIdAndClassTypeAndIsActiveTrue(flightId, classType);
     }
 }

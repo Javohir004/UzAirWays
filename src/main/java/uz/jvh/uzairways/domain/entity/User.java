@@ -35,9 +35,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
-    private boolean enabled;
-
-    private double balance;
+    private Double balance;
 
     private String address;
 

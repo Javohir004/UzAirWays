@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.FlightDTO;
+import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
+import uz.jvh.uzairways.domain.DTO.response.TicketDetailsResponse;
 import uz.jvh.uzairways.domain.entity.AirPlane;
 import uz.jvh.uzairways.domain.entity.Flight;
+import uz.jvh.uzairways.domain.enumerators.ClassType;
 import uz.jvh.uzairways.service.FlightService;
 
 import java.time.LocalDateTime;
@@ -13,12 +16,11 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/flight")
+@RequestMapping("/api/flight")
 @RequiredArgsConstructor
 public class FlightController {
 
     private final FlightService flightService;
-
 
 
     @PostMapping("/create-flight")
@@ -55,5 +57,12 @@ public class FlightController {
     public ResponseEntity<String> deleteFlight(@PathVariable UUID id) {
         flightService.deleteFlight(id);
         return ResponseEntity.ok("Parvoz o'chirildi");
+    }
+
+    @GetMapping("/tickets-class-type/{id}")
+    public ResponseEntity<List<TicketDetailsResponse>> getAllTicketDetailsByClassType(@PathVariable UUID id,
+                                                                                      @RequestParam ClassType classType) {
+        List<TicketDetailsResponse> allTicketDetailsByClassType = flightService.getAllTicketDetailsByClassType(id, classType);
+        return ResponseEntity.ok(allTicketDetailsByClassType);
     }
 }
