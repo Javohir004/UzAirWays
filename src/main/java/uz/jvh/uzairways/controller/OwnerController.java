@@ -1,10 +1,12 @@
 package uz.jvh.uzairways.controller;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.Views.UserView;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
+import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 import uz.jvh.uzairways.service.AuthService;
 import uz.jvh.uzairways.service.UserService;
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/owner")
+@RequestMapping("/api/owner")
 @RequiredArgsConstructor
 public class OwnerController {
 
@@ -21,21 +23,21 @@ public class OwnerController {
     private final AuthService authService;
 
     // Barcha foydalanuvchilarni ko'rish
-    @GetMapping("/get-all-user")
+    @GetMapping("/all-user")
     public ResponseEntity<List<UserView>> getAllUsers() {
         List<UserView> users = userService.findAllJ();
         return ResponseEntity.ok(users);
     }
 
     // Rol bo'yicha foydalanuvchilarni ko'rish
-    @GetMapping("/find-by-role/{role}")
-    public ResponseEntity<List<UserView>> getUsersByRole(@PathVariable UserRole role) {
-        List<UserView> users = userService.findByRole(role);
+    @GetMapping("/User-role/{role}")
+    public ResponseEntity<List<User>> getUsersByRole(@PathVariable UserRole role) {
+        List<User> users = userService.findByRole(role);
         return ResponseEntity.ok(users);
     }
 
     // Foydalanuvchi yaratish
-    @PostMapping("create-user")
+    @PostMapping("/create-admin")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userCreateDTO) {
         return ResponseEntity.ok(authService.save(userCreateDTO));
     }
@@ -56,8 +58,8 @@ public class OwnerController {
 
     // ID bo'yicha foydalanuvchini topish
     @GetMapping("/find-by-id/{userId}")
-    public ResponseEntity<UserView> getUserById(@PathVariable String userId) {
-        UserView user = userService.findById(UUID.fromString("616c5a6f-f661-458b-bf3d-498c07d9f37c"));
+    public ResponseEntity<User> getUserById(@PathVariable UUID userId) {
+        User user = userService.findByIdJ(userId);
         return ResponseEntity.ok(user);
     }
 

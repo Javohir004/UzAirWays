@@ -19,18 +19,10 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     protected UUID id;
-
     @CreationTimestamp
     protected LocalDateTime created;
-
     @UpdateTimestamp
     protected LocalDateTime modified;
-
-    @CreatedBy
-    protected UUID createdBy;
-
-    @LastModifiedBy
-    protected UUID modifiedBy;
 
     protected boolean isActive = true;
 

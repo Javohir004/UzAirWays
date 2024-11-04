@@ -12,17 +12,14 @@ import java.util.UUID;
 @Setter
 @Builder
 public class TicketDTO {
-    private UUID owner;
     private UUID flight;
-    private double price;
+    private Double price;
     private String seatNumber; // e.g., "12A"
     private ClassType classType;
-    private boolean nearWindow;
-    private TicketStatus ticketStatus;
     private LocalDateTime bookingDate;
 
     /// seat entity va ticket bitta dto da
-    private boolean isAvailable = true; // means false = booked , or true =  available
+    private boolean isBron = true; // means false = booked , or true =  available
 
 
 }
