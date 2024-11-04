@@ -55,11 +55,34 @@ public class SecurityConfig {
                 .cors().and()  // CORS konfiguratsiyasini yoqish
                 .authorizeHttpRequests()
                 .requestMatchers("/test",
-                        "/owner/role/**",
-                        "/owner/**",
-                        "/owner/find/**",
+                        "/owner/create-user/**",
+                        "/owner/find-by-role/**",
+                        "/owner/find-by-id/**",
+                        "/owner/get-all-user/",
+                        "/owner/update/**",
+                        "/owner/delete/**",
+
+                         "/airplane/create-airplane/**",
+                        "/airplane/update-airplane/**",
+                        "/airplane/delete-airplane/**",
+                        "/airplane/get-all-airplane",
+
+                        "/ticket/create-ticket/**",
+                        "/ticket/update-ticket/**",
+                        "/ticket/delete-ticket/**",
+                        "/ticket/get-all-ticket",
+
+                        "/flight/create-flight/**",
+                        "/flight/update-flight/**",
+                        "/flight/delete-flight/**",
+                        "/flight/get-all-flight",
+                        "/flight/get-available-airplanes",
+
+
                         "/api/auth/register/**",
                         "/api/auth/login/**",
+
+
                         "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                 .permitAll()
                 .anyRequest()
