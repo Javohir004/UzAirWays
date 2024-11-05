@@ -24,8 +24,8 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
     @Query("SELECT f.airplane FROM Flight f WHERE f.departureTime > :arrivalTime OR f.arrivalTime < :departureTime")
     List<AirPlane> findAvailableAirplanes(LocalDateTime departureTime, LocalDateTime arrivalTime);
 
-    Flight findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(Airport departureAirport,
-                                                                        Airport arrivalAirport,
+    Flight findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(String departureAirport,
+                                                                        String arrivalAirport,
                                                                         LocalDateTime departureTime);
 
     boolean existsByFlightNumber(String flightNumber);

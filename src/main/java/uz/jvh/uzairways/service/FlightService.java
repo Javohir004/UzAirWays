@@ -111,8 +111,9 @@ public class FlightService {
         return flightRepository.findAvailableAirplanes(departureTime, arrivalTime);
     }
 
+
     public List<TicketDetailsResponse> getAllTicketDetailsByClassType(UUID flightId, ClassType classType) {
-        List<Ticket> tickets = ticketService.findAllByFlightIdAndClassTypeAndIsActiveTrue(flightId, classType);
+        List<Ticket> tickets = ticketService.findAllByFlightIdAndClassTypeAndIsBronTrue(flightId, classType);
         return tickets.stream()
                 .map(ticket -> new TicketDetailsResponse(
                         ticket.getFlight().getId(),

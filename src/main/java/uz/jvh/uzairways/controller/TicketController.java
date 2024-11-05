@@ -28,7 +28,7 @@ public class TicketController {
         return ResponseEntity.ok(tickets);
     }
 
-    @GetMapping("/findbyId{id}")
+    @GetMapping("/find-by-id{id}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable UUID id) {
         Ticket ticket = ticketService.getTicketById(id);
         return ResponseEntity.ok(ticket);
@@ -57,7 +57,7 @@ public class TicketController {
 //        }
 //    }
 
-    @PostMapping("/get-flight-info")
+    @PostMapping("/get-ticket-info")
     public ResponseEntity<String> getFlightInfo(@RequestBody ByTickedRequest request) {
         try {
             String flightInfo = ticketService.getFlightInfo(request);
