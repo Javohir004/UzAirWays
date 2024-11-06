@@ -28,7 +28,7 @@ public class TicketController {
         return ResponseEntity.ok(tickets);
     }
 
-    @GetMapping("/findbyId{id}")
+    @GetMapping("/find-byId{id}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable UUID id) {
         Ticket ticket = ticketService.getTicketById(id);
         return ResponseEntity.ok(ticket);
@@ -58,16 +58,11 @@ public class TicketController {
 //    }
 
     @PostMapping("/get-flight-info")
-    public ResponseEntity<String> getFlightInfo(@RequestBody ByTickedRequest request) {
-        try {
-            String flightInfo = ticketService.getFlightInfo(request);
-            return ResponseEntity.ok(flightInfo);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    public ResponseEntity<List<Ticket>> getFlightInfo(@RequestBody ByTickedRequest request) {
+        List<Ticket> flightInfo = ticketService.getFlightInfo(request);
+        return ResponseEntity.ok(flightInfo);
     }
+
 
 
 }

@@ -91,7 +91,7 @@ public class TicketService {
 //    }
 
 
-    public String getFlightInfo(ByTickedRequest request) {
+    public List<Ticket> getFlightInfo(ByTickedRequest request) {
 
         Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
                 request.getDepartureAirport(),
@@ -109,7 +109,7 @@ public class TicketService {
         if (request.getPassengers() > availableTickets.size()) {
             throw new IllegalArgumentException("Passengers exceeds number of tickets");
         }
-        return availableTickets.toString();
+        return availableTickets;
     }
 
 

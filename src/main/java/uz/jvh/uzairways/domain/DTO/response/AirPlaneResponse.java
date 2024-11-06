@@ -11,8 +11,6 @@ public class AirPlaneResponse {
 
     private String model;
 
-    private int capacity;
-
     private String manufacturer;
 
     private String aircraftType;  // e.g., "Jet", "Propeller"

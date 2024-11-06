@@ -1,5 +1,6 @@
 package uz.jvh.uzairways.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Ticket extends BaseEntity {
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "flight_id", nullable = false)
     private Flight flight;
 
