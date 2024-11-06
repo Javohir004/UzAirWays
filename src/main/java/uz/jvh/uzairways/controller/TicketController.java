@@ -58,9 +58,9 @@ public class TicketController {
 //    }
 
     @PostMapping("/get-ticket-info")
-    public ResponseEntity<String> getFlightInfo(@RequestBody ByTickedRequest request) {
+    public ResponseEntity<?> getFlightInfo(@RequestBody ByTickedRequest request) {
         try {
-            String flightInfo = ticketService.getFlightInfo(request);
+            List<Ticket> flightInfo = ticketService.getFlightInfo(request);
             return ResponseEntity.ok(flightInfo);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

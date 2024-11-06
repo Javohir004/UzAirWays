@@ -22,4 +22,5 @@ public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 
     List<Ticket> findAllByIsBronAndFlight(Boolean isBron, Flight flight);
 
+
 }

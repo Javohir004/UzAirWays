@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class ByTickedRequest {
-    private String departureAirport;
-    private String arrivalAirport;
+    private Airport departureAirport;
+    private Airport arrivalAirport;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime departureTime;
     private Integer passengers;

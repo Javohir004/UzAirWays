@@ -38,10 +38,6 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
     }
 
-//    public Ticket createTicket(TicketDTO ticket) {
-//        Ticket ticket1 = mapRequestToTicket(ticket);
-//        return ticketRepository.save(ticket1);
-//    }
 
 
     public Ticket updateTicket(UUID id, Ticket ticket) {
@@ -72,24 +68,9 @@ public class TicketService {
     }
 
 
-//    public void cancelTicked(UUID ticketId) {
-//        if (ticketId == null) {
-//            throw new IllegalArgumentException("Ticket ID cannot be null");
-//        }
-//        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
-//        LocalDateTime departureTime = ticket.getFlight().getDepartureTime();
-//        LocalDateTime now = LocalDateTime.now();
-//
-//        if (departureTime.isAfter(now)) {
-//            ticket.setTicketStatus(TicketStatus.CANCELLED);
-//            ticketRepository.save(ticket);
-//        } else {
-//            throw new IllegalArgumentException("Ticket already cancelled");
-//        }
-//    }
 
 
-    public String getFlightInfo(ByTickedRequest request) {
+    public List<Ticket> getFlightInfo(ByTickedRequest request) {
 
         Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
                 request.getDepartureAirport(),
@@ -107,7 +88,7 @@ public class TicketService {
         if (request.getPassengers() > availableTickets.size()) {
             throw new IllegalArgumentException("Passengers exceeds number of tickets");
         }
-        return availableTickets.toString();
+        return availableTickets;
     }
 
 

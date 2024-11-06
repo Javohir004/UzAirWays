@@ -20,4 +20,5 @@ public class Employee extends BaseEntity {
     private String citizenship;
     private String serialNumber;
     private LocalDate validityPeriod;
+
 }

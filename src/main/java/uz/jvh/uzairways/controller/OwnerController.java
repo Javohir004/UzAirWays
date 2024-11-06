@@ -23,14 +23,6 @@ public class OwnerController {
     private final UserService userService;
     private final AuthService authService;
 
-    // Barcha foydalanuvchilarni ko'rish
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/all-user")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.findAllJ();
-        return ResponseEntity.ok(users);
-    }
-
     // Rol bo'yicha foydalanuvchilarni ko'rish
     @GetMapping("/User-role/{role}")
     public ResponseEntity<List<User>> getUsersByRole(@PathVariable UserRole role) {
