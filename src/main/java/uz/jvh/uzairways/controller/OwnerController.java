@@ -2,6 +2,7 @@ package uz.jvh.uzairways.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.Views.UserView;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;
@@ -21,13 +22,6 @@ public class OwnerController {
 
     private final UserService userService;
     private final AuthService authService;
-
-    // Barcha foydalanuvchilarni ko'rish
-    @GetMapping("/all-user")
-    public ResponseEntity<List<UserView>> getAllUsers() {
-        List<UserView> users = userService.findAllJ();
-        return ResponseEntity.ok(users);
-    }
 
     // Rol bo'yicha foydalanuvchilarni ko'rish
     @GetMapping("/User-role/{role}")

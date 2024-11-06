@@ -29,9 +29,8 @@ public class FlightController {
     public ResponseEntity<Flight> createFlight(@RequestBody FlightDTO flightDto) {
         return ResponseEntity.ok(flightService.saveFlight(flightDto));
     }
-
-
-    @GetMapping("/get-all-flight")
+  
+    @GetMapping("/all-flight")
     public ResponseEntity<List<Flight>> getAllFlights() {
         List<Flight> flights = flightService.getAllFlights();
         return ResponseEntity.ok(flights);

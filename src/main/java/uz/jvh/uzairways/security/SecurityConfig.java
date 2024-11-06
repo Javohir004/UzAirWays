@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,6 +27,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -34,7 +36,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint(){
+    public AuthenticationEntryPoint authenticationEntryPoint() {
         return ((request, response, authException) -> {
             authException.printStackTrace();
             String errorPath = request.getRequestURI();
@@ -45,9 +47,10 @@ public class SecurityConfig {
             );
             response.setStatus(errorCode);
             ServletOutputStream outputStream = response.getOutputStream();
-            objectMapper.writeValue(outputStream,appErrorDto);
+            objectMapper.writeValue(outputStream, appErrorDto);
         });
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http

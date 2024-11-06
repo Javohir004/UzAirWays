@@ -28,7 +28,6 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
                                           @Param("flyingAirport") Airport flyingAirport);
 
 
-
     @Query("SELECT f FROM Flight f WHERE f.departureAirport = :departureAirport " +
             "AND f.arrivalAirport = :arrivalAirport " +
             "AND f.departureTime >= :startTime " +

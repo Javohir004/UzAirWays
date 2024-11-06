@@ -1,13 +1,11 @@
 package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
 import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
 import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.Ticket;
-import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.AircraftType;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
 import uz.jvh.uzairways.respository.FlightRepository;
@@ -40,10 +38,6 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
     }
 
-//    public Ticket createTicket(TicketDTO ticket) {
-//        Ticket ticket1 = mapRequestToTicket(ticket);
-//        return ticketRepository.save(ticket1);
-//    }
 
 
     public Ticket updateTicket(UUID id, Ticket ticket) {
@@ -74,21 +68,6 @@ public class TicketService {
     }
 
 
-//    public void cancelTicked(UUID ticketId) {
-//        if (ticketId == null) {
-//            throw new IllegalArgumentException("Ticket ID cannot be null");
-//        }
-//        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
-//        LocalDateTime departureTime = ticket.getFlight().getDepartureTime();
-//        LocalDateTime now = LocalDateTime.now();
-//
-//        if (departureTime.isAfter(now)) {
-//            ticket.setTicketStatus(TicketStatus.CANCELLED);
-//            ticketRepository.save(ticket);
-//        } else {
-//            throw new IllegalArgumentException("Ticket already cancelled");
-//        }
-//    }
 
 
     public List<Ticket> getFlightInfo(ByTickedRequest request) {
@@ -101,8 +80,8 @@ public class TicketService {
         if (flight == null) {
             throw new IllegalArgumentException("Flight not found");
         }
-        List<Ticket> availableTickets = ticketRepository.findAllByIsActiveAndFlight(
-                true,
+        List<Ticket> availableTickets = ticketRepository.findAllByIsBronAndFlight(
+                false,
                 flight
         );
 
@@ -153,7 +132,7 @@ public class TicketService {
         }
     }
 
-    public List<Ticket> findAllByFlightIdAndClassTypeAndIsActiveTrue(UUID flightId, ClassType classType) {
-        return ticketRepository.findAllByFlightIdAndClassTypeAndIsActiveTrue(flightId, classType);
+    public List<Ticket> findAllByFlightIdAndClassTypeAndIsBronTrue(UUID flightId, ClassType classType) {
+        return ticketRepository.findAllByFlightIdAndClassTypeAndIsBronTrue(flightId, classType);
     }
 }
