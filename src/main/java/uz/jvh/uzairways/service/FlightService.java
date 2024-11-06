@@ -1,5 +1,6 @@
 package uz.jvh.uzairways.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -77,6 +78,7 @@ public class FlightService {
                 .arrivalTime(flight.getArrivalTime())
                 .departureAirport(flight.getDepartureAirport())
                 .arrivalAirport(flight.getArrivalAirport())
+                .flightStatus(flight.getStatus())
                 .build();
     }
 
@@ -87,17 +89,32 @@ public class FlightService {
     }
 
     @Transactional
-    public Flight updateFlight(UUID id, FlightDTO flight) {
-        AirPlane airPlane = airPlaneRepository.findById(flight.getAirplane()).orElseThrow(() -> new RuntimeException("Airplane not found"));
-        Flight byFlightId = flightRepository.findFlightById(id);
-        byFlightId.setFlightNumber(flight.getFlightNumber());
-        byFlightId.setAirplane(airPlane);
-        byFlightId.setDepartureTime(flight.getDepartureTime());
-        byFlightId.setArrivalTime(flight.getArrivalTime());
-        byFlightId.setDepartureAirport(flight.getDepartureAirport());
-        byFlightId.setArrivalAirport(flight.getArrivalAirport());
-        return flightRepository.save(byFlightId);
+    public void updateFlight(UUID flightId, FlightDTO flightDTO) {
+        Flight flight = flightRepository.findById(flightId)
+                .orElseThrow(() -> new EntityNotFoundException("Flight not found"));
+
+        if (flightDTO.getFlightNumber() != null) {
+            flight.setFlightNumber(flightDTO.getFlightNumber());
+        }
+        if (flightDTO.getDepartureTime() != null) {
+            flight.setDepartureTime(flightDTO.getDepartureTime());
+        }
+        if (flightDTO.getArrivalTime() != null) {
+            flight.setArrivalTime(flightDTO.getArrivalTime());
+        }
+        if (flightDTO.getDepartureAirport() != null) {
+            flight.setDepartureAirport(flightDTO.getDepartureAirport());
+        }
+        if (flightDTO.getArrivalAirport() != null) {
+            flight.setArrivalAirport(flightDTO.getArrivalAirport());
+        }
+        if (flightDTO.getStatus() != null) {
+            flight.setFlightStatus(flightDTO.getStatus());
+        }
+
+        flightRepository.save(flight);
     }
+
 
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();

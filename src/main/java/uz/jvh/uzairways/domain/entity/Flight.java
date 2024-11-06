@@ -38,4 +38,7 @@ public class Flight extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Airport arrivalAirport;
+
+    @Enumerated(EnumType.STRING)
+    private FlightStatues flightStatus;
 }

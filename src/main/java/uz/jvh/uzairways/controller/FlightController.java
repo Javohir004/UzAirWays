@@ -66,4 +66,11 @@ public class FlightController {
         List<TicketDetailsResponse> allTicketDetailsByClassType = flightService.getAllTicketDetailsByClassType(id, classType);
         return ResponseEntity.ok(allTicketDetailsByClassType);
     }
+
+
+    @PutMapping("/update-flight/{flightId}")
+    public ResponseEntity<Void> updateFlight(@PathVariable UUID flightId, @RequestBody FlightDTO flightDto) {
+        flightService.updateFlight(flightId, flightDto);
+        return ResponseEntity.ok().build();
+    }
 }
