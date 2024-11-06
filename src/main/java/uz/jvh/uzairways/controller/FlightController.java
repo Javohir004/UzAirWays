@@ -1,6 +1,7 @@
 package uz.jvh.uzairways.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.FlightDTO;
@@ -8,6 +9,7 @@ import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
 import uz.jvh.uzairways.domain.DTO.response.TicketDetailsResponse;
 import uz.jvh.uzairways.domain.entity.AirPlane;
 import uz.jvh.uzairways.domain.entity.Flight;
+import uz.jvh.uzairways.domain.enumerators.Airport;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
 import uz.jvh.uzairways.service.FlightService;
 
@@ -27,7 +29,7 @@ public class FlightController {
     public ResponseEntity<Flight> createFlight(@RequestBody FlightDTO flightDto) {
         return ResponseEntity.ok(flightService.saveFlight(flightDto));
     }
-
+  
     @GetMapping("/all-flight")
     public ResponseEntity<List<Flight>> getAllFlights() {
         List<Flight> flights = flightService.getAllFlights();
@@ -42,11 +44,11 @@ public class FlightController {
         return ResponseEntity.ok(flightById);
     }
 
-    @GetMapping("/available-airplanes")
-    public ResponseEntity<List<AirPlane>> getAvailableAirplanes(@RequestParam LocalDateTime departureTime,
-                                                                @RequestParam LocalDateTime arrivalTime) {
+    @GetMapping("/get-available-airplanes")
+    public ResponseEntity<List<AirPlane>> getAvailableAirplanes(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime departureTime ,
+                                                                @RequestParam Airport flightAirport) {
 
-        List<AirPlane> availableAirplanes = flightService.getAvailableAircrafts(departureTime, arrivalTime);
+        List<AirPlane> availableAirplanes = flightService.getAvailableAircrafts(departureTime , flightAirport);
 
         return ResponseEntity.ok(availableAirplanes);
     }

@@ -26,8 +26,7 @@ public class TicketController {
     public ResponseEntity<List<Ticket>> getAllTickets() {
         List<Ticket> tickets = ticketService.getAllTickets();
         return ResponseEntity.ok(tickets);
-    }
-
+    
     @GetMapping("/find-by-id{id}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable UUID id) {
         Ticket ticket = ticketService.getTicketById(id);
@@ -47,27 +46,13 @@ public class TicketController {
         return ResponseEntity.noContent().build();
     }
 
-//    @DeleteMapping("/cancel-ticked/{id}")
-//    public ResponseEntity<String> cancelTicket(@PathVariable UUID id) {
-//        try {
-//            ticketService.cancelTicked(id);
-//            return ResponseEntity.ok("Ticket successfully cancelled");
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
 
-    @PostMapping("/get-ticket-info")
-    public ResponseEntity<?> getFlightInfo(@RequestBody ByTickedRequest request) {
-        try {
-            List<Ticket> flightInfo = ticketService.getFlightInfo(request);
-            return ResponseEntity.ok(flightInfo);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    @PostMapping("/get-flight-info")
+    public ResponseEntity<List<Ticket>> getFlightInfo(@RequestBody ByTickedRequest request) {
+        List<Ticket> flightInfo = ticketService.getFlightInfo(request);
+        return ResponseEntity.ok(flightInfo);
     }
+
 
 
 }

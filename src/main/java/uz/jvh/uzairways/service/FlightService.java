@@ -10,6 +10,7 @@ import uz.jvh.uzairways.domain.DTO.response.TicketDetailsResponse;
 import uz.jvh.uzairways.domain.entity.AirPlane;
 import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.Ticket;
+import uz.jvh.uzairways.domain.enumerators.Airport;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
 import uz.jvh.uzairways.respository.AirPlaneRepository;
 import uz.jvh.uzairways.respository.FlightRepository;
@@ -107,8 +108,8 @@ public class FlightService {
     }
 
 
-    public List<AirPlane> getAvailableAircrafts(LocalDateTime departureTime, LocalDateTime arrivalTime) {
-        return flightRepository.findAvailableAirplanes(departureTime, arrivalTime);
+    public List<AirPlane> getAvailableAircrafts(LocalDateTime departureTime , Airport flyingAirport) {
+        return flightRepository.findAvailableAirplanes(departureTime , flyingAirport);
     }
 
 
