@@ -19,7 +19,7 @@ public class TicketDTO {
     private LocalDateTime bookingDate;
 
     /// seat entity va ticket bitta dto da
-    private boolean isBron = true; // means false = booked , or true =  available
+    private boolean isBron = false; // means false = booked , or true =  available
 
 
 }

@@ -122,7 +122,6 @@ public class UserService {
         user.setBirthDate(userRequest.getBirthDate() != null ? userRequest.getBirthDate() : user.getBirthDate());
         user.setAddress(userRequest.getAddress() != null ? userRequest.getAddress() : user.getAddress());
         user.setPassportSeries(userRequest.getPassportSeries() != null ? userRequest.getPassportSeries() : user.getPassportSeries());
-
         return userRepository.save(user);
     }
 

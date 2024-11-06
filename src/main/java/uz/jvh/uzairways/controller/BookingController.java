@@ -19,11 +19,6 @@ public class BookingController {
 
     private final BookingService bookingService;
 
-//    @PostMapping("/create-booking")
-//    public Booking createBooking(@RequestBody BookingRequest request) {
-//        return bookingService.createBooking(request);
-//    }
-
     @PostMapping("/user-reserve-tickets")
     public ResponseEntity<String> reserveTickets(@RequestBody List<Ticket> tickets,
                                                  @RequestBody ByTickedRequest request) {
