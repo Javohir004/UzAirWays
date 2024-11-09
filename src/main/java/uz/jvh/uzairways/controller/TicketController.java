@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
-import uz.jvh.uzairways.domain.DTO.request.CreateTicketRequest;
-import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
 import uz.jvh.uzairways.domain.entity.Ticket;
-import uz.jvh.uzairways.domain.enumerators.AircraftType;
 import uz.jvh.uzairways.service.TicketService;
 
 import java.util.List;
@@ -26,9 +23,8 @@ public class TicketController {
     public ResponseEntity<List<Ticket>> getAllTickets() {
         List<Ticket> tickets = ticketService.getAllTickets();
         return ResponseEntity.ok(tickets);
-    }
-
-    @GetMapping("/find-byId{id}")
+    
+    @GetMapping("/find-by-id{id}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable UUID id) {
         Ticket ticket = ticketService.getTicketById(id);
         return ResponseEntity.ok(ticket);

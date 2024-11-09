@@ -19,7 +19,6 @@ public class BookingService {
 
 
     public void bronTicked(List<Ticket> tickets, ByTickedRequest request) {
-
         for (int i = 0; i < request.getPassengers(); i++) {
             Ticket ticket = tickets.get(i);
             ticket.setActive(true);

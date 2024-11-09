@@ -3,6 +3,7 @@ package uz.jvh.uzairways.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,6 @@ import uz.jvh.uzairways.domain.DTO.request.UserRequest;;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
-import uz.jvh.uzairways.respository.BookingRepository;
-import uz.jvh.uzairways.respository.TicketRepository;
 import uz.jvh.uzairways.respository.UserRepository;
 
 import java.util.List;
@@ -108,9 +107,14 @@ public class UserService {
         List<User> users = userRepository.findAllByIsActiveTrue();
         return users.stream()
                 .map(user -> mapEntityToResponse(user))
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<User> findAllJ() {
+        List<User> allUsers = userRepository.findAll();
+
+        return allUsers.stream()
+                .filter(user -> user.getRole().equals(UserRole.USER))
                 .collect(Collectors.toList());
     }
-
 
     public User update(UUID id, UserRequest userRequest) {
         User user = findByIdJ(id);
@@ -123,7 +127,7 @@ public class UserService {
         user.setBirthDate(userRequest.getBirthDate() != null ? userRequest.getBirthDate() : user.getBirthDate());
         user.setAddress(userRequest.getAddress() != null ? userRequest.getAddress() : user.getAddress());
         user.setPassportSeries(userRequest.getPassportSeries() != null ? userRequest.getPassportSeries() : user.getPassportSeries());
-
         return userRepository.save(user);
     }
+
 }

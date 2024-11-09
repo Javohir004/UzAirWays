@@ -1,13 +1,11 @@
 package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
 import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
 import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.Ticket;
-import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.AircraftType;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
 import uz.jvh.uzairways.respository.FlightRepository;
@@ -67,6 +65,7 @@ public class TicketService {
 
 
 
+
     public List<Ticket> getFlightInfo(ByTickedRequest request) {
 
         Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
@@ -77,8 +76,8 @@ public class TicketService {
         if (flight == null) {
             throw new IllegalArgumentException("Flight not found");
         }
-        List<Ticket> availableTickets = ticketRepository.findAllByIsActiveAndFlight(
-                true,
+        List<Ticket> availableTickets = ticketRepository.findAllByIsBronAndFlight(
+                false,
                 flight
         );
 
@@ -129,7 +128,7 @@ public class TicketService {
         }
     }
 
-    public List<Ticket> findAllByFlightIdAndClassTypeAndIsActiveTrue(UUID flightId, ClassType classType) {
-        return ticketRepository.findAllByFlightIdAndClassTypeAndIsActiveTrue(flightId, classType);
+    public List<Ticket> findAllByFlightIdAndClassTypeAndIsBronTrue(UUID flightId, ClassType classType) {
+        return ticketRepository.findAllByFlightIdAndClassTypeAndIsBronTrue(flightId, classType);
     }
 }

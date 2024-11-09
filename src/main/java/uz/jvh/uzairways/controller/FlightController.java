@@ -29,9 +29,8 @@ public class FlightController {
     public ResponseEntity<Flight> createFlight(@RequestBody FlightDTO flightDto) {
         return ResponseEntity.ok(flightService.saveFlight(flightDto));
     }
-
-
-    @GetMapping("/get-all-flight")
+  
+    @GetMapping("/all-flight")
     public ResponseEntity<List<Flight>> getAllFlights() {
         List<Flight> flights = flightService.getAllFlights();
         return ResponseEntity.ok(flights);
@@ -66,5 +65,12 @@ public class FlightController {
                                                                                       @RequestParam ClassType classType) {
         List<TicketDetailsResponse> allTicketDetailsByClassType = flightService.getAllTicketDetailsByClassType(id, classType);
         return ResponseEntity.ok(allTicketDetailsByClassType);
+    }
+
+
+    @PutMapping("/update-flight/{flightId}")
+    public ResponseEntity<Void> updateFlight(@PathVariable UUID flightId, @RequestBody FlightDTO flightDto) {
+        flightService.updateFlight(flightId, flightDto);
+        return ResponseEntity.ok().build();
     }
 }
