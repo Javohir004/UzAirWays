@@ -24,7 +24,7 @@ public class OwnerController {
     // Barcha foydalanuvchilarni ko'rish
     @GetMapping("/all-user")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<UserResponse> users = userService.findAllJ();
+        List<UserResponse> users = userService.findAllforOwner();
         return ResponseEntity.ok(users);
     }
 

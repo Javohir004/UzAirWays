@@ -103,13 +103,17 @@ public class UserService {
     }
 
 
-    public List<UserResponse> findAllJ() {
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponse> findAllforOwner() {
         List<User> users = userRepository.findAllByIsActiveTrue();
         return users.stream()
                 .map(user -> mapEntityToResponse(user))
-    @PreAuthorize("hasRole('ADMIN')")
+                .collect(Collectors.toList());
+    }
+
+
     public List<User> findAllJ() {
-        List<User> allUsers = userRepository.findAll();
+        List<User> allUsers = userRepository.findAllByIsActiveTrue();
 
         return allUsers.stream()
                 .filter(user -> user.getRole().equals(UserRole.USER))
