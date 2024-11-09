@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ByTickedRequest {
     private Airport departureAirport;
-    private Airport arrivalAirport
+    private Airport arrivalAirport;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime departureTime;
     private Integer passengers;
