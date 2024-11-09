@@ -20,7 +20,6 @@ public class AirPlane extends BaseEntity {
 
     private String model;
 
-
     private String manufacturer;
 
     @Enumerated(EnumType.STRING)
