@@ -10,7 +10,6 @@ import uz.jvh.uzairways.domain.enumerators.AircraftType;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
 import uz.jvh.uzairways.respository.FlightRepository;
 import uz.jvh.uzairways.respository.TicketRepository;
-import uz.jvh.uzairways.respository.UserRepository;
 
 import java.util.*;
 
@@ -18,10 +17,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class TicketService {
     private final TicketRepository ticketRepository;
-    private final UserRepository userRepository;
     private final FlightRepository flightRepository;
-
-
 
 
 
@@ -128,7 +124,4 @@ public class TicketService {
         }
     }
 
-    public List<Ticket> findAllByFlightIdAndClassTypeAndIsBronTrue(UUID flightId, ClassType classType) {
-        return ticketRepository.findAllByFlightIdAndClassTypeAndIsBronTrue(flightId, classType);
-    }
 }

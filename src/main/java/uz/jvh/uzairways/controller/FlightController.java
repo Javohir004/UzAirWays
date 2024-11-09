@@ -45,7 +45,7 @@ public class FlightController {
     }
 
     @GetMapping("/get-available-airplanes")
-    public ResponseEntity<List<AirPlane>> getAvailableAirplanes(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime departureTime ,
+    public ResponseEntity<List<AirPlane>> getAvailableAirplanes(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS") LocalDateTime departureTime ,
                                                                 @RequestParam Airport flightAirport) {
 
         List<AirPlane> availableAirplanes = flightService.getAvailableAircrafts(departureTime , flightAirport);
@@ -64,7 +64,7 @@ public class FlightController {
     public ResponseEntity<List<TicketDetailsResponse>> getAllTicketDetailsByClassType(@PathVariable UUID id,
                                                                                       @RequestParam ClassType classType) {
         List<TicketDetailsResponse> allTicketDetailsByClassType = flightService.getAllTicketDetailsByClassType(id, classType);
-        return ResponseEntity.ok(allTicketDetailsByClassType);
+            return ResponseEntity.ok(allTicketDetailsByClassType);
     }
 
 

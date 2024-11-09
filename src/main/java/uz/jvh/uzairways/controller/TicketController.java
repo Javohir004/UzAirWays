@@ -23,9 +23,6 @@ public class TicketController {
     public ResponseEntity<List<Ticket>> getAllTickets() {
         List<Ticket> tickets = ticketService.getAllTickets();
         return ResponseEntity.ok(tickets);
-    }
-
-
 
     @GetMapping("/find-by-id{id}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable UUID id) {

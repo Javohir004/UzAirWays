@@ -15,6 +15,7 @@ import uz.jvh.uzairways.domain.enumerators.Airport;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
 import uz.jvh.uzairways.respository.AirPlaneRepository;
 import uz.jvh.uzairways.respository.FlightRepository;
+import uz.jvh.uzairways.respository.TicketRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +30,7 @@ public class FlightService {
     private final FlightRepository flightRepository;
     private final AirPlaneRepository airPlaneRepository;
     private final TicketService ticketService;
+    private final TicketRepository ticketRepository;
 
     @Transactional
     public Flight saveFlight(FlightDTO flight) {
@@ -131,7 +133,7 @@ public class FlightService {
 
 
     public List<TicketDetailsResponse> getAllTicketDetailsByClassType(UUID flightId, ClassType classType) {
-        List<Ticket> tickets = ticketService.findAllByFlightIdAndClassTypeAndIsBronTrue(flightId, classType);
+        List<Ticket> tickets = ticketRepository.findAllByFlightIdAndClassTypeAndIsBronTrue(flightId, classType);
         return tickets.stream()
                 .map(ticket -> new TicketDetailsResponse(
                         ticket.getFlight().getId(),
