@@ -1,9 +1,7 @@
 package uz.jvh.uzairways.controller;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.jvh.uzairways.Views.UserView;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.domain.entity.User;
@@ -24,8 +22,8 @@ public class OwnerController {
 
     // Barcha foydalanuvchilarni ko'rish
     @GetMapping("/all-user")
-    public ResponseEntity<List<UserView>> getAllUsers() {
-        List<UserView> users = userService.findAllJ();
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<UserResponse> users = userService.findAllJ();
         return ResponseEntity.ok(users);
     }
 
@@ -51,8 +49,8 @@ public class OwnerController {
 
     // Foydalanuvchini yangilash
     @PutMapping("/update/{userId}")
-    public ResponseEntity<UserView> updateUser(@PathVariable UUID userId, @RequestBody UserRequest updatedUser) {
-        UserView updatedUserInfo = userService.updateUserJ(updatedUser, userId);
+    public ResponseEntity<UserResponse> updateUser(@PathVariable UUID userId, @RequestBody UserRequest updatedUser) {
+        UserResponse updatedUserInfo = userService.updateUserJ(updatedUser, userId);
         return ResponseEntity.ok(updatedUserInfo);
     }
 

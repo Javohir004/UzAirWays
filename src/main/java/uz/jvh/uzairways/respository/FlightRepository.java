@@ -15,10 +15,6 @@ import java.util.UUID;
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, UUID> {
 
-//    Optional<Flight> findByDepartureAirportAndArrivalAirportAndDepartureTime(Airport departureAirport,
-//                                                                             Airport arrivalAirport,
-//                                                                             LocalDateTime departureTime);
-
     Flight findFlightById(UUID flightId);
 
 

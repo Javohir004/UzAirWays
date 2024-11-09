@@ -47,15 +47,6 @@ public class TicketController {
         return ResponseEntity.noContent().build();
     }
 
-//    @DeleteMapping("/cancel-ticked/{id}")
-//    public ResponseEntity<String> cancelTicket(@PathVariable UUID id) {
-//        try {
-//            ticketService.cancelTicked(id);
-//            return ResponseEntity.ok("Ticket successfully cancelled");
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
 
     @PostMapping("/get-flight-info")
     public ResponseEntity<List<Ticket>> getFlightInfo(@RequestBody ByTickedRequest request) {

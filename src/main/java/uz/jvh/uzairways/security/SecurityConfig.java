@@ -81,41 +81,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-/*    @Bean
 
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler(){
-        return ((request, response, accessDeniedException) -> {
-            accessDeniedException.printStackTrace();
-            String errorPath = request.getRequestURI();
-            String errorMessage = accessDeniedException.getMessage();
-            Integer errorCode = 403;
-            AppErrorRequest appErrorDto = new AppErrorRequest(
-                    errorPath, errorMessage, errorCode, LocalDateTime.now()
-            );
-            response.setStatus(errorCode);
-            ServletOutputStream outputStream = response.getOutputStream();
-            objectMapper.writeValue(outputStream,appErrorDto);
-        });
-    }*/
-
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource(){
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.setAllowedOriginPatterns(List.of(
-//                "http//localhost:8080",
-//                "http//localhost:3000"
-//        ));
-//        corsConfiguration.setAllowedHeaders(List.of(
-//                "Accept"
-//        ));
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**",corsConfiguration);
-//        /*source.registerCorsConfiguration("/api/v2/**",corsConfiguration2);
-//        source.registerCorsConfiguration("/api/v3/**",corsConfiguration3);*/
-//        return source;
-//    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

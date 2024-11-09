@@ -26,7 +26,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
 
     public void save(User user) {
         userRepository.save(user);
@@ -54,12 +53,14 @@ public class UserService {
     }
 
     @Transactional
-    public UserView updateUserJ(UserRequest userCreateDTO, UUID userId) {
-        User user = modelMapper.map(userCreateDTO, User.class);
+    public UserResponse updateUserJ(UserRequest userCreateDTO, UUID userId) {
+        User user = mapRequestToEntity(userCreateDTO);
         user.setId(userId);
         userRepository.save(user);
-        return modelMapper.map(user, UserView.class);
+        return mapEntityToResponse(user);
     }
+
+
 
     public User findByIdJ(UUID id) {
         return userRepository.findById(id).
@@ -103,10 +104,10 @@ public class UserService {
     }
 
 
-    public List<UserView> findAllJ() {
-        List<User> users = userRepository.findAll();
+    public List<UserResponse> findAllJ() {
+        List<User> users = userRepository.findAllByIsActiveTrue();
         return users.stream()
-                .map(user -> modelMapper.map(user, UserView.class))
+                .map(user -> mapEntityToResponse(user))
                 .collect(Collectors.toList());
     }
 

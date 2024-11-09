@@ -24,11 +24,7 @@ public class TicketService {
     private final FlightRepository flightRepository;
 
 
-    /// miyyanga ... o'zincha o'chirib tashlama yoqmasa tegma kommentga olib qo'y
-    ///
-    ///
-    ///
-    /// kamroq chatjpt ishlatish kerak ......bosh , kop method chala yozilgan
+
 
 
     public List<Ticket> getAllTickets() {
@@ -40,10 +36,6 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
     }
 
-//    public Ticket createTicket(TicketDTO ticket) {
-//        Ticket ticket1 = mapRequestToTicket(ticket);
-//        return ticketRepository.save(ticket1);
-//    }
 
 
     public Ticket updateTicket(UUID id, Ticket ticket) {
@@ -73,22 +65,6 @@ public class TicketService {
         return ticket;
     }
 
-
-//    public void cancelTicked(UUID ticketId) {
-//        if (ticketId == null) {
-//            throw new IllegalArgumentException("Ticket ID cannot be null");
-//        }
-//        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
-//        LocalDateTime departureTime = ticket.getFlight().getDepartureTime();
-//        LocalDateTime now = LocalDateTime.now();
-//
-//        if (departureTime.isAfter(now)) {
-//            ticket.setTicketStatus(TicketStatus.CANCELLED);
-//            ticketRepository.save(ticket);
-//        } else {
-//            throw new IllegalArgumentException("Ticket already cancelled");
-//        }
-//    }
 
 
     public List<Ticket> getFlightInfo(ByTickedRequest request) {

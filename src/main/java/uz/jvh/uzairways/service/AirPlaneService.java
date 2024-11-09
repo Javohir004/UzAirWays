@@ -22,11 +22,9 @@ public class AirPlaneService {
     private final AirPlaneRepository airPlaneRepository;
 
 
-    private final ModelMapper modelMapper;
-
     @Transactional
     public String create(AirPlaneDTO airPlane) {
-        AirPlane save = airPlaneRepository.save(modelMapper.map(airPlane, AirPlane.class));
+        AirPlane save = mapToEntity(airPlane);
         airPlaneRepository.save(save);
         return "success";
     }
@@ -39,9 +37,9 @@ public class AirPlaneService {
 
     @Transactional
     public void update(AirPlaneDTO airPlane , UUID id) {
-        AirPlane map = modelMapper.map(airPlane, AirPlane.class);
-        map.setId(id);
-        airPlaneRepository.save(map);
+        AirPlane airPlane1 = mapToEntity(airPlane);
+        airPlane1.setId(id);
+        airPlaneRepository.save(airPlane1);
     }
 
     public AirPlane findById(UUID id) {
@@ -49,11 +47,31 @@ public class AirPlaneService {
                 .orElseThrow(() -> new NoSuchElementException("AirPlane with ID " + id + " not found"));
     }
 
+    public AirPlane mapToEntity(AirPlaneDTO airPlaneDTO) {
+        AirPlane airPlane = new AirPlane();
+        airPlane.setId(airPlane.getId());
+        airPlane.setAircraftType(airPlaneDTO.getAircraftType());
+        airPlane.setModel(airPlaneDTO.getModel());
+        airPlane.setManufacturer(airPlaneDTO.getManufacturer());
+        return airPlane;
+    }
+
+
+    public AirPlaneResponse mapToResponse(AirPlane airPlane) {
+        AirPlaneResponse response = new AirPlaneResponse();
+        response.setAircraftType(String.valueOf(airPlane.getAircraftType()));
+        response.setModel(airPlane.getModel());
+        response.setManufacturer(airPlane.getManufacturer());
+        return response;
+    }
+
 
     public List<AirPlaneResponse> findAll() {
-        List<AirPlane> all = airPlaneRepository.findAll();
+        List<AirPlane> all = airPlaneRepository.findAllByIsActiveTrue();
         return all.stream()
-                .map(airPlane -> modelMapper.map(airPlane, AirPlaneResponse.class))
+                .map(this::mapToResponse)
                 .toList();
     }
+
+
 }
