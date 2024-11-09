@@ -16,6 +16,8 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final TicketRepository ticketRepository;
 
+
+
     public void bronTicked(List<Ticket> tickets, ByTickedRequest request) {
         for (int i = 0; i < request.getPassengers(); i++) {
             Ticket ticket = tickets.get(i);

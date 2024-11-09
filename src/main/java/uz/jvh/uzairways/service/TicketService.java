@@ -22,11 +22,7 @@ public class TicketService {
     private final FlightRepository flightRepository;
 
 
-    /// miyyanga ... o'zincha o'chirib tashlama yoqmasa tegma kommentga olib qo'y
-    ///
-    ///
-    ///
-    /// kamroq chatjpt ishlatish kerak ......bosh , kop method chala yozilgan
+
 
 
     public List<Ticket> getAllTickets() {
