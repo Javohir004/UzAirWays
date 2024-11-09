@@ -18,13 +18,15 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
     Flight findFlightById(UUID flightId);
 
 
-
+   /** bu yerda kirib kelgan departure vaqti flight dataBazasidagi flight larning arrival vaqtidan katta bo'lishi kerak
+    * va arrival airaporti kirib kelgan departure airaportiga teng bo'lishi kerak**/
     @Query("SELECT f.airplane FROM Flight f WHERE f.arrivalTime < :departureTime AND f.arrivalAirport = :flyingAirport")
     List<AirPlane> findAvailableAirplanes(@Param("departureTime") LocalDateTime departureTime,
                                           @Param("flyingAirport") Airport flyingAirport);
 
 
 
+    /**metodi uchish aeroporti, kelish aeroporti va uchish vaqti bo‘yicha eng yaqin flight qidiradi.**/
     @Query("SELECT f FROM Flight f WHERE f.departureAirport = :departureAirport " +
             "AND f.arrivalAirport = :arrivalAirport " +
             "AND f.departureTime >= :startTime " +
@@ -37,10 +39,15 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
 
     boolean existsByFlightNumber(String flightNumber);
 
+
     boolean existsByAirplaneAndDepartureTimeAndArrivalTime(
             AirPlane airplane, LocalDateTime departureTime, LocalDateTime arrivalTime
+
     );
 
+    /**Bu metod Flight jadvallari orasida departureAirport, arrivalAirport, departureTime, va arrivalTime
+    qiymatlari berilgan qiymatlarga teng bo‘lgan yozuv bor-yo‘qligini tekshiradi.
+      */
     boolean existsByDepartureAirportAndArrivalAirportAndDepartureTimeAndArrivalTime(
             Airport departureAirport,
             Airport arrivalAirport,
