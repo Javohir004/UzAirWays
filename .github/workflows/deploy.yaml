@@ -40,8 +40,8 @@ jobs:
       # Step 6: Build and push Docker image
       - name: Build and push Docker image
         run: |
-          docker build -t javohir0/for-aws:latest .
-          docker push javohir0/for-aws:latest
+          docker build -t javohir0/uzairways:latest .
+          docker push javohir0/uzairways:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,8 +62,8 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_KNOWN_HOSTS }} "
-          sudo docker pull javohir0/for-aws:latest &&
+          sudo docker pull javohir0/uzairways:latest &&
           sudo docker stop my-app || true &&
           sudo docker rm my-app || true &&
-          sudo docker run -d --name my-app -p 8080:8080 javohir0/uzairways:latest
+          sudo docker run -d --name my-app -p 3000:3000 javohir0/uzairways:latest
           "
