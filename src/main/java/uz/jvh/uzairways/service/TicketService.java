@@ -20,7 +20,6 @@ public class TicketService {
     private final FlightRepository flightRepository;
 
 
-
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }
@@ -29,7 +28,6 @@ public class TicketService {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
     }
-
 
 
     public Ticket updateTicket(UUID id, Ticket ticket) {
@@ -60,10 +58,11 @@ public class TicketService {
     }
 
 
-
-
     public List<Ticket> getFlightInfo(ByTickedRequest request) {
 
+        if (request.getPassengers() > 5) {
+            throw new IllegalArgumentException("Passengers must be less than 5");
+        }
         Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
                 request.getDepartureAirport(),
                 request.getArrivalAirport(),
