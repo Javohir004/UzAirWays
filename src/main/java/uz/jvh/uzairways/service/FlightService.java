@@ -133,7 +133,7 @@ public class FlightService {
 
 
     public List<TicketDetailsResponse> getAllTicketDetailsByClassType(UUID flightId, ClassType classType) {
-        List<Ticket> tickets = ticketRepository.findAllByFlightIdAndClassTypeAndIsBronTrue(flightId, classType);
+        List<Ticket> tickets = ticketRepository.findAllByFlightIdAndClassTypeAndIsBronFalse(flightId, classType);
         return tickets.stream()
                 .map(ticket -> new TicketDetailsResponse(
                         ticket.getFlight().getId(),

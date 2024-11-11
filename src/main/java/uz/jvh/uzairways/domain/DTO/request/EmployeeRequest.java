@@ -1,22 +1,20 @@
-package uz.jvh.uzairways.domain.entity;
+package uz.jvh.uzairways.domain.DTO.request;
 
-import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-@Entity(name = "employee")
-public class Employee extends BaseEntity {
+public class EmployeeRequest {
     private String username;
     private String firstName;
     private LocalDate birthDate;
     private String citizenship;
     private String serialNumber;
     private LocalDate validityPeriod;
-
 }
