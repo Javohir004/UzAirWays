@@ -50,7 +50,6 @@ public class BookingService {
                         employee.getSerialNumber(),
                         employee.getValidityPeriod()
                 );
-
                 bookingEmployee = employeeRepository.save(employeeRequest);
             }
             bookingEmployees.add(bookingEmployee);
@@ -74,7 +73,7 @@ public class BookingService {
 
             bookedTickets.add(ticket);
             totalPrice += ticket.getPrice();
-        }
+        }   
         if (user.getBalance() < totalPrice) {
             throw new IllegalArgumentException("Insufficient balance for the booking");
         }
