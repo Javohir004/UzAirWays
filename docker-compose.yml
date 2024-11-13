@@ -1,7 +1,6 @@
 version: '3.8'
 services:
   app:
-    image: uz_air_ways
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,7 +9,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/uz_air_ways
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 2023
+      SPRING_DATASOURCE_PASSWORD: 0000
     depends_on:
       - db
     networks:
@@ -21,7 +20,7 @@ services:
     environment:
       POSTGRES_DB: uz_air_ways
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 2023
+      POSTGRES_PASSWORD: 0000
     ports:
       - "5433:5432"
     healthcheck:
