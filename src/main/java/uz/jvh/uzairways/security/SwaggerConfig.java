@@ -28,7 +28,6 @@ public class SwaggerConfig {
                                         .name(securitySchemeName)
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
-                                        .bearerFormat("JWT")))
-                .addServersItem(new Server().url("http://13.51.56.238:3000/api/**"));
+                                        .bearerFormat("JWT")));
     }
 }
