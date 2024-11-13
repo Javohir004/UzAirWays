@@ -27,7 +27,7 @@ public class UserController {
         return userService.update(id, userRequest);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/all-user")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.findAllJ();
