@@ -1,4 +1,4 @@
-version: '3.8'  # Versiyani yangilash tavsiya etiladi
+version: '3.8'
 services:
   app:
     image: uz_air_ways
@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"  # Tashqi port
+      - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/uz_air_ways
       SPRING_DATASOURCE_USERNAME: postgres
@@ -23,7 +23,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 2023
     ports:
-      - "5433:5432"  # Tashqi port
+      - "5433:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
