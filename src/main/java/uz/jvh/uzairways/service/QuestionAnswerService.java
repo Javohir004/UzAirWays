@@ -76,6 +76,7 @@ public class QuestionAnswerService {
         AnswerResponse answer = new AnswerResponse();
         answer.setQuestion(questionAnswer.getQuestion());
         answer.setAnswer(questionAnswer.getAnswer());
+        answer.setId(questionAnswer.getId());
         return answer;
     }
 }
