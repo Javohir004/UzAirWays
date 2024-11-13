@@ -55,7 +55,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()  // CSRF himoyasini o'chirish
-                .cors().and()  // CORS konfiguratsiyasini yoqish
+                .cors().disable()  // CORS konfiguratsiyasini yoqish
                 .authorizeHttpRequests()
                 .requestMatchers("/test",
                         "/api/auth/register/**",
@@ -118,7 +118,7 @@ public class SecurityConfig {
         private LocalDateTime timeStamp;
     }
 
-    @Bean
+  /*  @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://64.227.142.47:8081")); // Ruxsat berilgan manzillar
@@ -129,5 +129,5 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
+    }*/
 }
