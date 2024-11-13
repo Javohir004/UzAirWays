@@ -9,7 +9,7 @@ import uz.jvh.uzairways.service.QuestionAnswerService;
 
 import java.util.List;
 import java.util.UUID;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/question/answer")
 @RequiredArgsConstructor

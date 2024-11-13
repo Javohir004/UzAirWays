@@ -10,7 +10,7 @@ import uz.jvh.uzairways.service.AirPlaneService;
 
 import java.util.List;
 import java.util.UUID;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/airplane")
 @RequiredArgsConstructor

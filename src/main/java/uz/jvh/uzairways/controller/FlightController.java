@@ -16,7 +16,7 @@ import uz.jvh.uzairways.service.FlightService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/flight")
 @RequiredArgsConstructor

@@ -9,7 +9,7 @@ import uz.jvh.uzairways.service.TicketService;
 
 import java.util.List;
 import java.util.UUID;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/ticket")
 @RequiredArgsConstructor
