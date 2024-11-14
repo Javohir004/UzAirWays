@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   uz_air_ways:
-    image: madiyornegov/uz_air_ways
+    image: madiyornegov/uz_air_ways:2
     ports:
       - "8080:8080"
     environment:
