@@ -8,9 +8,9 @@ services:
       - "8080:8080"
     environment:
       TZ: Asia/Tashkent
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/uz_air_ways
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 0000
+      DB_HOST: db
+      DB_USERNAME: postgres
+      DB_PASSWORD: 0000
     depends_on:
       - db
     networks:
