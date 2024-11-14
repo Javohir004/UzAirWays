@@ -49,7 +49,4 @@ public class TicketController {
         List<Ticket> flightInfo = ticketService.getFlightInfo(request);
         return ResponseEntity.ok(flightInfo);
     }
-
-
-
 }
