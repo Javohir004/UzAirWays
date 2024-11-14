@@ -3,7 +3,7 @@ services:
  uz_air_ways:
     image: madiyornegov/uz_air_ways
     ports:
-      - "80:8080"
+      - "8080:8080"
     environment:
       TZ: Asia/Tashkent
       DB_HOST: db
@@ -21,4 +21,4 @@ services:
       POSTGRES_PASSWORD: 0000
       TZ: Asia/Tashkent
     ports:
-      - "5433:5433"
+      - "5435:5432"
