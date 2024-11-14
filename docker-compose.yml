@@ -16,6 +16,7 @@ services:
     networks:
       - mynetwork
 
+
   db:
     image: postgres:16
     environment:
