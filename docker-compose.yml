@@ -21,4 +21,4 @@ services:
       POSTGRES_PASSWORD: 0000
       TZ: Asia/Tashkent
     ports:
-      - "5435:5432"
+      - "5432:5432"
