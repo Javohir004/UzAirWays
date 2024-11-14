@@ -8,7 +8,7 @@ import uz.jvh.uzairways.service.UserHistoryService;
 
 import java.util.List;
 import java.util.UUID;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/history")

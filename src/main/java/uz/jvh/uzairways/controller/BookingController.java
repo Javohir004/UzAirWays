@@ -11,7 +11,6 @@ import uz.jvh.uzairways.service.BookingService;
 
 import java.util.List;
 import java.util.UUID;
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RequestMapping("/api/booking")
 @RestController

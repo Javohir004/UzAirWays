@@ -14,7 +14,7 @@ import uz.jvh.uzairways.service.UserService;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(origins = "*")
+
 @RequestMapping("/api/user")
 @RestController
 @RequiredArgsConstructor

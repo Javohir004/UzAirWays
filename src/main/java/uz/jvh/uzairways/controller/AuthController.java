@@ -7,7 +7,7 @@ import uz.jvh.uzairways.domain.DTO.request.UserRequest;
 import uz.jvh.uzairways.domain.DTO.response.JwtResponse;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.service.AuthService;
-@CrossOrigin(origins = "*")
+
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 @RestController
