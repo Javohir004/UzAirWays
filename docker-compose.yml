@@ -7,11 +7,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      TZ=Asia/Tashkent
+      TZ: Asia/Tashkent
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/uz_air_ways
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 0000
-      TZ=Asia/Tashkent
     depends_on:
       - db
     networks:
@@ -23,6 +22,7 @@ services:
       POSTGRES_DB: uz_air_ways
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 0000
+      TZ: Asia/Tashkent
     ports:
       - "5432:5432"
     healthcheck:
