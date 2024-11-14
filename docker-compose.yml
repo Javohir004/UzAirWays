@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: madiyornegov/uz_air_ways
     ports:
       - "8080:8080"
     environment:
