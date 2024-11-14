@@ -1,6 +1,6 @@
 version: '3.8'
 services:
- uz_air_ways:
+  uz_air_ways:
     image: madiyornegov/uz_air_ways
     ports:
       - "8080:8080"
@@ -11,9 +11,10 @@ services:
       DB_PASSWORD: 0000
     depends_on:
       - db
+    networks:
+      - uzairways-network
 
-
- db:
+  db:
     image: postgres:16
     environment:
       POSTGRES_DB: uz_air_ways
@@ -22,3 +23,9 @@ services:
       TZ: Asia/Tashkent
     ports:
       - "5432:5432"
+    networks:
+      - uzairways-network
+
+networks:
+  uzairways-network:
+    driver: bridge
