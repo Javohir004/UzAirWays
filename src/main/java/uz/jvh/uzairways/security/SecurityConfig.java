@@ -50,11 +50,10 @@ public class SecurityConfig {
         });
     }
 
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().disable()  // CSRF himoyasini o'chirish
-                .cors().disable()  // CORS konfiguratsiyasini yoqish
+                .csrf().disable()  // CSRF ni o'chirish
+                .cors().disable()  // CORS ni o'chirish (sizning iltimosingiz bo‘yicha)
                 .authorizeHttpRequests()
                 .requestMatchers("/test",
                         "/api/auth/register/**",
@@ -71,7 +70,6 @@ public class SecurityConfig {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint())
-                /*.accessDeniedHandler(accessDeniedHandler())*/
                 .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenUtil, userDetailsService),
                         UsernamePasswordAuthenticationFilter.class)
