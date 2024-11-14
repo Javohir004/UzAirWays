@@ -50,6 +50,7 @@ public class SecurityConfig {
         });
     }
 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()  // CSRF ni o'chirish
@@ -57,7 +58,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/test",
                         "/api/auth/register/**",
-                        "/api/auth/login/**",
+                        "/api/auth/login/**","/api/auth/register","/api/auth/login",
                         "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                 .permitAll()
                 .anyRequest()
