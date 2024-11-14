@@ -31,6 +31,7 @@ public class BookingController {
         }
     }
 
+
     @GetMapping("/get-tickets-flight-by-userId")
     public ResponseEntity<List<TickedResponse>> getTicketsByUserId(@RequestParam UUID userId) {
         return ResponseEntity.ok(bookingService.getBookingsByOwnerId(userId));
