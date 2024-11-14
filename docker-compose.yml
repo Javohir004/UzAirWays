@@ -5,15 +5,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      TZ: Asia/Tashkent
       DB_HOST: db
       DB_USERNAME: postgres
       DB_PASSWORD: 0000
     depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - uzairways-network
+      - db
+
+
 
   db:
     image: postgres:16
@@ -21,17 +19,6 @@ services:
       POSTGRES_DB: uz_air_ways
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 0000
-      TZ: Asia/Tashkent
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - uzairways-network
 
-networks:
-  uzairways-network:
-    driver: bridge
