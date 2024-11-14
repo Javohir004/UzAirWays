@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @Builder
 public class UserResponse {
+
     private String username;
     private String surname;
     private String password;

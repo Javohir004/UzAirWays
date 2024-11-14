@@ -5,10 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.CreateBookingRequest;
+import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
 import uz.jvh.uzairways.domain.entity.Booking;
 import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.service.BookingService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,4 +30,11 @@ public class BookingController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/get-tickets-flight-by-userId")
+    public ResponseEntity<List<TickedResponse>> getTicketsByUserId(@RequestParam UUID userId) {
+        return ResponseEntity.ok(bookingService.getBookingsByOwnerId(userId));
+    }
+
+
 }

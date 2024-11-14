@@ -5,7 +5,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.FlightDTO;
-import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
 import uz.jvh.uzairways.domain.DTO.response.TicketDetailsResponse;
 import uz.jvh.uzairways.domain.entity.AirPlane;
 import uz.jvh.uzairways.domain.entity.Flight;
