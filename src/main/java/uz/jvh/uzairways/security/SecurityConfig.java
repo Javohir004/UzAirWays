@@ -53,25 +53,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())  // CSRF ni o'chirish
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // CORS sozlamalari
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/register/**",
-                                "/api/auth/login/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html")  // Bu URL'lar uchun autentifikatsiya kerak emas
-                        .permitAll()  // Yuqoridagi URL'larga kirishga ruxsat beriladi
-                        .anyRequest()  // Boshqa barcha so'rovlar
-                        .authenticated())  // Faqat autentifikatsiya qilingan foydalanuvchilar uchun ruxsat beriladi
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Sessiya yaratishni o'chirish (stateless)
-                .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint(authenticationEntryPoint()))  // Maxsus autentifikatsiya xatoliklarini boshqarish
+                .csrf().disable()  // CSRF himoyasini o'chirish
+                .cors().disable()// CORS konfiguratsiyasini yoqish
+                .authorizeHttpRequests()
+                .requestMatchers("/api/auth/login",
+                        "/api/auth/register",
+                        "/v3/api-docs/", "/swagger-ui/", "/swagger-ui.html")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .httpBasic()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint())
+                //.accessDeniedHandler(accessDeniedHandler())
+                .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenUtil, userDetailsService),
-                        UsernamePasswordAuthenticationFilter.class)  // JWT tokenni tekshirish uchun maxsus filter qo'shish
-                .build();  // Xavfsizlik sozlamalarini qo'llash
+                        UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
+
 
 
     @Bean
