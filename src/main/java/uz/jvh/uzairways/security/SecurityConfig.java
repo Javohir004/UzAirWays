@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,11 +18,11 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +32,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final JwtTokenUtil jwtTokenUtil;
     private final CustomUserDetailsService userDetailsService;
+
 
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
@@ -53,28 +53,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().disable()  // CSRF ni o'chirish
-                .cors().disable()  // CORS ni o'chirish (sizning iltimosingiz bo‘yicha)
-                .authorizeHttpRequests()
-                .requestMatchers("/test",
-                        "/api/auth/register/**",
-                        "/api/auth/login/**",
-                        "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .httpBasic()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint())
-                .and()
+                .csrf(csrf -> csrf.disable())  // CSRF ni o'chirish
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // CORS sozlamalari
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/register/**",
+                                "/api/auth/login/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")  // Bu URL'lar uchun autentifikatsiya kerak emas
+                        .permitAll()  // Yuqoridagi URL'larga kirishga ruxsat beriladi
+                        .anyRequest()  // Boshqa barcha so'rovlar
+                        .authenticated())  // Faqat autentifikatsiya qilingan foydalanuvchilar uchun ruxsat beriladi
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Sessiya yaratishni o'chirish (stateless)
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(authenticationEntryPoint()))  // Maxsus autentifikatsiya xatoliklarini boshqarish
                 .addFilterBefore(new JwtTokenFilter(jwtTokenUtil, userDetailsService),
-                        UsernamePasswordAuthenticationFilter.class)
-                .build();
+                        UsernamePasswordAuthenticationFilter.class)  // JWT tokenni tekshirish uchun maxsus filter qo'shish
+                .build();  // Xavfsizlik sozlamalarini qo'llash
     }
 
 
@@ -82,8 +78,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
     /*@Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -96,7 +90,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }*/
-
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity httpSecurity) throws Exception {
@@ -116,16 +109,22 @@ public class SecurityConfig {
         private LocalDateTime timeStamp;
     }
 
-  /*  @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://64.227.142.47:8081")); // Ruxsat berilgan manzillar
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true);
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }*/
+        CorsConfiguration config = new CorsConfiguration();
+
+        // CORS uchun ruxsat beriladigan parametrlar:
+        config.addAllowedOrigin("*");  // Barcha domenlarga ruxsat beriladi (specific domain qo'yish mumkin, masalan: "https://example.com")
+        config.addAllowedMethod("*");  // Hamma metodlarga ruxsat beriladi (masalan: GET, POST, PUT, DELETE va h.k.)
+        config.addAllowedHeader("*");  // Hamma sarlavhalarga ruxsat beriladi
+        config.setAllowCredentials(true);  // Cookie'lar yoki boshqa autentifikatsiya ma'lumotlarini yuborishga ruxsat berish
+
+        // CORS konfiguratsiyasini barcha URL'lar uchun ro'yxatdan o'tkazish
+        source.registerCorsConfiguration("/**", config);
+
+        return source;  // CORS konfiguratsiyasini qaytarish
+
+    }
 }
