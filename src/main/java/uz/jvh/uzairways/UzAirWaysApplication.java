@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class UzAirWaysApplication {
 
     public static void main(String[] args) {
+        String s;
         SpringApplication.run(UzAirWaysApplication.class, args);
     }
 

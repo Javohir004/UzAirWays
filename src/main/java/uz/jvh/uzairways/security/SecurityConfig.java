@@ -18,46 +18,49 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig{
+public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
     private final JwtTokenUtil jwtTokenUtil;
     private final CustomUserDetailsService userDetailsService;
 
-
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
-        return ((request, response, authException) -> {
+        return (request, response, authException) -> {
             authException.printStackTrace();
             String errorPath = request.getRequestURI();
             String errorMessage = authException.getMessage();
-            Integer errorCode = 401;
+            int errorCode = 401;
             AppErrorRequest appErrorDto = new AppErrorRequest(
                     errorPath, errorMessage, errorCode, LocalDateTime.now()
             );
+            response.setContentType("application/json");
             response.setStatus(errorCode);
-            ServletOutputStream outputStream = response.getOutputStream();
-            objectMapper.writeValue(outputStream, appErrorDto);
-        });
+            try (ServletOutputStream outputStream = response.getOutputStream()) {
+                objectMapper.writeValue(outputStream, appErrorDto);
+                outputStream.flush();
+            }
+        };
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
+                .cors().configurationSource(corsConfigurationSource()).and()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/login",
                         "/api/auth/register",
-                        "/v3/api-docs/", "/swagger-ui/", "/swagger-ui.html")
+                        "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -65,27 +68,23 @@ public class SecurityConfig{
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .httpBasic()
-                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint())
-                //.accessDeniedHandler(accessDeniedHandler())
                 .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenUtil, userDetailsService),
                         UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    /*@Bean
+
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOriginPatterns(List.of("http://localhost:3000"));  // Frontend domenini qo'shish
+        corsConfiguration.addAllowedOrigin("*");  // Barcha domenlarga ruxsat beriladi
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Ruxsat etilgan metodlar
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));  // Ruxsat etilgan sarlavhalar
         corsConfiguration.setAllowCredentials(true);  // Cookie yoki auth ma'lumotlarini uzatishga ruxsat
@@ -93,7 +92,7 @@ public class SecurityConfig{
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
-    }*/
+    }
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity httpSecurity) throws Exception {
@@ -111,24 +110,5 @@ public class SecurityConfig{
         private String errorMessage;
         private Integer errorCode;
         private LocalDateTime timeStamp;
-    }
-
-    @Bean
-    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-
-        // CORS uchun ruxsat beriladigan parametrlar:
-        config.addAllowedOrigin("*");  // Barcha domenlarga ruxsat beriladi (specific domain qo'yish mumkin, masalan: "https://example.com")
-        config.addAllowedMethod("*");  // Hamma metodlarga ruxsat beriladi (masalan: GET, POST, PUT, DELETE va h.k.)
-        config.addAllowedHeader("*");  // Hamma sarlavhalarga ruxsat beriladi
-        config.setAllowCredentials(true);  // Cookie'lar yoki boshqa autentifikatsiya ma'lumotlarini yuborishga ruxsat berish
-
-        // CORS konfiguratsiyasini barcha URL'lar uchun ro'yxatdan o'tkazish
-        source.registerCorsConfiguration("/**", config);
-
-        return source;  // CORS konfiguratsiyasini qaytarish
-
     }
 }

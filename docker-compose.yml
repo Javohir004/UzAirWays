@@ -7,7 +7,7 @@ services:
     environment:
       DB_HOST: db
       DB_USERNAME: postgres
-      DB_PASSWORD: 0000
+      DB_PASSWORD: 1483
     depends_on:
       - db
 
@@ -18,7 +18,7 @@ services:
     environment:
       POSTGRES_DB: uz_air_ways
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 0000
+      POSTGRES_PASSWORD: 1483
     ports:
       - "5432:5432"
 
