@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig{
 
     private final ObjectMapper objectMapper;
     private final JwtTokenUtil jwtTokenUtil;
@@ -53,8 +53,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().disable()  // CSRF himoyasini o'chirish
-                .cors().disable()// CORS konfiguratsiyasini yoqish
+                .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/login",
                         "/api/auth/register",
