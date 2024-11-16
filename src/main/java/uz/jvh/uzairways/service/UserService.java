@@ -59,8 +59,6 @@ public class UserService {
         return mapEntityToResponse(user);
     }
 
-
-
     public User findByIdJ(UUID id) {
         return userRepository.findById(id).
                 orElseThrow(() -> new UsernameNotFoundException("User  not found"));

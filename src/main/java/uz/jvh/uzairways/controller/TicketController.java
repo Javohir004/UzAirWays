@@ -7,6 +7,7 @@ import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
 import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.service.TicketService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,4 +50,8 @@ public class TicketController {
         List<Ticket> flightInfo = ticketService.getFlightInfo(request);
         return ResponseEntity.ok(flightInfo);
     }
+
+
+
+
 }
