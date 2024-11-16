@@ -37,5 +37,23 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getBookingsByOwnerId(userId));
     }
 
+    // Muddati o'tgan ticketlarni olish
+    @GetMapping("/get-expired-tickets")
+    public ResponseEntity<List<TickedResponse>> getExpiredTickets(@RequestParam UUID userId) {
+        List<TickedResponse> expiredTickets = bookingService.getExpiredTicketsByUserId(userId);
+        return ResponseEntity.ok(expiredTickets);
+    }
+
+    // Muddati o'tmagan ticketlarni olish
+    @GetMapping("/get-active-tickets")
+    public ResponseEntity<List<TickedResponse>> getActiveTickets(@RequestParam UUID userId) {
+        List<TickedResponse> activeTickets = bookingService.getActiveTicketsByUserId(userId);
+        return ResponseEntity.ok(activeTickets);
+    }
+
+
+
+
+
 
 }

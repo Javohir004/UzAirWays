@@ -90,21 +90,8 @@ public class BookingService {
     }
 
 
-//    public List<TickedResponse> getBookingsByOwnerId(UUID ownerId) {
-//        List<Booking> byUserIdAndIsActiveTrue = bookingRepository.findByUserIdAndIsActiveTrue(ownerId);
-//        Booking booking = byUserIdAndIsActiveTrue.get(1);
-//        LocalDateTime bookingDate = booking.getBookingDate();
-//        BookingStatus status = booking.getStatus();
-//        List<Employee> employees = booking.getEmployees();
-//        User user = booking.getUser();
-//        List<Ticket> tickets = booking.getTickets();
-//        Flight flight = tickets.get(1).getFlight();
-//        Double totalPrice = booking.getTotalPrice();
-//        UUID id = booking.getId();
-//  return null;
-//    }
 
-
+   /** bu user ni barcha chiptalarini olib keladi **/
     public List<TickedResponse> getBookingsByOwnerId(UUID ownerId) {
         List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(ownerId);
 
@@ -112,6 +99,53 @@ public class BookingService {
                 .flatMap(booking -> booking.getTickets().stream().map(ticket -> toTickedResponse(ticket, booking)))
                 .collect(Collectors.toList());
     }
+
+    /** muddati o'tgan chiptalar yani history uchun**/
+    public List<TickedResponse> getExpiredTicketsByUserId(UUID userId) {
+        List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(userId);
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        List<TickedResponse> expiredTickets = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            for (Ticket ticket : booking.getTickets()) {
+                Flight flight = ticket.getFlight();
+
+                // Muddati o'tgan ticketni tekshirish
+                if (flight.getDepartureTime().isBefore(currentDateTime)) {
+                    TickedResponse ticketResponse = toTickedResponse(ticket, booking);
+                    expiredTickets.add(ticketResponse);
+                }
+            }
+        }
+
+        return expiredTickets;
+    }
+
+    /** bronni ichidagi hali foydalanilmagan chiptalar **/
+    public List<TickedResponse> getActiveTicketsByUserId(UUID userId) {
+        List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(userId);
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        List<TickedResponse> activeTickets = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            for (Ticket ticket : booking.getTickets()) {
+                Flight flight = ticket.getFlight();
+
+                // Muddati o'tmagan ticketni tekshirish
+                if (flight.getDepartureTime().isAfter(currentDateTime)) {
+                    TickedResponse ticketResponse = toTickedResponse(ticket, booking);
+                    activeTickets.add(ticketResponse);
+                }
+            }
+        }
+
+        return activeTickets;
+    }
+
 
     private TickedResponse toTickedResponse(Ticket ticket, Booking booking) {
         Flight flight = ticket.getFlight();
