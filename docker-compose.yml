@@ -24,6 +24,8 @@ services:
       POSTGRES_PASSWORD: 1483
     ports:
       - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data  # Ma'lumotlarni hajviy diskda saqlash
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 10s
