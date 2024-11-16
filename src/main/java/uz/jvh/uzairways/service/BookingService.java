@@ -3,10 +3,8 @@ package uz.jvh.uzairways.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.EmployeeRequest;
-import uz.jvh.uzairways.domain.entity.Booking;
-import uz.jvh.uzairways.domain.entity.Employee;
-import uz.jvh.uzairways.domain.entity.Ticket;
-import uz.jvh.uzairways.domain.entity.User;
+import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
+import uz.jvh.uzairways.domain.entity.*;
 import uz.jvh.uzairways.domain.enumerators.BookingStatus;
 import uz.jvh.uzairways.respository.*;
 
@@ -16,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,7 +65,7 @@ public class BookingService {
             Ticket ticket = ticketOptional.get();
 
             if (ticket.isBron()) {
-                throw new RuntimeException("Ticket is Bron");
+                throw new RuntimeException("Ticket is already Bron");
             }
             ticket.setBron(true);
             ticketRepository.save(ticket);
@@ -89,4 +88,85 @@ public class BookingService {
                 .build();
         return bookingRepository.save(booking);
     }
+
+
+
+   /** bu user ni barcha chiptalarini olib keladi **/
+    public List<TickedResponse> getBookingsByOwnerId(UUID ownerId) {
+        List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(ownerId);
+
+        return bookings.stream()
+                .flatMap(booking -> booking.getTickets().stream().map(ticket -> toTickedResponse(ticket, booking)))
+                .collect(Collectors.toList());
+    }
+
+    /** muddati o'tgan chiptalar yani history uchun**/
+    public List<TickedResponse> getExpiredTicketsByUserId(UUID userId) {
+        List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(userId);
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        List<TickedResponse> expiredTickets = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            for (Ticket ticket : booking.getTickets()) {
+                Flight flight = ticket.getFlight();
+
+                // Muddati o'tgan ticketni tekshirish
+                if (flight.getDepartureTime().isBefore(currentDateTime)) {
+                    TickedResponse ticketResponse = toTickedResponse(ticket, booking);
+                    expiredTickets.add(ticketResponse);
+                }
+            }
+        }
+
+        return expiredTickets;
+    }
+
+    /** bronni ichidagi hali foydalanilmagan chiptalar **/
+    public List<TickedResponse> getActiveTicketsByUserId(UUID userId) {
+        List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(userId);
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        List<TickedResponse> activeTickets = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            for (Ticket ticket : booking.getTickets()) {
+                Flight flight = ticket.getFlight();
+
+                // Muddati o'tmagan ticketni tekshirish
+                if (flight.getDepartureTime().isAfter(currentDateTime)) {
+                    TickedResponse ticketResponse = toTickedResponse(ticket, booking);
+                    activeTickets.add(ticketResponse);
+                }
+            }
+        }
+
+        return activeTickets;
+    }
+
+
+    private TickedResponse toTickedResponse(Ticket ticket, Booking booking) {
+        Flight flight = ticket.getFlight();
+
+        return TickedResponse.builder()
+                .ticketId(ticket.getId())
+                .seatNumber(ticket.getSeatNumber())
+                .price(ticket.getPrice())
+                .bookingDate(booking.getBookingDate())
+                .classType(ticket.getClassType())
+                .isBron(ticket.isBron())
+                // Parvoz ma'lumotlari
+                .flightId(flight.getId())
+                .flightNumber(flight.getFlightNumber())
+                .departureTime(flight.getDepartureTime())
+                .arrivalTime(flight.getArrivalTime())
+                .departureAirport(flight.getDepartureAirport().toString())
+                .arrivalAirport(flight.getArrivalAirport().toString())
+                .flightStatus(flight.getFlightStatus())
+                .build();
+    }
+
+
 }
