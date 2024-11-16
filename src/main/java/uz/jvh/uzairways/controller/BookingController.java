@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.CreateBookingRequest;
 import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
 import uz.jvh.uzairways.domain.entity.Booking;
-import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.service.BookingService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/api/booking")
 @RestController

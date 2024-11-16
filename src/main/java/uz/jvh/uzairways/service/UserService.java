@@ -100,7 +100,7 @@ public class UserService {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     public List<User> findAllJ() {
         List<User> allUsers = userRepository.findAllByIsActiveTrue();
 

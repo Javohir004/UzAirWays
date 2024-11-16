@@ -1,33 +1,33 @@
 name: CI/CD Pipeline
 
-
 on:
   push:
     branches:
-      - master # Trigger on pushes to the main branch
+      - master
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # Step 1: Checkout code
+      # Step 1: Checkout repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up JDK
+      # Step 2: Set up JDK for Spring application
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # Step 3: Build with Gradle
+      # Step 3: Build Spring Boot application using Gradle
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew
           ./gradlew clean build
 
-      # Step 4: Set up Docker
+      # Step 4: Set up Docker build environment
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
@@ -35,36 +35,25 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: javohir0
+          username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 6: Build and push Docker image
+      # Step 6: Define the VERSION environment variable
+      - name: Set Docker image version
+        run: echo "VERSION=6" >> $GITHUB_ENV
+
+      # Step 7: Build and push Docker image
       - name: Build and push Docker image
         run: |
-          docker build -t javohir0/uzairways:latest .
-          docker push javohir0/uzairways:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/uz_air_ways:${{ env.VERSION }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/uz_air_ways:${{ env.VERSION }}
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      # Step 1: Set up SSH
-      - name: Install SSH client
-        run: sudo apt-get install -y openssh-client
-
-      # Step 2: Add SSH key for EC2
-      - name: Add SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.AWS_SSH_KEY }}
-          known_hosts: ${{ secrets.EC2_KNOWN_HOSTS }}
-
-      # Step 3: Deploy to EC2
-      - name: Deploy to EC2
+      # Step 8: Tag and push Docker image as latest
+      - name: Push Docker image as latest
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_KNOWN_HOSTS }} "
-          sudo docker pull javohir0/uzairways:latest &&
-          sudo docker stop my-app || true &&
-          sudo docker rm my-app || true &&
-          sudo docker run -d --name my-app -p 3000:3000 javohir0/uzairways:latest
-          "
+          docker tag ${{ secrets.DOCKER_USERNAME }}/uz_air_ways:${{ env.VERSION }} ${{ secrets.DOCKER_USERNAME }}/uz_air_ways:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/uz_air_ways:latest
+
+      # Step 9: Show Docker images for debugging
+      - name: Show Docker images
+        run: docker images

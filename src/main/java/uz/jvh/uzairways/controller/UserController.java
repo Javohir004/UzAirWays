@@ -2,7 +2,6 @@ package uz.jvh.uzairways.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
@@ -27,7 +26,7 @@ public class UserController {
         return userService.update(id, userRequest);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/all-user")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.findAllJ();

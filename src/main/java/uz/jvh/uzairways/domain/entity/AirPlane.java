@@ -25,4 +25,6 @@ public class AirPlane extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AircraftType aircraftType;  // e.g., "Jet", "Propeller"
 
+
+
 }
