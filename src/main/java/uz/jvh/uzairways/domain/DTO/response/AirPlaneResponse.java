@@ -1,5 +1,6 @@
 package uz.jvh.uzairways.domain.DTO.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.UUID;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Builder
 public class AirPlaneResponse {
 
+    @JsonProperty("id")
     private UUID id;
 
     private String model;
