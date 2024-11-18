@@ -82,6 +82,7 @@ public class UserService {
 
     public UserResponse mapEntityToResponse(User user) {
         return UserResponse.builder()
+                .uuid(user.getId())
                 .username(user.getUsername())
                 .surname(user.getSurname())
                 .role(user.getRole())

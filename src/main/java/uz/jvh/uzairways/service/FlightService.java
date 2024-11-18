@@ -68,7 +68,6 @@ public class FlightService {
         return flight1;
     }
 
-
     public Flight mapRequestToFlight(FlightDTO flight) {
         AirPlane airPlane = airPlaneRepository.findById(flight.getAirplane())
                 .orElseThrow(() -> new RuntimeException("Airplane not found"));
@@ -121,6 +120,7 @@ public class FlightService {
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
+
 
     public Flight getFlightById(UUID id) {
         return flightRepository.findFlightById(id);

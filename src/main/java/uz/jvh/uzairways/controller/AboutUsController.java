@@ -1,23 +1,19 @@
 package uz.jvh.uzairways.controller;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.AboutUsRequest;
 import uz.jvh.uzairways.domain.DTO.response.AboutUsResponse;
 import uz.jvh.uzairways.service.AboutUsService;
-
 import java.util.List;
 import java.util.UUID;
-
 @RestController
 @RequestMapping("/api/about-us")
 @RequiredArgsConstructor
 public class AboutUsController {
 
     private final AboutUsService aboutUsService;
-
-
+    
     @PostMapping("/create-about-us")
     public ResponseEntity<AboutUsResponse> create(@RequestBody AboutUsRequest aboutUsRequest) {
         return ResponseEntity.ok(aboutUsService.save(aboutUsRequest));
