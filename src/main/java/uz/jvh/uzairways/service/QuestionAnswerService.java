@@ -74,6 +74,7 @@ public class QuestionAnswerService {
 
     public AnswerResponse mapToAnswerResponse(QuestionAnswer questionAnswer) {
         AnswerResponse answer = new AnswerResponse();
+        answer.setId(questionAnswer.getId());
         answer.setQuestion(questionAnswer.getQuestion());
         answer.setAnswer(questionAnswer.getAnswer());
         answer.setId(questionAnswer.getId());

@@ -6,6 +6,7 @@ import uz.jvh.uzairways.domain.enumerators.UserRole;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +14,7 @@ import java.util.List;
 @Setter
 @Builder
 public class UserResponse {
-
+    private UUID uuid;
     private String username;
     private String surname;
     private String password;
