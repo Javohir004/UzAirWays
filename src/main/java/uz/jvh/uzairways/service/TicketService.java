@@ -83,6 +83,7 @@ public class TicketService {
     }
 
 
+
     public void createTickets1(Flight flight) {
         AircraftType aircraftType = flight.getAirplane().getAircraftType();
         List<Ticket> tickets = new ArrayList<>();
@@ -102,7 +103,7 @@ public class TicketService {
 
         int[] availableSeats = aircraftSeats.get(aircraftType);
 
-
+        // Har bir ClassType uchun chiptalarni yaratish
         for (ClassType classType : ClassType.values()) {
             createTicketsByClass(tickets, flight, availableSeats, classPrices.get(classType), classType);
         }
@@ -112,15 +113,61 @@ public class TicketService {
 
     private void createTicketsByClass(List<Ticket> tickets, Flight flight, int[] availableSeats, Double price, ClassType classType) {
         int classIndex = classType.ordinal(); // ClassType dan indeks olish
-        for (int j = 0; j < availableSeats[classIndex]; j++) {
+        int seatCount = availableSeats[classIndex]; // O'rinlar sonini olish
+
+        // Har bir o'rin uchun chipta yaratish
+        for (int j = 0; j < seatCount; j++) {
+            // seatNumberni avtomatik ravishda yaratish: masalan, "B1", "F1", "E1"
+            String seatNumber = classType.name().substring(0, 1) + (j + 1);  // B -> Business, F -> First, E -> Economy
+
             Ticket ticket = Ticket.builder()
                     .flight(flight)
-                    .isBron(false)
+                    .isBron(false)  // Bron qilish holati
                     .price(price)
                     .classType(classType)
+                    .seatNumber(seatNumber)  // seatNumberni belgilash
                     .build();
             tickets.add(ticket);
         }
     }
+
+//    public void createTickets1(Flight flight) {
+//        AircraftType aircraftType = flight.getAirplane().getAircraftType();
+//        List<Ticket> tickets = new ArrayList<>();
+//
+//        Map<ClassType, Double> classPrices = new HashMap<>();
+//        classPrices.put(ClassType.BUSINESS, 1000d);
+//        classPrices.put(ClassType.FIRST, 500d);
+//        classPrices.put(ClassType.ECONOMY, 200d);
+//
+//        Map<AircraftType, int[]> aircraftSeats = new HashMap<>();
+//        aircraftSeats.put(AircraftType.JET, new int[]{20, 10, 30}); // Business, First Class, Economy
+//        aircraftSeats.put(AircraftType.PROPELLER, new int[]{40, 20, 60});
+//
+//        if (!aircraftSeats.containsKey(aircraftType)) {
+//            return;
+//        }
+//
+//        int[] availableSeats = aircraftSeats.get(aircraftType);
+//
+//
+//        for (ClassType classType : ClassType.values()) {
+//            createTicketsByClass(tickets, flight, availableSeats, classPrices.get(classType), classType);
+//        }
+//        ticketRepository.saveAll(tickets);
+//    }
+
+//    private void createTicketsByClass(List<Ticket> tickets, Flight flight, int[] availableSeats, Double price, ClassType classType) {
+//        int classIndex = classType.ordinal(); // ClassType dan indeks olish
+//        for (int j = 0; j < availableSeats[classIndex]; j++) {
+//            Ticket ticket = Ticket.builder()
+//                    .flight(flight)
+//                    .isBron(false)
+//                    .price(price)
+//                    .classType(classType)
+//                    .build();
+//            tickets.add(ticket);
+//        }
+//    }
 
 }
