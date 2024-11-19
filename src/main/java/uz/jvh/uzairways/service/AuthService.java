@@ -47,15 +47,17 @@ public class AuthService {
     }
 
     public void sendPasswordResetEmail(String email) {
-
+        if (email == null || email.isEmpty()) {
+            throw new CustomException("Email manzili noto'g'ri", HttpStatus.BAD_REQUEST);
+        }
         logger.info("Parolni tiklash uchun email yuborish boshlandi " + email);
 
-        User user = userRepository.findByEmail(email.toLowerCase())
-                .orElseThrow(() ->
-                {
+        User user = userRepository.findByEmail(email.toLowerCase());
+
+                if (user == null) {
                     logger.error("Email topilmadi:", email);
-                    return new CustomException("Email ro‘yxatdan o‘tmagan", HttpStatus.NOT_FOUND);
-                });
+                    throw  new CustomException("Email ro‘yxatdan o‘tmagan", HttpStatus.NOT_FOUND);
+                };
 
         logger.info("Foydalanuvchi topildi:", user.getUsername());
 
