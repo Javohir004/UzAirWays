@@ -50,7 +50,7 @@ public class AuthService {
 
         logger.info("Parolni tiklash uchun email yuborish boshlandi " + email);
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() ->
                 {
                     logger.error("Email topilmadi:", email);
