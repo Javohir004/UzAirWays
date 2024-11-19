@@ -124,4 +124,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public Double getUserBalance(UUID id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User  not found"));
+        return user.getBalance();
+    }
+
 }
