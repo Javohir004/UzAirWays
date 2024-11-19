@@ -2,10 +2,12 @@ package uz.jvh.uzairways.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import uz.jvh.uzairways.domain.exception.CustomException;
 
 
 @Service
@@ -24,7 +26,7 @@ public class EmailService {
 
             mailSender.send(message);
         } catch (MessagingException e) {
-            throw new RuntimeException("Email yuborishda xatolik: " + e.getMessage());
+            throw new CustomException("Email yuborishda xatolik: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
