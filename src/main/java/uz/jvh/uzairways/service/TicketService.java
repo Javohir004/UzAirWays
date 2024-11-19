@@ -2,6 +2,7 @@ package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
 import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
 import uz.jvh.uzairways.domain.entity.Flight;
@@ -84,6 +85,7 @@ public class TicketService {
 
 
 
+    @Transactional
     public void createTickets1(Flight flight) {
         AircraftType aircraftType = flight.getAirplane().getAircraftType();
         List<Ticket> tickets = new ArrayList<>();
@@ -107,7 +109,7 @@ public class TicketService {
         for (ClassType classType : ClassType.values()) {
             createTicketsByClass(tickets, flight, availableSeats, classPrices.get(classType), classType);
         }
-        ticketRepository.saveAll(tickets);
+//        ticketRepository.saveAll(tickets);
     }
 
 
@@ -129,6 +131,8 @@ public class TicketService {
                     .build();
             tickets.add(ticket);
         }
+        ticketRepository.saveAll(tickets);
+
     }
 
 //    public void createTickets1(Flight flight) {
