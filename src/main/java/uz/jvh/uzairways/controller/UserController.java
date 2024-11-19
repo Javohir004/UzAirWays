@@ -55,4 +55,10 @@ public class UserController {
         User user = userService.findByIdJ(userId);
         return ResponseEntity.ok(user);
     }
+
+    @GetMapping("/my-balance")
+    public ResponseEntity<Double> getUserBalance(@RequestParam UUID userId) {
+        Double userBalance = userService.getUserBalance(userId);
+        return ResponseEntity.ok(userBalance);
+    }
 }
