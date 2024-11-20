@@ -132,11 +132,11 @@ public class UserService {
     }
 
     public User findUserByEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
+        if (email == null || email.isEmpty()) {
             throw new CustomException("Email manzili noto'g'ri", HttpStatus.BAD_REQUEST);
         }
 
-        return userRepository.findByEmail(email.toLowerCase().trim())
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException("Email ro‘yxatdan o‘tmagan", HttpStatus.NOT_FOUND));
     }
 
