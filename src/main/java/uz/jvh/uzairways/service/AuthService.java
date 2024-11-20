@@ -50,7 +50,7 @@ public class AuthService {
         if (email == null || email.isEmpty()) {
             throw new CustomException("Email manzili noto'g'ri", HttpStatus.BAD_REQUEST);
         }
-        logger.info("Parolni tiklash uchun email yuborish boshlandi " + email);
+        logger.info("Parolni tiklash uchun email yuborish boshlandi {}", email);
 
         User user = userRepository.findByEmail(email.toLowerCase());
 
