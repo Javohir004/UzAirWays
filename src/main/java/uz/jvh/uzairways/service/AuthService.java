@@ -52,14 +52,7 @@ public class AuthService {
         }
         logger.info("Parolni tiklash uchun email yuborish boshlandi {}", email);
 
-        User user = userRepository.findByEmail(email.toLowerCase());
-
-                if (user == null) {
-                    logger.error("Email topilmadi:", email);
-                    throw  new CustomException("Email ro‘yxatdan o‘tmagan", HttpStatus.NOT_FOUND);
-                };
-
-        logger.info("Foydalanuvchi topildi:", user.getUsername());
+        User user = userService.findUserByEmail(email.toLowerCase());
 
         String resetToken = UUID.randomUUID().toString();
         user.setVerificationToken(resetToken);

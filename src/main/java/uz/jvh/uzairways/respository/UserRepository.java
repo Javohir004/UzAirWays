@@ -14,16 +14,16 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Boolean existsByUsernameAndPassword(String username, String password);
-
     List<User> findByRoleAndIsActiveTrue(UserRole role);
 
     Optional<User> findByUsername(String username);
 
     List<User>findAllByIsActiveTrue();
 
-    @Query("SELECT u FROM User u WHERE LOWER(u.email) = LOWER(:email)")
-    User findByEmail(@Param("email") String email);
+
+    @Query("SELECT u FROM User u WHERE LOWER(TRIM(u.email)) = LOWER(TRIM(:email))")
+    Optional<User> findByEmail(@Param("email") String email);
+
 
 
     Optional<User> findByVerificationToken(String token);
