@@ -3,6 +3,7 @@ package uz.jvh.uzairways.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +13,7 @@ import uz.jvh.uzairways.domain.DTO.request.UserRequest;;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
+import uz.jvh.uzairways.domain.exception.CustomException;
 import uz.jvh.uzairways.respository.UserRepository;
 
 import java.util.List;
@@ -128,5 +130,15 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User  not found"));
         return user.getBalance();
     }
+
+    public User findUserByEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new CustomException("Email manzili noto'g'ri", HttpStatus.BAD_REQUEST);
+        }
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException("Email ro‘yxatdan o‘tmagan", HttpStatus.NOT_FOUND));
+    }
+
 
 }
