@@ -47,6 +47,7 @@ public class AirPlaneController {
     }
 
 
+
     @DeleteMapping("/delete{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         airPlaneService.delete(id);
