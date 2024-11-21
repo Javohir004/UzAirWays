@@ -1,18 +1,18 @@
 package uz.jvh.uzairways.domain.enumerators;
 
 public enum Airport {
-    TASHKENT("https://media.istockphoto.com/id/1643986725/photo/aerial-shot-of-tashkent-tv-tower-in-uzbekistan-daytime.jpg?s=612x612&w=0&k=20&c=6ZLMIpVCQQkYf_Ur3TwYTvB7pbATLo1BenZu8R4-8OE="),
-    SAMARKAND("https://t4.ftcdn.net/jpg/02/97/55/21/240_F_297552163_uvGPnu50vreeglLTjtDEwY7mqfIFvA0f.jpg"),
-    BUKHARA("https://media.istockphoto.com/id/1316899269/photo/mir-i-arab-medressa-aerial-architecture-mir-i-arab-madrasa-bukhara-uzbekistan.webp?a=1&b=1&s=612x612&w=0&k=20&c=Z5bZuCLZsn42QnUiHGR2UwuSoX9ADA74ug6Ri8LJUi0="),
-    NAVOIY("https://c4.wallpaperflare.com/wallpaper/164/150/324/austria-cities-houses-lights-wallpaper-preview.jpg"),
-    NAMANGAN("https://images.pexels.com/photos/354941/pexels-photo-354941.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
-    ANDIJON("https://images.unsplash.com/photo-1690149629537-806bfdab1409?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fFV6YmVraXN0YW58ZW58MHx8MHx8fDA%3D"),
-    FERGANA("https://media.istockphoto.com/id/2179497050/photo/kokand.jpg?s=612x612&w=0&k=20&c=0FEdNHC0FRi25nhMmv9cKFsRSzOFhePl4NCrUZUndSw="),
-    KARSHI("https://c4.wallpaperflare.com/wallpaper/336/395/764/paris-the-beautiful-city-night-scene-eiffel-tower-aerial-photograph-wallpaper-preview.jpg"),
-    NUKUS("https://t3.ftcdn.net/jpg/02/72/21/44/240_F_272214493_zZ8vZ6iuB0vMyGMgW584f35nnEmwjt6Y.jpg"),
-    TERMIZ("https://images.unsplash.com/photo-1541336032412-2048a678540d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D"),
-    JIZZAKH("https://c4.wallpaperflare.com/wallpaper/244/947/795/cool-berlin-wallpaper-83635-wallpaper-preview.jpg"),
-    KHIVA("https://images.pexels.com/photos/15481205/pexels-photo-15481205/free-photo-of-big-city-great-city.jpeg?auto=compress&cs=tinysrgb&w=600");
+    TASHKENT("https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    SAMARKAND("https://images.pexels.com/photos/302769/pexels-photo-302769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    BUKHARA("https://images.pexels.com/photos/618079/pexels-photo-618079.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    NAVOIY("https://images.pexels.com/photos/409127/pexels-photo-409127.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    NAMANGAN("https://images.pexels.com/photos/219692/pexels-photo-219692.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    ANDIJON("https://images.pexels.com/photos/290595/pexels-photo-290595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    FERGANA("https://images.pexels.com/photos/417192/pexels-photo-417192.jpeg?auto=compress&cs=tinysrgb&w=800"),
+    KARSHI("https://images.pexels.com/photos/97906/pexels-photo-97906.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    NUKUS("https://images.pexels.com/photos/7613/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    TERMIZ("https://images.pexels.com/photos/1209978/pexels-photo-1209978.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    JIZZAKH("https://images.pexels.com/photos/1374377/pexels-photo-1374377.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
+    KHIVA("https://images.pexels.com/photos/1292843/pexels-photo-1292843.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
 
     private final String imageUrl;
 
