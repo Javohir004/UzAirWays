@@ -85,8 +85,6 @@ public class TicketService {
 
 
     @Transactional
-
-    @Transactional
     public void createTickets1(Flight flight) {
         AircraftType aircraftType = flight.getAirplane().getAircraftType();
         List<Ticket> tickets = new ArrayList<>();
@@ -132,7 +130,8 @@ public class TicketService {
                     .build();
             tickets.add(ticket);
         }
-        ticketRepository.saveAll(tickets);
-
     }
+
+
+
 }
