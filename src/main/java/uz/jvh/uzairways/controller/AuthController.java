@@ -7,7 +7,7 @@ import uz.jvh.uzairways.domain.DTO.request.UserRequest;
 import uz.jvh.uzairways.domain.DTO.response.JwtResponse;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.service.AuthService;
-@CrossOrigin(origins = "*")
+
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 @RestController
@@ -24,6 +24,4 @@ public class AuthController {
     public JwtResponse login(@RequestBody LoginDto loginDto) {
         return authService.login(loginDto);
     }
-
-
 }

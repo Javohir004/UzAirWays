@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,82 +29,106 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final ObjectMapper objectMapper;
-    private final JwtTokenUtil jwtTokenUtil;
-    private final CustomUserDetailsService userDetailsService;
+    private final ObjectMapper objectMapper; // JSON mapper for custom error responses
+    private final JwtTokenUtil jwtTokenUtil; // Utility for handling JWT tokens
+    private final CustomUserDetailsService userDetailsService; // User details service implementation
 
+    /**
+     * Custom AuthenticationEntryPoint to handle unauthorized access (401 error).
+     */
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
-        return ((request, response, authException) -> {
-            authException.printStackTrace();
+        return (request, response, authException) -> {
             String errorPath = request.getRequestURI();
             String errorMessage = authException.getMessage();
-            Integer errorCode = 401;
+            int errorCode = 401;
+
+            // Create error response object
             AppErrorRequest appErrorDto = new AppErrorRequest(
                     errorPath, errorMessage, errorCode, LocalDateTime.now()
             );
+
+            // Set response details
+            response.setContentType("application/json");
             response.setStatus(errorCode);
-            ServletOutputStream outputStream = response.getOutputStream();
-            objectMapper.writeValue(outputStream, appErrorDto);
-        });
+            try (ServletOutputStream outputStream = response.getOutputStream()) {
+                objectMapper.writeValue(outputStream, appErrorDto);
+                outputStream.flush();
+            }
+        };
     }
 
+    /**
+     * Security filter chain configuration.
+     */
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().disable()  // CSRF ni o'chirish
-                .cors().disable()  // CORS ni o'chirish (sizning iltimosingiz bo‘yicha)
+                .csrf().disable() // Disable CSRF protection (ensure this is safe for your use case)
+                .cors().configurationSource(corsConfigurationSource()).and() // Enable CORS with custom configuration
                 .authorizeHttpRequests()
-                .requestMatchers("/test",
-                        "/api/auth/register/**",
+                .requestMatchers(
+                        "/", // Public endpoints
                         "/api/auth/login/**",
-                        "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                        "/api/auth/register/**",
+                        "api/auth/sent-email/**",
+                        "api/auth/sent-password/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                ).permitAll()
+                .anyRequest().authenticated() // Protect all other endpoints
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .httpBasic()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Use stateless sessions
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint())
+                .authenticationEntryPoint(authenticationEntryPoint()) // Use custom authentication entry point
                 .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenUtil, userDetailsService),
-                        UsernamePasswordAuthenticationFilter.class)
+                        UsernamePasswordAuthenticationFilter.class) // Add custom JWT filter
                 .build();
     }
 
-
+    /**
+     * Password encoder for encoding and validating passwords.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
-    /*@Bean
+    /**
+     * Custom CORS configuration for handling cross-origin requests.
+     */
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOriginPatterns(List.of("http://localhost:3000"));  // Frontend domenini qo'shish
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Ruxsat etilgan metodlar
-        corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));  // Ruxsat etilgan sarlavhalar
-        corsConfiguration.setAllowCredentials(true);  // Cookie yoki auth ma'lumotlarini uzatishga ruxsat
+        corsConfiguration.addAllowedOrigin("*"); // Allow all origins
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed methods
+        corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept")); // Allowed headers
+        //corsConfiguration.setAllowCredentials(true); // Allow credentials (e.g., cookies, authorization headers)
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
-    }*/
+    }
 
-
+    /**
+     * AuthenticationManager bean for managing authentication logic.
+     */
     @Bean
     public AuthenticationManager authManager(HttpSecurity httpSecurity) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder
-                = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder()); // Use BCrypt for password encoding
         return authenticationManagerBuilder.build();
     }
 
+    /**
+     * DTO for custom error responses.
+     */
     @Getter
     @AllArgsConstructor
     public static class AppErrorRequest {
@@ -114,17 +137,4 @@ public class SecurityConfig {
         private Integer errorCode;
         private LocalDateTime timeStamp;
     }
-
-  /*  @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://64.227.142.47:8081")); // Ruxsat berilgan manzillar
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }*/
 }

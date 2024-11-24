@@ -1,24 +1,41 @@
-version: '3.8'
+
 services:
- uz_air_ways:
-    image: madiyornegov/uz_air_ways
+  uz_air_ways:
+    image: madiyornegov/uz_air_ways:latest
     ports:
       - "8080:8080"
     environment:
-      TZ: Asia/Tashkent
-      DB_HOST: db
-      DB_USERNAME: postgres
-      DB_PASSWORD: 0000
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/uz_air_ways
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1483
     depends_on:
       - db
+    networks:
+      - mynetwork
+    restart: always  # Tasodifiy to‘xtab qolishlardan himoya
 
-
- db:
+  db:
     image: postgres:16
     environment:
       POSTGRES_DB: uz_air_ways
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 0000
-      TZ: Asia/Tashkent
+      POSTGRES_PASSWORD: 1483
     ports:
       - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mynetwork
+    restart: always
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  db_data:

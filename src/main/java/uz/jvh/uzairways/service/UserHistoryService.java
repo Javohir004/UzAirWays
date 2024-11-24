@@ -15,6 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserHistoryService {
     private final BookingRepository bookingRepository;
+
     public List<Booking> getUserBooking(UUID userId) {
         if (userId == null) {
             throw new IllegalArgumentException("userId cannot be null");

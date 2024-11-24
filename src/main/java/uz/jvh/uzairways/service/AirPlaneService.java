@@ -2,8 +2,6 @@ package uz.jvh.uzairways.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.AirPlaneDTO;
 import uz.jvh.uzairways.domain.DTO.response.AirPlaneResponse;
@@ -59,6 +57,8 @@ public class AirPlaneService {
 
     public AirPlaneResponse mapToResponse(AirPlane airPlane) {
         AirPlaneResponse response = new AirPlaneResponse();
+        response.setId(airPlane.getId());
+//        response.setId(UUID.fromString(airPlane.getId().toString()));
         response.setAircraftType(String.valueOf(airPlane.getAircraftType()));
         response.setModel(airPlane.getModel());
         response.setManufacturer(airPlane.getManufacturer());

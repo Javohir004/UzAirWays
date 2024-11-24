@@ -18,6 +18,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
 
+
+
     public UserResponse save(UserRequest user) {
         User user1 = userService.mapRequestToEntity(user);
         user1.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -25,13 +27,14 @@ public class AuthService {
         return userService.mapEntityToResponse(user1);
     }
 
-
     public JwtResponse login(LoginDto loginDto) {
         User username = userService.findByUsername(loginDto.getUsername());
         if (!passwordEncoder.matches(loginDto.getPassword(), username.getPassword())) {
             throw new UsernameNotFoundException("Invalid username or password");
         }
-       return  new JwtResponse(jwtTokenUtil.generateToken(loginDto.getUsername()));
+        return new JwtResponse(jwtTokenUtil.generateToken(loginDto.getUsername()));
 
     }
+
+
 }

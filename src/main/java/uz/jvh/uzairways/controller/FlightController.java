@@ -5,7 +5,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.FlightDTO;
-import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
 import uz.jvh.uzairways.domain.DTO.response.TicketDetailsResponse;
 import uz.jvh.uzairways.domain.entity.AirPlane;
 import uz.jvh.uzairways.domain.entity.Flight;
@@ -16,7 +15,7 @@ import uz.jvh.uzairways.service.FlightService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/flight")
 @RequiredArgsConstructor

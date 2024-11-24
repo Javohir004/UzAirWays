@@ -2,7 +2,6 @@ package uz.jvh.uzairways.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
@@ -14,7 +13,7 @@ import uz.jvh.uzairways.service.UserService;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(origins = "*")
+
 @RequestMapping("/api/user")
 @RestController
 @RequiredArgsConstructor
@@ -55,5 +54,11 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable UUID userId) {
         User user = userService.findByIdJ(userId);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/my-balance")
+    public ResponseEntity<Double> getUserBalance(@RequestParam UUID userId) {
+        Double userBalance = userService.getUserBalance(userId);
+        return ResponseEntity.ok(userBalance);
     }
 }
