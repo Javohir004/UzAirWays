@@ -10,6 +10,7 @@ import uz.jvh.uzairways.domain.enumerators.Airport;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -31,7 +32,7 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
             "AND f.arrivalAirport = :arrivalAirport " +
             "AND f.departureTime >= :startTime " +
             "ORDER BY f.departureTime ASC")
-    Flight findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
+    Optional<Flight> findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
             @Param("departureAirport") Airport departureAirport,
             @Param("arrivalAirport") Airport arrivalAirport,
             @Param("startTime") LocalDateTime startTime);
