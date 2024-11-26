@@ -116,21 +116,17 @@ public class FlightService {
         flightRepository.save(flight);
     }
 
-
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
-
 
     public Flight getFlightById(UUID id) {
         return flightRepository.findFlightById(id);
     }
 
-
     public List<AirPlane> getAvailableAircrafts(LocalDateTime departureTime , Airport flyingAirport) {
         return flightRepository.findAvailableAirplanes(departureTime , flyingAirport);
     }
-
 
     public List<TicketDetailsResponse> getAllTicketDetailsByClassType(UUID flightId, ClassType classType) {
         List<Ticket> tickets = ticketRepository.findAllByFlightIdAndClassTypeAndIsBronFalse(flightId, classType);

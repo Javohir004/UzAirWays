@@ -16,9 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionAnswerService {
 
-
     private final QuestionAnswerRepo questionAnswerRepo;
-
 
     public AnswerResponse save(QuestionRequest questionAnswer) {
         if (questionAnswer == null) {
@@ -29,8 +27,6 @@ public class QuestionAnswerService {
         questionAnswerRepo.save(questionAnswerEntity);
         return mapToAnswerResponse(questionAnswerEntity);
     }
-
-
 
     public void delete(UUID id) {
         QuestionAnswer questionAnswer = questionAnswerRepo.findById(id)
@@ -56,15 +52,12 @@ public class QuestionAnswerService {
                 .collect(Collectors.toList());
     }
 
-
     public List<AnswerResponse> findAll() {
         List<QuestionAnswer> questionAnswers = questionAnswerRepo.findAllByIsActiveTrueAndQuestionIsNotNullAndAnswerIsNotNull();
         return questionAnswers.stream()
                 .map(this::mapToAnswerResponse)
                 .collect(Collectors.toList());
     }
-
-
 
     public QuestionAnswer mapToQuestionAnswer(QuestionRequest questionAnswer) {
      QuestionAnswer answer = new QuestionAnswer();

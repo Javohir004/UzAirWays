@@ -38,7 +38,7 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
             @Param("startTime") LocalDateTime startTime);
 
 
-    boolean existsByFlightNumber(String flightNumber);
+ boolean existsByFlightNumber(String flightNumber);
 
 
     boolean existsByAirplaneAndDepartureTimeAndArrivalTime(

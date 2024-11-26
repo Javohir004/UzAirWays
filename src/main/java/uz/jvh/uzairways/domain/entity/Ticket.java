@@ -33,5 +33,6 @@ public class Ticket extends BaseEntity {
 
     private LocalDateTime bookingDate;
 
-    private boolean isBron;
+    @Builder.Default
+    private boolean isBron = false;
 }

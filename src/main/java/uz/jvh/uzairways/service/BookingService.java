@@ -89,8 +89,6 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-
-
    /** bu user ni barcha chiptalarini olib keladi **/
     public List<TickedResponse> getBookingsByOwnerId(UUID ownerId) {
         List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(ownerId);
@@ -146,7 +144,6 @@ public class BookingService {
         return activeTickets;
     }
 
-
     private TickedResponse toTickedResponse(Ticket ticket, Booking booking) {
         Flight flight = ticket.getFlight();
 
@@ -167,6 +164,5 @@ public class BookingService {
                 .flightStatus(flight.getFlightStatus())
                 .build();
     }
-
 
 }
