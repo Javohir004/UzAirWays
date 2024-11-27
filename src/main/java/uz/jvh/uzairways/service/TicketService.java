@@ -49,17 +49,6 @@ public class TicketService {
         ticketRepository.save(existingTicket);
     }
 
-    public Ticket mapRequestToTicket(TicketDTO ticketDTO) {
-        Ticket ticket = new Ticket();
-        Flight flight = flightRepository.findById(ticketDTO.getFlight()).orElseThrow(() -> new RuntimeException("Flight not found"));
-        ticket.setSeatNumber(ticketDTO.getSeatNumber());
-        ticket.setPrice(ticketDTO.getPrice());
-        ticket.setClassType(ticketDTO.getClassType());
-        ticket.setFlight(flight);
-        ticket.setBookingDate(ticketDTO.getBookingDate());
-        return ticket;
-    }
-
     public List<TicketResponse> getFlightInfo(ByTickedRequest request) {
 
         if (request.getPassengers() > 5) {
@@ -85,7 +74,6 @@ public class TicketService {
             throw new CustomException("Passengers exceeds number of tickets", 4002, HttpStatus.BAD_REQUEST);
         }
 
-        // Map qilish
         return mapToTicketResponse(availableTickets, flight);
     }
 
@@ -144,6 +132,7 @@ public class TicketService {
                         .departureTime(flight.getDepartureTime())
                         .arrivalTime(flight.getArrivalTime()) // Flight'dan olish
                         .isBron(ticket.isBron())
+                        .price(ticket.getPrice())
                         .build())
                 .toList();
     }

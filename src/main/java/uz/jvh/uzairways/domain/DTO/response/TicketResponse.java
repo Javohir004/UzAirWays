@@ -18,5 +18,6 @@ public class TicketResponse {
     private LocalDateTime departureTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime arrivalTime;
+    private Double price ;
     private boolean isBron;
 }
