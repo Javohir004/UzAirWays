@@ -91,9 +91,6 @@ public class BookingService {
         return createAndSaveBooking(user, bookingEmployees, bookedTickets, totalPrice);
     }
 
-    /**
-     * bu user ni barcha chiptalarini olib keladi
-     **/
 
 
    /** bu user ni barcha chiptalarini olib keladi **/
