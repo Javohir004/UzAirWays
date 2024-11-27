@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
 import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
+import uz.jvh.uzairways.domain.DTO.response.TicketResponse;
 import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.domain.enumerators.AircraftType;
@@ -59,33 +60,33 @@ public class TicketService {
         return ticket;
     }
 
-    public List<Ticket> getFlightInfo(ByTickedRequest request) {
+    public List<TicketResponse> getFlightInfo(ByTickedRequest request) {
 
         if (request.getPassengers() > 5) {
-            throw new CustomException("Passengers must be less than 5",4002, HttpStatus.BAD_REQUEST);
+            throw new CustomException("Passengers must be less than 5", 4002, HttpStatus.BAD_REQUEST);
         }
-        Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
-                request.getDepartureAirport(),
-                request.getArrivalAirport(),
-                request.getDepartureTime())
-                .orElseThrow(()-> new CustomException("Flight not found",4041, HttpStatus.NOT_FOUND));
 
-        if (flight == null) {
-            throw new CustomException("Flight not found",4041,HttpStatus.NOT_FOUND);
-        }
+        Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
+                        request.getDepartureAirport(),
+                        request.getArrivalAirport(),
+                        request.getDepartureTime())
+                .orElseThrow(() -> new CustomException("Flight not found", 4041, HttpStatus.NOT_FOUND));
+
         List<Ticket> availableTickets = ticketRepository.findAllByIsBronAndFlight(
                 false,
                 flight
         );
 
         if (availableTickets.isEmpty()) {
-            throw new CustomException("No available tickets for the selected flight",4042,HttpStatus.NOT_FOUND);
+            throw new CustomException("No available tickets for the selected flight", 4042, HttpStatus.NOT_FOUND);
         }
 
         if (request.getPassengers() > availableTickets.size()) {
-            throw new CustomException("Passengers exceeds number of tickets",4002, HttpStatus.BAD_REQUEST);
+            throw new CustomException("Passengers exceeds number of tickets", 4002, HttpStatus.BAD_REQUEST);
         }
-        return availableTickets;
+
+        // Map qilish
+        return mapToTicketResponse(availableTickets, flight);
     }
 
     @Transactional
@@ -135,4 +136,15 @@ public class TicketService {
         }
     }
 
+    private List<TicketResponse> mapToTicketResponse(List<Ticket> tickets, Flight flight) {
+        return tickets.stream()
+                .map(ticket -> TicketResponse.builder()
+                        .ticketId(ticket.getId())
+                        .flightNumber(flight.getFlightNumber())
+                        .departureTime(flight.getDepartureTime())
+                        .arrivalTime(flight.getArrivalTime()) // Flight'dan olish
+                        .isBron(ticket.isBron())
+                        .build())
+                .toList();
+    }
 }
