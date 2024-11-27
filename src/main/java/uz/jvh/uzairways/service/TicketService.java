@@ -160,6 +160,7 @@ public class TicketService {
                         .arrivalTime(flight.getArrivalTime()) // Flight'dan olish
                         .isBron(ticket.isBron())
                         .price(ticket.getPrice())
+                        .classType(ticket.getClassType())
                         .build())
                 .toList();
     }

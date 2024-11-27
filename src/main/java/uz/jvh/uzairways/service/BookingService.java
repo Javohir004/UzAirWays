@@ -6,6 +6,7 @@ import uz.jvh.uzairways.domain.DTO.request.EmployeeRequest;
 import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
 import uz.jvh.uzairways.domain.entity.*;
 import uz.jvh.uzairways.domain.enumerators.BookingStatus;
+import uz.jvh.uzairways.domain.enumerators.UserRole;
 import uz.jvh.uzairways.respository.*;
 
 import java.math.BigDecimal;
@@ -72,23 +73,27 @@ public class BookingService {
 
             bookedTickets.add(ticket);
             totalPrice += ticket.getPrice();
-        }   
+        }
         if (user.getBalance() < totalPrice) {
             throw new IllegalArgumentException("Insufficient balance for the booking");
         }
         user.setBalance(user.getBalance() - totalPrice);
 
-        Booking booking = Booking.builder()
-                .user(user)
-                .employees(bookingEmployees)
-                .tickets(bookedTickets)
-                .totalPrice(totalPrice)
-                .bookingDate(LocalDateTime.now())
-                .status(BookingStatus.CONFIRMED)
-                .build();
-        return bookingRepository.save(booking);
+        Optional<User> ownerOptional = userRepository.findByRole(UserRole.OWNER);
+        if (ownerOptional.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        User owner = ownerOptional.get();
+        owner.setBalance(owner.getBalance() + totalPrice);
+        userRepository.save(owner);
+
+        return createAndSaveBooking(user, bookingEmployees, bookedTickets, totalPrice);
     }
 
+    /**
+     * bu user ni barcha chiptalarini olib keladi
+     **/
 
 
    /** bu user ni barcha chiptalarini olib keladi **/
@@ -100,7 +105,9 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    /** muddati o'tgan chiptalar yani history uchun**/
+    /**
+     * muddati o'tgan chiptalar yani history uchun
+     **/
     public List<TickedResponse> getExpiredTicketsByUserId(UUID userId) {
         List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(userId);
 
@@ -123,7 +130,9 @@ public class BookingService {
         return expiredTickets;
     }
 
-    /** bronni ichidagi hali foydalanilmagan chiptalar **/
+    /**
+     * bronni ichidagi hali foydalanilmagan chiptalar
+     **/
     public List<TickedResponse> getActiveTicketsByUserId(UUID userId) {
         List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(userId);
 
@@ -166,5 +175,18 @@ public class BookingService {
                 .flightStatus(flight.getFlightStatus())
                 .build();
     }
+
+    private Booking createAndSaveBooking(User user, List<Employee> employees, List<Ticket> tickets, double totalPrice) {
+        Booking booking = Booking.builder()
+                .user(user)
+                .employees(employees)
+                .tickets(tickets)
+                .totalPrice(totalPrice)
+                .bookingDate(LocalDateTime.now())
+                .status(BookingStatus.CONFIRMED)
+                .build();
+        return bookingRepository.save(booking);
+    }
+
 
 }

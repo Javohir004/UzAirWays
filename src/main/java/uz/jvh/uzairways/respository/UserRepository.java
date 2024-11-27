@@ -20,6 +20,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     List<User>findAllByIsActiveTrue();
 
+    Optional<User> findByRole(UserRole role);
+
 
 //    @Query("SELECT u FROM User u WHERE LOWER(TRIM(u.email)) = LOWER(TRIM(:email))")
 //    Optional<User> findByEmail(@Param("email") String email);
