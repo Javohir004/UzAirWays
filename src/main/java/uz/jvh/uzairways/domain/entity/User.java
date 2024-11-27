@@ -2,10 +2,11 @@ package uz.jvh.uzairways.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder.Default;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Entity
 @Table(name = "users")
@@ -35,7 +36,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
-    private Double balance;
+    @Builder.Default
+    private Double balance = 0.0;
 
     private String address;
 

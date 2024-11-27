@@ -1,6 +1,7 @@
 package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
@@ -9,6 +10,7 @@ import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.domain.enumerators.AircraftType;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
+import uz.jvh.uzairways.domain.exception.CustomException;
 import uz.jvh.uzairways.respository.FlightRepository;
 import uz.jvh.uzairways.respository.TicketRepository;
 
@@ -29,7 +31,6 @@ public class TicketService {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
     }
-
 
     public Ticket updateTicket(UUID id, Ticket ticket) {
         Ticket existingTicket = getTicketById(id);
@@ -58,31 +59,34 @@ public class TicketService {
         return ticket;
     }
 
-
     public List<Ticket> getFlightInfo(ByTickedRequest request) {
 
         if (request.getPassengers() > 5) {
-            throw new IllegalArgumentException("Passengers must be less than 5");
+            throw new CustomException("Passengers must be less than 5",4002, HttpStatus.BAD_REQUEST);
         }
         Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
                 request.getDepartureAirport(),
                 request.getArrivalAirport(),
-                request.getDepartureTime());
+                request.getDepartureTime())
+                .orElseThrow(()-> new CustomException("Flight not found",4041, HttpStatus.NOT_FOUND));
 
         if (flight == null) {
-            throw new IllegalArgumentException("Flight not found");
+            throw new CustomException("Flight not found",4041,HttpStatus.NOT_FOUND);
         }
         List<Ticket> availableTickets = ticketRepository.findAllByIsBronAndFlight(
                 false,
                 flight
         );
 
+        if (availableTickets.isEmpty()) {
+            throw new CustomException("No available tickets for the selected flight",4042,HttpStatus.NOT_FOUND);
+        }
+
         if (request.getPassengers() > availableTickets.size()) {
-            throw new IllegalArgumentException("Passengers exceeds number of tickets");
+            throw new CustomException("Passengers exceeds number of tickets",4002, HttpStatus.BAD_REQUEST);
         }
         return availableTickets;
     }
-
 
     @Transactional
     public void createTickets1(Flight flight) {
@@ -111,7 +115,6 @@ public class TicketService {
         ticketRepository.saveAll(tickets);
     }
 
-
     private void createTicketsByClass(List<Ticket> tickets, Flight flight, int[] availableSeats, Double price, ClassType classType) {
         int classIndex = classType.ordinal(); // ClassType dan indeks olish
         int seatCount = availableSeats[classIndex]; // O'rinlar sonini olish
@@ -131,7 +134,5 @@ public class TicketService {
             tickets.add(ticket);
         }
     }
-
-
 
 }

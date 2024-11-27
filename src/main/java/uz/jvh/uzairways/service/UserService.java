@@ -53,14 +53,6 @@ public class UserService {
         return user;
     }
 
-    @Transactional
-    public UserResponse updateUserJ(UserRequest userCreateDTO, UUID userId) {
-        User user = mapRequestToEntity(userCreateDTO);
-        user.setId(userId);
-        userRepository.save(user);
-        return mapEntityToResponse(user);
-    }
-
     public User findByIdJ(UUID id) {
         return userRepository.findById(id).
                 orElseThrow(() -> new UsernameNotFoundException("User  not found"));
@@ -97,13 +89,6 @@ public class UserService {
                 .build();
     }
 
-    public UserView findById(UUID id) {
-        return (UserView) userRepository.findById(id).
-                orElseThrow(() -> new UsernameNotFoundException("User with " + id + " not found"));
-
-    }
-
-
     public List<User> findAllJ() {
         List<User> allUsers = userRepository.findAllByIsActiveTrue();
 
@@ -130,15 +115,5 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User  not found"));
         return user.getBalance();
     }
-
-    public User findUserByEmail(String email) {
-        if (email == null || email.isEmpty()) {
-            throw new CustomException("Email manzili noto'g'ri", HttpStatus.BAD_REQUEST);
-        }
-
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException("Email ro‘yxatdan o‘tmagan", HttpStatus.NOT_FOUND));
-    }
-
 
 }

@@ -16,9 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AirPlaneService {
 
-
     private final AirPlaneRepository airPlaneRepository;
-
 
     @Transactional
     public String create(AirPlaneDTO airPlane) {
@@ -54,7 +52,6 @@ public class AirPlaneService {
         return airPlane;
     }
 
-
     public AirPlaneResponse mapToResponse(AirPlane airPlane) {
         AirPlaneResponse response = new AirPlaneResponse();
         response.setId(airPlane.getId());
@@ -65,13 +62,11 @@ public class AirPlaneService {
         return response;
     }
 
-
     public List<AirPlaneResponse> findAll() {
         List<AirPlane> all = airPlaneRepository.findAllByIsActiveTrue();
         return all.stream()
                 .map(this::mapToResponse)
                 .toList();
     }
-
 
 }
