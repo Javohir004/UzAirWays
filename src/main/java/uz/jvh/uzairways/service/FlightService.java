@@ -83,11 +83,14 @@ public class FlightService {
                 .build();
     }
 
+
     public void deleteFlight(UUID id) {
         Flight byFlightId = flightRepository.findFlightById(id);
         byFlightId.setActive(false);
         flightRepository.save(byFlightId);
     }
+
+
 
     @Transactional
     public void updateFlight(UUID flightId, FlightDTO flightDTO) {
@@ -116,17 +119,24 @@ public class FlightService {
         flightRepository.save(flight);
     }
 
+
+
     public List<Flight> getAllFlights() {
-        return flightRepository.findAll();
+        return flightRepository.findAllByOrderByCreatedDesc();
     }
+
+
 
     public Flight getFlightById(UUID id) {
         return flightRepository.findFlightById(id);
     }
 
+
+
     public List<AirPlane> getAvailableAircrafts(LocalDateTime departureTime , Airport flyingAirport) {
         return flightRepository.findAvailableAirplanes(departureTime , flyingAirport);
     }
+
 
     public List<TicketDetailsResponse> getAllTicketDetailsByClassType(UUID flightId, ClassType classType) {
         List<Ticket> tickets = ticketRepository.findAllByFlightIdAndClassTypeAndIsBronFalse(flightId, classType);
@@ -139,4 +149,5 @@ public class FlightService {
                 )).collect(Collectors.toList());
 
     }
+
 }

@@ -1,6 +1,7 @@
 package uz.jvh.uzairways.domain.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.Builder.Default;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
@@ -34,7 +35,9 @@ public class User extends BaseEntity {
     private LocalDate birthDate;
 
     @Column(nullable = false)
+    @Pattern(regexp = "^\\+998\\s?\\d{9}$", message = "Phone number must start with +998, followed by 9 digits, and may have an optional space.")
     private String phoneNumber;
+
 
     @Builder.Default
     private Double balance = 0.0;

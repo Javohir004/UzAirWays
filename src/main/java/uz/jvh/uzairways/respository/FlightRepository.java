@@ -40,7 +40,6 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
 
  boolean existsByFlightNumber(String flightNumber);
 
-
     boolean existsByAirplaneAndDepartureTimeAndArrivalTime(
             AirPlane airplane, LocalDateTime departureTime, LocalDateTime arrivalTime
 
@@ -55,5 +54,9 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
             LocalDateTime departureTime,
             LocalDateTime arrivalTime
     );
+
+    @Query("SELECT f FROM Flight f ORDER BY f.created DESC")
+    List<Flight> findAllByOrderByCreatedDesc();
+
 
 }
