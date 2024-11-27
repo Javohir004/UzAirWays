@@ -32,8 +32,9 @@ public class UserService {
         userRepository.save(user);
     }
 
+
     public User findByUsername(String username) {
-        User userEntity = userRepository.findByUsername(username)
+        User userEntity = userRepository.findByUsernameAndIsActiveTrue(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
         return userEntity;
     }
@@ -53,10 +54,12 @@ public class UserService {
         return user;
     }
 
+
     public User findByIdJ(UUID id) {
         return userRepository.findById(id).
                 orElseThrow(() -> new UsernameNotFoundException("User  not found"));
     }
+
 
     public User mapRequestToEntity(UserRequest userRequest) {
         return User.builder()
@@ -73,6 +76,7 @@ public class UserService {
                 .build();
 
     }
+
 
     public UserResponse mapEntityToResponse(User user) {
         return UserResponse.builder()
