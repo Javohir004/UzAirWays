@@ -2,6 +2,7 @@ package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.EmployeeRequest;
 import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
 import uz.jvh.uzairways.domain.entity.*;
@@ -25,7 +26,7 @@ public class BookingService {
     private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
 
-
+    @Transactional
     public Booking createBooking(UUID userId, List<UUID> ticketIds, List<EmployeeRequest> employees) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
