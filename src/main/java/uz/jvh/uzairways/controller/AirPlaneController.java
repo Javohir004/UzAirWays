@@ -35,7 +35,7 @@ public class AirPlaneController {
 
 
     @GetMapping("/findBy-Id{id}")
-    public ResponseEntity<AirPlane> getById(@PathVariable UUID id) {
+    public ResponseEntity<AirPlaneResponse> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(airPlaneService.findById(id));
     }
 

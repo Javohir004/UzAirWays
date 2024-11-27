@@ -26,9 +26,9 @@ public class AirPlaneService {
     }
 
     public void delete(UUID id) {
-        AirPlane byId = findById(id);
-        byId.setActive(false);
-        airPlaneRepository.save(byId);
+        AirPlane airPlane = airPlaneRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        airPlane.setActive(false);
+        airPlaneRepository.save(airPlane);
     }
 
     @Transactional
@@ -38,9 +38,10 @@ public class AirPlaneService {
         airPlaneRepository.save(airPlane1);
     }
 
-    public AirPlane findById(UUID id) {
-        return airPlaneRepository.findById(id)
+    public AirPlaneResponse findById(UUID id) {
+        AirPlane airPlane = airPlaneRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("AirPlane with ID " + id + " not found"));
+        return mapToResponse(airPlane);
     }
 
     public AirPlane mapToEntity(AirPlaneDTO airPlaneDTO) {
@@ -55,7 +56,6 @@ public class AirPlaneService {
     public AirPlaneResponse mapToResponse(AirPlane airPlane) {
         AirPlaneResponse response = new AirPlaneResponse();
         response.setId(airPlane.getId());
-//        response.setId(UUID.fromString(airPlane.getId().toString()));
         response.setAircraftType(String.valueOf(airPlane.getAircraftType()));
         response.setModel(airPlane.getModel());
         response.setManufacturer(airPlane.getManufacturer());

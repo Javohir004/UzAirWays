@@ -16,6 +16,7 @@ import uz.jvh.uzairways.respository.FlightRepository;
 import uz.jvh.uzairways.respository.TicketRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,29 +25,52 @@ public class TicketService {
     private final FlightRepository flightRepository;
 
 
-    public List<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
+    public List<TicketResponse> getAllTickets() {
+        List<Ticket> all = ticketRepository.findAll();
+        return all.stream()
+                .map(ticket -> mapToTicketResponse(ticket))  // Pass ticket to the mapToTicketResponse method
+                .collect(Collectors.toList());  // Collect the results into a list
     }
 
-    public Ticket getTicketById(UUID id) {
-        return ticketRepository.findById(id)
+
+    public TicketResponse getTicketById(UUID id) {
+        Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
+        return mapToTicketResponse(ticket);
     }
 
-    public Ticket updateTicket(UUID id, Ticket ticket) {
-        Ticket existingTicket = getTicketById(id);
+    public TicketResponse updateTicket(UUID id, TicketDTO ticket) {
+        Flight flight = flightRepository.findById(ticket.getFlight()).
+                orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
+
+        Ticket existingTicket = ticketRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
+
         existingTicket.setId(id);
-        existingTicket.setFlight(ticket.getFlight());
+        existingTicket.setFlight(flight);
         existingTicket.setSeatNumber(ticket.getSeatNumber());
         existingTicket.setPrice(ticket.getPrice());
         existingTicket.setClassType(ticket.getClassType());
-        return ticketRepository.save(existingTicket);
+        Ticket save = ticketRepository.save(existingTicket);
+     return mapToTicketResponse(save);
     }
 
     public void deleteTicket(UUID id) {
-        Ticket existingTicket = getTicketById(id);
-        existingTicket.setActive(false);
-        ticketRepository.save(existingTicket);
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
+        ticket.setActive(false);
+        ticketRepository.save(ticket);
+    }
+
+
+    public TicketResponse mapToTicketResponse(Ticket ticket) {
+        TicketResponse ticketResponse = new TicketResponse();
+        ticketResponse.setTicketId(ticket.getId());
+        ticketResponse.setPrice(ticket.getPrice());
+        ticketResponse.setBron(ticket.isBron());
+        ticketResponse.setArrivalTime(ticket.getFlight().getArrivalTime());
+        ticketResponse.setDepartureTime(ticket.getFlight().getDepartureTime());
+        ticketResponse.setTicketId(ticket.getId());
+        return ticketResponse;
     }
 
     public List<TicketResponse> getFlightInfo(ByTickedRequest request) {
@@ -104,6 +128,7 @@ public class TicketService {
         ticketRepository.saveAll(tickets);
     }
 
+
     private void createTicketsByClass(List<Ticket> tickets, Flight flight, int[] availableSeats, Double price, ClassType classType) {
         int classIndex = classType.ordinal(); // ClassType dan indeks olish
         int seatCount = availableSeats[classIndex]; // O'rinlar sonini olish
@@ -123,6 +148,8 @@ public class TicketService {
             tickets.add(ticket);
         }
     }
+
+
 
     private List<TicketResponse> mapToTicketResponse(List<Ticket> tickets, Flight flight) {
         return tickets.stream()

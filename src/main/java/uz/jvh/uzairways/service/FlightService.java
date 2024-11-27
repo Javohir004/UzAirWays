@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.FlightDTO;
 
+import uz.jvh.uzairways.domain.DTO.response.AirPlaneResponse;
+import uz.jvh.uzairways.domain.DTO.response.FlightResponse;
 import uz.jvh.uzairways.domain.DTO.response.TicketDetailsResponse;
 import uz.jvh.uzairways.domain.entity.AirPlane;
 import uz.jvh.uzairways.domain.entity.Flight;
@@ -29,11 +31,12 @@ public class FlightService {
 
     private final FlightRepository flightRepository;
     private final AirPlaneRepository airPlaneRepository;
+    private final AirPlaneService airPlaneService;
     private final TicketService ticketService;
     private final TicketRepository ticketRepository;
 
     @Transactional
-    public Flight saveFlight(FlightDTO flight) {
+    public FlightResponse saveFlight(FlightDTO flight) {
         if (flightRepository.existsByFlightNumber(flight.getFlightNumber())) {     //  shu raqamli reys  mavjud emasligi
             throw new IllegalArgumentException("Flight number already exists !");
         }
@@ -65,7 +68,25 @@ public class FlightService {
         Flight flight1 = mapRequestToFlight(flight);
         flightRepository.save(flight1);
         ticketService.createTickets1(flight1);
-        return flight1;
+
+        return mapToFlightResponse(flight1);
+    }
+
+    public FlightResponse mapToFlightResponse(Flight flight) {
+        FlightResponse flightResponse = new FlightResponse();
+        flightResponse.setFlightNumber(flight.getFlightNumber());
+        flightResponse.setFlightId(flight.getId());
+
+        flightResponse.setDepartureAirport(flight.getDepartureAirport());
+        flightResponse.setDepartureTime(flight.getDepartureTime());
+
+        flightResponse.setArrivalAirport(flight.getArrivalAirport());
+        flightResponse.setArrivalTime(flight.getArrivalTime());
+
+        flightResponse.setAirplane(flight.getAirplane());
+        flightResponse.setFlightStatus(flight.getFlightStatus());
+
+        return flightResponse;
     }
 
     public Flight mapRequestToFlight(FlightDTO flight) {
@@ -121,20 +142,28 @@ public class FlightService {
 
 
 
-    public List<Flight> getAllFlights() {
-        return flightRepository.findAllByOrderByCreatedDesc();
+    public List<FlightResponse> getAllFlights() {
+        List<Flight> allByOrderByCreatedDesc = flightRepository.findAllByOrderByCreatedDesc();
+        return allByOrderByCreatedDesc.stream().map(flight ->
+                        mapToFlightResponse(flight))
+                .collect(Collectors.toList());
     }
 
 
 
-    public Flight getFlightById(UUID id) {
-        return flightRepository.findFlightById(id);
+    public FlightResponse getFlightById(UUID id) {
+        Flight flight = flightRepository.findById(id).
+                orElseThrow(() -> new EntityNotFoundException("Flight not found"));
+        return mapToFlightResponse(flight);
     }
 
 
 
-    public List<AirPlane> getAvailableAircrafts(LocalDateTime departureTime , Airport flyingAirport) {
-        return flightRepository.findAvailableAirplanes(departureTime , flyingAirport);
+    public List<AirPlaneResponse> getAvailableAircrafts(LocalDateTime departureTime , Airport flyingAirport) {
+        List<AirPlane> availableAirplanes = flightRepository.findAvailableAirplanes(departureTime, flyingAirport);
+        return availableAirplanes.stream()
+                .map(airPlane -> airPlaneService.mapToResponse(airPlane))
+                .collect(Collectors.toList());
     }
 
 
