@@ -89,6 +89,8 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+
+
    /** bu user ni barcha chiptalarini olib keladi **/
     public List<TickedResponse> getBookingsByOwnerId(UUID ownerId) {
         List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(ownerId);

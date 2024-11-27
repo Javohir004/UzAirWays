@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
+import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
 import uz.jvh.uzairways.domain.DTO.response.TicketResponse;
 import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.service.TicketService;
@@ -21,21 +22,21 @@ public class TicketController {
     private final TicketService ticketService;
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<Ticket>> getAllTickets() {
-        List<Ticket> tickets = ticketService.getAllTickets();
+    public ResponseEntity<List<TicketResponse>> getAllTickets() {
+        List<TicketResponse> tickets = ticketService.getAllTickets();
         return ResponseEntity.ok(tickets);
     }
 
     @GetMapping("/find-by-id{id}")
-    public ResponseEntity<Ticket> getTicketById(@PathVariable UUID id) {
-        Ticket ticket = ticketService.getTicketById(id);
+    public ResponseEntity<TicketResponse> getTicketById(@PathVariable UUID id) {
+        TicketResponse ticket = ticketService.getTicketById(id);
         return ResponseEntity.ok(ticket);
     }
 
    // @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update{id}")
-    public ResponseEntity<Ticket> updateTicket(@PathVariable UUID id, @RequestBody Ticket ticket) {
-        Ticket updatedTicket = ticketService.updateTicket(id, ticket);
+    public ResponseEntity<TicketResponse> updateTicket(@PathVariable UUID id, @RequestBody TicketDTO ticket) {
+        TicketResponse updatedTicket = ticketService.updateTicket(id, ticket);
         return ResponseEntity.ok(updatedTicket);
     }
 
