@@ -35,16 +35,16 @@ public class TicketService {
 
     public TicketResponse getTicketById(UUID id) {
         Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
+                .orElseThrow(() -> new CustomException("Chipta topilmadi: " + id, 4002, HttpStatus.NOT_FOUND));
         return mapToTicketResponse(ticket);
     }
 
     public TicketResponse updateTicket(UUID id, TicketDTO ticket) {
         Flight flight = flightRepository.findById(ticket.getFlight()).
-                orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
+                orElseThrow(() -> new CustomException("Chipta topilmadi: " + id, 4002, HttpStatus.NOT_FOUND));
 
         Ticket existingTicket = ticketRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
+                orElseThrow(() -> new CustomException("Chipta topilmadi: " + id, 4002, HttpStatus.NOT_FOUND));
 
         existingTicket.setId(id);
         existingTicket.setFlight(flight);
@@ -52,11 +52,11 @@ public class TicketService {
         existingTicket.setPrice(ticket.getPrice());
         existingTicket.setClassType(ticket.getClassType());
         Ticket save = ticketRepository.save(existingTicket);
-     return mapToTicketResponse(save);
+        return mapToTicketResponse(save);
     }
 
     public void deleteTicket(UUID id) {
-        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Chipta topilmadi: " + id));
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new CustomException("Chipta topilmadi: " + id, 4002, HttpStatus.NOT_FOUND));
         ticket.setActive(false);
         ticketRepository.save(ticket);
     }
@@ -148,7 +148,6 @@ public class TicketService {
             tickets.add(ticket);
         }
     }
-
 
 
     private List<TicketResponse> mapToTicketResponse(List<Ticket> tickets, Flight flight) {

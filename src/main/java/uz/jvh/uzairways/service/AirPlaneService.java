@@ -2,10 +2,12 @@ package uz.jvh.uzairways.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.AirPlaneDTO;
 import uz.jvh.uzairways.domain.DTO.response.AirPlaneResponse;
 import uz.jvh.uzairways.domain.entity.AirPlane;
+import uz.jvh.uzairways.domain.exception.CustomException;
 import uz.jvh.uzairways.respository.AirPlaneRepository;
 
 import java.util.List;
@@ -40,7 +42,7 @@ public class AirPlaneService {
 
     public AirPlaneResponse findById(UUID id) {
         AirPlane airPlane = airPlaneRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("AirPlane with ID " + id + " not found"));
+                .orElseThrow(() -> new CustomException("AirPlane with ID " + id + " not found",4002, HttpStatus.NOT_FOUND));
         return mapToResponse(airPlane);
     }
 

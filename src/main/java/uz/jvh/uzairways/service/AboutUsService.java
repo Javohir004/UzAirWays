@@ -1,11 +1,13 @@
 package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.AboutUsRequest;
 import uz.jvh.uzairways.domain.DTO.response.AboutUsResponse;
 import uz.jvh.uzairways.domain.entity.AboutUs;
+import uz.jvh.uzairways.domain.exception.CustomException;
 import uz.jvh.uzairways.respository.AboutUsEntityRepo;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class AboutUsService {
 
     public AboutUsResponse save(AboutUsRequest aboutUsRequest) {
         if (aboutUsRequest == null) {
-            throw new IllegalArgumentException("AboutUsRequest must not be null");
+            throw new CustomException("AboutUsRequest must not be null",4002, HttpStatus.NOT_FOUND);
         }
 
         AboutUs aboutUsEntity = mapToAboutUsEntity(aboutUsRequest);
@@ -30,7 +32,7 @@ public class AboutUsService {
 
     public void delete(UUID id) {
         AboutUs aboutUs = repo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("AboutUs not found with id: " + id));
+                .orElseThrow(() -> new CustomException("AboutUs not found with id: " + id,4002, HttpStatus.NOT_FOUND));
         aboutUs.setActive(false);
         repo.save(aboutUs);
     }
@@ -38,7 +40,7 @@ public class AboutUsService {
     @Transactional
     public AboutUsResponse update(AboutUsRequest aboutUsRequest, UUID id) {
         AboutUs aboutUsEntity = repo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("AboutUs not found with id: " + id));
+                .orElseThrow(() -> new CustomException("AboutUs not found with id: " + id,4002, HttpStatus.NOT_FOUND));
         aboutUsEntity.setTuri(aboutUsRequest.getTuri());
         aboutUsEntity.setTitle(aboutUsRequest.getTitle());
         aboutUsEntity.setContent(aboutUsRequest.getContent());
@@ -55,7 +57,7 @@ public class AboutUsService {
 
     public AboutUsResponse findById(UUID id) {
         AboutUs aboutUs = repo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("AboutUs not found with id: " + id));
+                .orElseThrow(() -> new CustomException("AboutUs not found with id: " + id,4002, HttpStatus.NOT_FOUND));
         return mapToAboutUsResponse(aboutUs);
     }
 

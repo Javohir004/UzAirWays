@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.FlightDTO;
 
@@ -15,6 +16,7 @@ import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.Ticket;
 import uz.jvh.uzairways.domain.enumerators.Airport;
 import uz.jvh.uzairways.domain.enumerators.ClassType;
+import uz.jvh.uzairways.domain.exception.CustomException;
 import uz.jvh.uzairways.respository.AirPlaneRepository;
 import uz.jvh.uzairways.respository.FlightRepository;
 import uz.jvh.uzairways.respository.TicketRepository;
@@ -38,31 +40,31 @@ public class FlightService {
     @Transactional
     public FlightResponse saveFlight(FlightDTO flight) {
         if (flightRepository.existsByFlightNumber(flight.getFlightNumber())) {     //  shu raqamli reys  mavjud emasligi
-            throw new IllegalArgumentException("Flight number already exists !");
+            throw new CustomException("Flight number already exists !",4012, HttpStatus.CONFLICT);
         }
         if (flight.getDepartureAirport().equals(flight.getArrivalAirport())) {         // Jo'nash va kelish aeroportlari bir xil emasligiga
-            throw new IllegalArgumentException("Departure and arrival airports cannot be the same !");
+            throw new CustomException("Departure and arrival airports cannot be the same !",4013,HttpStatus.BAD_REQUEST);
         }
         if (flight.getDepartureTime().isAfter(flight.getArrivalTime()) ||
                 flight.getArrivalTime().isBefore(flight.getDepartureTime())) {       //Jo'nash va kelish vaqtlari to'g'ri ekanligiga
-            throw new IllegalArgumentException("Departure time must be before arrival time !");
+            throw new CustomException("Departure time must be before arrival time !",4014,HttpStatus.BAD_REQUEST);
         }
         if (flightRepository.existsByDepartureAirportAndArrivalAirportAndDepartureTimeAndArrivalTime(
                 flight.getDepartureAirport(),
                 flight.getArrivalAirport(),
                 flight.getDepartureTime(),
                 flight.getArrivalTime())) {                    // Ushbu sanada va vaqtda, shu aeroportlar bilan reys mavjud emasligiga
-            throw new IllegalArgumentException("A flight with the same departure and arrival airports at the same time already exists.");
+            throw new CustomException("A flight with the same departure and arrival airports at the same time already exists.",4015,HttpStatus.CONFLICT);
         }
 
         AirPlane airPlane = airPlaneRepository.findById(flight.getAirplane())
-                .orElseThrow(() -> new IllegalArgumentException("Airplane not found"));
+                .orElseThrow(() -> new CustomException("Airplane not found",4002, HttpStatus.NOT_FOUND));
 
         if (flightRepository.existsByAirplaneAndDepartureTimeAndArrivalTime(
                 airPlane,
                 flight.getDepartureTime(),
                 flight.getArrivalTime())) {               //Samolyot shu sanada va vaqtda boshqa reysda band emasliginiga
-            throw new IllegalArgumentException("The airplane is already scheduled for another flight at this time.");
+            throw new CustomException("The airplane is already scheduled for another flight at this time.",4017,HttpStatus.CONFLICT);
         }
 
         Flight flight1 = mapRequestToFlight(flight);
@@ -91,7 +93,7 @@ public class FlightService {
 
     public Flight mapRequestToFlight(FlightDTO flight) {
         AirPlane airPlane = airPlaneRepository.findById(flight.getAirplane())
-                .orElseThrow(() -> new RuntimeException("Airplane not found"));
+                .orElseThrow(() -> new CustomException("Airplane not found",4002, HttpStatus.NOT_FOUND));
 
         return Flight.builder()
                 .flightNumber(flight.getFlightNumber())
@@ -104,19 +106,16 @@ public class FlightService {
                 .build();
     }
 
-
     public void deleteFlight(UUID id) {
         Flight byFlightId = flightRepository.findFlightById(id);
         byFlightId.setActive(false);
         flightRepository.save(byFlightId);
     }
 
-
-
     @Transactional
     public void updateFlight(UUID flightId, FlightDTO flightDTO) {
         Flight flight = flightRepository.findById(flightId)
-                .orElseThrow(() -> new EntityNotFoundException("Flight not found"));
+                .orElseThrow(() -> new CustomException("Flight not found",4002, HttpStatus.NOT_FOUND));
 
         if (flightDTO.getFlightNumber() != null) {
             flight.setFlightNumber(flightDTO.getFlightNumber());
@@ -140,8 +139,6 @@ public class FlightService {
         flightRepository.save(flight);
     }
 
-
-
     public List<FlightResponse> getAllFlights() {
         List<Flight> allByOrderByCreatedDesc = flightRepository.findAllByOrderByCreatedDesc();
         return allByOrderByCreatedDesc.stream().map(flight ->
@@ -149,15 +146,11 @@ public class FlightService {
                 .collect(Collectors.toList());
     }
 
-
-
     public FlightResponse getFlightById(UUID id) {
         Flight flight = flightRepository.findById(id).
-                orElseThrow(() -> new EntityNotFoundException("Flight not found"));
+                orElseThrow(() -> new CustomException("Flight not found",4002, HttpStatus.NOT_FOUND));
         return mapToFlightResponse(flight);
     }
-
-
 
     public List<AirPlaneResponse> getAvailableAircrafts(LocalDateTime departureTime , Airport flyingAirport) {
         List<AirPlane> availableAirplanes = flightRepository.findAvailableAirplanes(departureTime, flyingAirport);
@@ -165,7 +158,6 @@ public class FlightService {
                 .map(airPlane -> airPlaneService.mapToResponse(airPlane))
                 .collect(Collectors.toList());
     }
-
 
     public List<TicketDetailsResponse> getAllTicketDetailsByClassType(UUID flightId, ClassType classType) {
         List<Ticket> tickets = ticketRepository.findAllByFlightIdAndClassTypeAndIsBronFalse(flightId, classType);

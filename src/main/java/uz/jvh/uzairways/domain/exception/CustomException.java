@@ -1,22 +1,32 @@
 package uz.jvh.uzairways.domain.exception;
-
 import org.springframework.http.HttpStatus;
 
 public class CustomException extends RuntimeException {
-    private final int errorCode;
-    private final HttpStatus status;
 
-    public CustomException(String message, int errorCode, HttpStatus status) {
-        super(message);
+    private final String  errorMessage;
+    private final int errorCode;
+    private final HttpStatus httpStatus;
+
+    public CustomException(String errorMessage,int errorCode,  HttpStatus httpStatus) {
+        super(errorMessage);
+        this.errorMessage = errorMessage;
         this.errorCode = errorCode;
-        this.status = status;
+        this.httpStatus = httpStatus;
+
     }
+
 
     public int getErrorCode() {
         return errorCode;
     }
 
-    public HttpStatus getStatus() {
-        return status;
+    public String getErrorMessage() {
+        return errorMessage;
     }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
+
+
 }
