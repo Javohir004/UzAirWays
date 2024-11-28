@@ -1,11 +1,13 @@
 package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.QuestionRequest;
 import uz.jvh.uzairways.domain.DTO.response.AnswerResponse;
 import uz.jvh.uzairways.domain.entity.QuestionAnswer;
+import uz.jvh.uzairways.domain.exception.CustomException;
 import uz.jvh.uzairways.respository.QuestionAnswerRepo;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class QuestionAnswerService {
 
     public AnswerResponse save(QuestionRequest questionAnswer) {
         if (questionAnswer == null) {
-            throw new IllegalArgumentException("QuestionRequest must not be null");
+            throw new CustomException("QuestionRequest must not be null",4002, HttpStatus.NOT_FOUND);
         }
 
         QuestionAnswer questionAnswerEntity = mapToQuestionAnswer(questionAnswer);
@@ -30,7 +32,7 @@ public class QuestionAnswerService {
 
     public void delete(UUID id) {
         QuestionAnswer questionAnswer = questionAnswerRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("QuestionAnswer not found with id: " + id));
+                .orElseThrow(() -> new CustomException("QuestionAnswer not found with id: " + id,4002,HttpStatus.NOT_FOUND));
         questionAnswer.setActive(false);
         questionAnswerRepo.save(questionAnswer);
     }
@@ -38,7 +40,7 @@ public class QuestionAnswerService {
     @Transactional
     public AnswerResponse update(QuestionRequest questionRequest, UUID questionId) {
         QuestionAnswer questionAnswerEntity = questionAnswerRepo.findById(questionId)
-                .orElseThrow(() -> new IllegalArgumentException("QuestionAnswer not found with id: " + questionId));
+                .orElseThrow(() -> new CustomException("QuestionAnswer not found with id: " + questionId,4002,HttpStatus.NOT_FOUND));
         questionAnswerEntity.setAnswer(questionRequest.getAnswer());
         questionAnswerRepo.save(questionAnswerEntity);
         return mapToAnswerResponse(questionAnswerEntity);

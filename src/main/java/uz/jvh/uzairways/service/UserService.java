@@ -2,6 +2,7 @@ package uz.jvh.uzairways.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,10 @@ import uz.jvh.uzairways.domain.DTO.request.UserRequest;;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
+import uz.jvh.uzairways.domain.exception.CustomException;
 import uz.jvh.uzairways.respository.UserRepository;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,7 +33,7 @@ public class UserService {
 
     public User findByUsername(String username) {
         User userEntity = userRepository.findByUsernameAndIsActiveTrue(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
+                .orElseThrow(() -> new CustomException("Username " + username + " not found", 4002, HttpStatus.NOT_FOUND));
         return userEntity;
     }
 
@@ -42,7 +45,7 @@ public class UserService {
 
     public User deleteUser(UUID userId) {
         User user = userRepository.findById(userId).
-                orElseThrow(() -> new UsernameNotFoundException("Username " + userId + " not found"));
+                orElseThrow(() -> new CustomException("Username  not found", 4002, HttpStatus.NOT_FOUND));
 
         user.setActive(false);
         userRepository.save(user);
@@ -52,7 +55,7 @@ public class UserService {
 
     public User findByIdJ(UUID id) {
         return userRepository.findById(id).
-                orElseThrow(() -> new UsernameNotFoundException("User  not found"));
+                orElseThrow(() -> new CustomException("User  not found",4002, HttpStatus.NOT_FOUND));
     }
 
 
@@ -111,7 +114,7 @@ public class UserService {
     }
 
     public Double getUserBalance(UUID id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User  not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new CustomException("User  not found", 4002, HttpStatus.NOT_FOUND));
         return user.getBalance();
     }
 

@@ -15,16 +15,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<Map<String, Object>> handleCustomException(CustomException ex) {
         Map<String, Object> errorResponse = new HashMap<>();
+
+        // Return error details without translation
         errorResponse.put("errorCode", ex.getErrorCode());
-        errorResponse.put("errorMessage", ex.getMessage());
+        errorResponse.put("errorMessage", ex.getErrorMessage());
         errorResponse.put("timestamp", LocalDateTime.now());
-        return new ResponseEntity<>(errorResponse, ex.getStatus());
+
+        // Get HttpStatus and return response
+        HttpStatus status = ex.getHttpStatus();
+        return new ResponseEntity<>(errorResponse, status);
     }
 
+    // General Exception handler for unhandled exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneralException(Exception ex) {
         Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("errorCode", 500);
+        errorResponse.put("errorCode", "500");
         errorResponse.put("errorMessage", "Internal server error: " + ex.getMessage());
         errorResponse.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

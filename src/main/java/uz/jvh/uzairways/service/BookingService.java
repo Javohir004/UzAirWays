@@ -1,6 +1,7 @@
 package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.EmployeeRequest;
@@ -8,9 +9,9 @@ import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
 import uz.jvh.uzairways.domain.entity.*;
 import uz.jvh.uzairways.domain.enumerators.BookingStatus;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
+import uz.jvh.uzairways.domain.exception.CustomException;
 import uz.jvh.uzairways.respository.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,71 +27,71 @@ public class BookingService {
     private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
 
-    @Transactional
-    public Booking createBooking(UUID userId, List<UUID> ticketIds, List<EmployeeRequest> employees) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty()) {
-            throw new IllegalArgumentException("User not found");
-        }
-        User user = optionalUser.get();
-
-        List<Employee> bookingEmployees = new ArrayList<>();
-
-        for (EmployeeRequest employee : employees) {
-            Optional<Employee> employeeOptional = employeeRepository.findByUsername(employee.getUsername());
-            Employee bookingEmployee;
-
-            if (employeeOptional.isPresent()) {
-                bookingEmployee = employeeOptional.get();
-            } else {
-                Employee employeeRequest = new Employee(
-                        employee.getUsername(),
-                        employee.getFirstName(),
-                        employee.getBirthDate(),
-                        employee.getCitizenship(),
-                        employee.getSerialNumber(),
-                        employee.getValidityPeriod()
-                );
-                bookingEmployee = employeeRepository.save(employeeRequest);
+        @Transactional
+        public Booking createBooking(UUID userId, List<UUID> ticketIds, List<EmployeeRequest> employees) {
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (optionalUser.isEmpty()) {
+                throw new CustomException("User note found",4002,HttpStatus.NOT_FOUND);
             }
-            bookingEmployees.add(bookingEmployee);
-        }
+            User user = optionalUser.get();
 
-        List<Ticket> bookedTickets = new ArrayList<>();
+            List<Employee> bookingEmployees = new ArrayList<>();
 
-        double totalPrice = 0.0;
-        for (UUID ticketId : ticketIds) {
-            Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
-            if (ticketOptional.isEmpty()) {
-                throw new RuntimeException("Ticket not found");
+            for (EmployeeRequest employee : employees) {
+                Optional<Employee> employeeOptional = employeeRepository.findByUsername(employee.getUsername());
+                Employee bookingEmployee;
+
+                if (employeeOptional.isPresent()) {
+                    bookingEmployee = employeeOptional.get();
+                } else {
+                    Employee employeeRequest = new Employee(
+                            employee.getUsername(),
+                            employee.getFirstName(),
+                            employee.getBirthDate(),
+                            employee.getCitizenship(),
+                            employee.getSerialNumber(),
+                            employee.getValidityPeriod()
+                    );
+                    bookingEmployee = employeeRepository.save(employeeRequest);
+                }
+                bookingEmployees.add(bookingEmployee);
             }
-            Ticket ticket = ticketOptional.get();
 
-            if (ticket.isBron()) {
-                throw new RuntimeException("Ticket is already Bron");
+            List<Ticket> bookedTickets = new ArrayList<>();
+
+            double totalPrice = 0.0;
+            for (UUID ticketId : ticketIds) {
+                Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
+                if (ticketOptional.isEmpty()) {
+                    throw new CustomException("Ticket not found",4002,HttpStatus.NOT_FOUND);
+                }
+                Ticket ticket = ticketOptional.get();
+
+                if (ticket.isBron()) {
+                    throw new CustomException("Ticket is already Bron",4012,HttpStatus.CONFLICT);
+                }
+                ticket.setBron(true);
+                ticketRepository.save(ticket);
+
+                bookedTickets.add(ticket);
+                totalPrice += ticket.getPrice();
             }
-            ticket.setBron(true);
-            ticketRepository.save(ticket);
+            if (user.getBalance() < totalPrice) {
+                throw new CustomException("Insufficient balance for the booking",4012,HttpStatus.BAD_REQUEST);
+            }
+            user.setBalance(user.getBalance() - totalPrice);
 
-            bookedTickets.add(ticket);
-            totalPrice += ticket.getPrice();
+            Optional<User> ownerOptional = userRepository.findByRole(UserRole.OWNER);
+            if (ownerOptional.isEmpty()) {
+                throw new CustomException("User not found",4002,HttpStatus.NOT_FOUND);
+            }
+
+            User owner = ownerOptional.get();
+            owner.setBalance(owner.getBalance() + totalPrice);
+            userRepository.save(owner);
+
+            return createAndSaveBooking(user, bookingEmployees, bookedTickets, totalPrice);
         }
-        if (user.getBalance() < totalPrice) {
-            throw new IllegalArgumentException("Insufficient balance for the booking");
-        }
-        user.setBalance(user.getBalance() - totalPrice);
-
-        Optional<User> ownerOptional = userRepository.findByRole(UserRole.OWNER);
-        if (ownerOptional.isEmpty()) {
-            throw new IllegalArgumentException("User not found");
-        }
-
-        User owner = ownerOptional.get();
-        owner.setBalance(owner.getBalance() + totalPrice);
-        userRepository.save(owner);
-
-        return createAndSaveBooking(user, bookingEmployees, bookedTickets, totalPrice);
-    }
 
 
 
