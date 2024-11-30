@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.AirPlaneDTO;
 import uz.jvh.uzairways.domain.DTO.response.AirPlaneResponse;
-import uz.jvh.uzairways.domain.entity.AirPlane;
 import uz.jvh.uzairways.service.AirPlaneService;
 
 import java.util.List;

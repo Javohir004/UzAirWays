@@ -3,6 +3,7 @@ package uz.jvh.uzairways.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.CreateBookingRequest;
 import uz.jvh.uzairways.domain.DTO.response.TickedResponse;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class BookingController {
     private final BookingService bookingService;
 
+//    @PreAuthorize("hasRole('USER')")
     @PostMapping("/create-booking")
     public ResponseEntity<Booking> createBooking(@RequestParam UUID userId,
                                                  @RequestBody CreateBookingRequest request) {
@@ -31,18 +33,20 @@ public class BookingController {
     }
 
 
+//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/get-tickets-flight-by-userId")
     public ResponseEntity<List<TickedResponse>> getTicketsByUserId(@RequestParam UUID userId) {
         return ResponseEntity.ok(bookingService.getBookingsByOwnerId(userId));
     }
 
     // Muddati o'tgan ticketlarni olish
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/get-expired-tickets")
     public ResponseEntity<List<TickedResponse>> getExpiredTickets(@RequestParam UUID userId) {
         List<TickedResponse> expiredTickets = bookingService.getExpiredTicketsByUserId(userId);
         return ResponseEntity.ok(expiredTickets);
     }
-
+//    @PreAuthorize("hasRole('USER')")
     // Muddati o'tmagan ticketlarni olish
     @GetMapping("/get-active-tickets")
     public ResponseEntity<List<TickedResponse>> getActiveTickets(@RequestParam UUID userId) {

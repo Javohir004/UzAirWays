@@ -27,75 +27,75 @@ public class BookingService {
     private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
 
-        @Transactional
-        public Booking createBooking(UUID userId, List<UUID> ticketIds, List<EmployeeRequest> employees) {
-            Optional<User> optionalUser = userRepository.findById(userId);
-            if (optionalUser.isEmpty()) {
-                throw new CustomException("User note found",4002,HttpStatus.NOT_FOUND);
+    @Transactional
+    public Booking createBooking(UUID userId, List<UUID> ticketIds, List<EmployeeRequest> employees) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            throw new CustomException("User note found", 4002, HttpStatus.NOT_FOUND);
+        }
+        User user = optionalUser.get();
+
+        List<Employee> bookingEmployees = new ArrayList<>();
+
+        for (EmployeeRequest employee : employees) {
+            Optional<Employee> employeeOptional = employeeRepository.findByUsername(employee.getUsername());
+            Employee bookingEmployee;
+
+            if (employeeOptional.isPresent()) {
+                bookingEmployee = employeeOptional.get();
+            } else {
+                Employee employeeRequest = new Employee(
+                        employee.getUsername(),
+                        employee.getFirstName(),
+                        employee.getBirthDate(),
+                        employee.getCitizenship(),
+                        employee.getSerialNumber(),
+                        employee.getValidityPeriod()
+                );
+                bookingEmployee = employeeRepository.save(employeeRequest);
             }
-            User user = optionalUser.get();
-
-            List<Employee> bookingEmployees = new ArrayList<>();
-
-            for (EmployeeRequest employee : employees) {
-                Optional<Employee> employeeOptional = employeeRepository.findByUsername(employee.getUsername());
-                Employee bookingEmployee;
-
-                if (employeeOptional.isPresent()) {
-                    bookingEmployee = employeeOptional.get();
-                } else {
-                    Employee employeeRequest = new Employee(
-                            employee.getUsername(),
-                            employee.getFirstName(),
-                            employee.getBirthDate(),
-                            employee.getCitizenship(),
-                            employee.getSerialNumber(),
-                            employee.getValidityPeriod()
-                    );
-                    bookingEmployee = employeeRepository.save(employeeRequest);
-                }
-                bookingEmployees.add(bookingEmployee);
-            }
-
-            List<Ticket> bookedTickets = new ArrayList<>();
-
-            double totalPrice = 0.0;
-            for (UUID ticketId : ticketIds) {
-                Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
-                if (ticketOptional.isEmpty()) {
-                    throw new CustomException("Ticket not found",4002,HttpStatus.NOT_FOUND);
-                }
-                Ticket ticket = ticketOptional.get();
-
-                if (ticket.isBron()) {
-                    throw new CustomException("Ticket is already Bron",4012,HttpStatus.CONFLICT);
-                }
-                ticket.setBron(true);
-                ticketRepository.save(ticket);
-
-                bookedTickets.add(ticket);
-                totalPrice += ticket.getPrice();
-            }
-            if (user.getBalance() < totalPrice) {
-                throw new CustomException("Insufficient balance for the booking",4012,HttpStatus.BAD_REQUEST);
-            }
-            user.setBalance(user.getBalance() - totalPrice);
-
-            Optional<User> ownerOptional = userRepository.findByRole(UserRole.OWNER);
-            if (ownerOptional.isEmpty()) {
-                throw new CustomException("User not found",4002,HttpStatus.NOT_FOUND);
-            }
-
-            User owner = ownerOptional.get();
-            owner.setBalance(owner.getBalance() + totalPrice);
-            userRepository.save(owner);
-
-            return createAndSaveBooking(user, bookingEmployees, bookedTickets, totalPrice);
+            bookingEmployees.add(bookingEmployee);
         }
 
+        List<Ticket> bookedTickets = new ArrayList<>();
 
+        double totalPrice = 0.0;
+        for (UUID ticketId : ticketIds) {
+            Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
+            if (ticketOptional.isEmpty()) {
+                throw new CustomException("Ticket not found", 4002, HttpStatus.NOT_FOUND);
+            }
+            Ticket ticket = ticketOptional.get();
 
-   /** bu user ni barcha chiptalarini olib keladi **/
+            if (ticket.isBron()) {
+                throw new CustomException("Ticket is already Bron", 4012, HttpStatus.CONFLICT);
+            }
+            ticket.setBron(true);
+            ticketRepository.save(ticket);
+
+            bookedTickets.add(ticket);
+            totalPrice += ticket.getPrice();
+        }
+        if (user.getBalance() < totalPrice) {
+            throw new CustomException("Insufficient balance for the booking", 4012, HttpStatus.BAD_REQUEST);
+        }
+        user.setBalance(user.getBalance() - totalPrice);
+
+        Optional<User> ownerOptional = userRepository.findByRole(UserRole.OWNER);
+        if (ownerOptional.isEmpty()) {
+            throw new CustomException("User not found", 4002, HttpStatus.NOT_FOUND);
+        }
+
+        User owner = ownerOptional.get();
+        owner.setBalance(owner.getBalance() + totalPrice);
+        userRepository.save(owner);
+
+        return createAndSaveBooking(user, bookingEmployees, bookedTickets, totalPrice);
+    }
+
+    /**
+     * bu user ni barcha chiptalarini olib keladi
+     **/
     public List<TickedResponse> getBookingsByOwnerId(UUID ownerId) {
         List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrue(ownerId);
 
