@@ -44,9 +44,6 @@ public class User extends BaseEntity {
 
     private String address;
 
-    @Column(unique = true)
-    private String verificationToken;
-
     @Column(nullable = false)
     private String passportSeries;
 
