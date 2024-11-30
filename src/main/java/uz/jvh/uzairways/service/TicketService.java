@@ -39,6 +39,7 @@ public class TicketService {
         return mapToTicketResponse(ticket);
     }
 
+    @Transactional
     public TicketResponse updateTicket(UUID id, TicketDTO ticket) {
         Flight flight = flightRepository.findById(ticket.getFlight()).
                 orElseThrow(() -> new CustomException("Chipta topilmadi: " + id, 4002, HttpStatus.NOT_FOUND));
@@ -55,6 +56,7 @@ public class TicketService {
         return mapToTicketResponse(save);
     }
 
+    @Transactional
     public void deleteTicket(UUID id) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new CustomException("Chipta topilmadi: " + id, 4002, HttpStatus.NOT_FOUND));
         ticket.setActive(false);

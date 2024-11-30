@@ -3,9 +3,9 @@ package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
 import uz.jvh.uzairways.domain.entity.User;
@@ -26,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public void save(User user) {
         userRepository.save(user);
     }
@@ -42,7 +43,7 @@ public class UserService {
         return userRepository.findByRoleAndIsActiveTrue(role);
     }
 
-
+    @Transactional
     public User deleteUser(UUID userId) {
         User user = userRepository.findById(userId).
                 orElseThrow(() -> new CustomException("Username  not found", 4002, HttpStatus.NOT_FOUND));
@@ -55,7 +56,7 @@ public class UserService {
 
     public User findByIdJ(UUID id) {
         return userRepository.findById(id).
-                orElseThrow(() -> new CustomException("User  not found",4002, HttpStatus.NOT_FOUND));
+                orElseThrow(() -> new CustomException("User  not found", 4002, HttpStatus.NOT_FOUND));
     }
 
 
@@ -99,6 +100,8 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+
+    @Transactional
     public User update(UUID id, UserRequest userRequest) {
         User user = findByIdJ(id);
         user.setUsername(userRequest.getUsername() != null ? userRequest.getUsername() : user.getUsername());

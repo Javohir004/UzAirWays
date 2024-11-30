@@ -20,6 +20,7 @@ public class AboutUsService {
 
     private final AboutUsEntityRepo repo;
 
+    @Transactional
     public AboutUsResponse save(AboutUsRequest aboutUsRequest) {
         if (aboutUsRequest == null) {
             throw new CustomException("AboutUsRequest must not be null",4002, HttpStatus.NOT_FOUND);
@@ -30,6 +31,7 @@ public class AboutUsService {
         return mapToAboutUsResponse(aboutUsEntity);
     }
 
+    @Transactional
     public void delete(UUID id) {
         AboutUs aboutUs = repo.findById(id)
                 .orElseThrow(() -> new CustomException("AboutUs not found with id: " + id,4002, HttpStatus.NOT_FOUND));
