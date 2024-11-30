@@ -22,7 +22,7 @@ public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 
     List<Ticket> findAllByIsBronAndFlightAndIsActiveTrue(Boolean isBron, Flight flight);
 
-    List<Ticket> findAllIsActiveTrue();
+    List<Ticket> findAllByIsActiveTrue();
 
     Optional<Ticket> findByIdAndIsActiveTrue(UUID id);
 }

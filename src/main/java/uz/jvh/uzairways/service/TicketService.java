@@ -26,7 +26,7 @@ public class TicketService {
 
 
     public List<TicketResponse> getAllTickets() {
-        List<Ticket> all = ticketRepository.findAllIsActiveTrue();
+        List<Ticket> all = ticketRepository.findAllByIsActiveTrue();
         return all.stream()
                 .map(ticket -> mapToTicketResponse(ticket))  // Pass ticket to the mapToTicketResponse method
                 .collect(Collectors.toList());  // Collect the results into a list
