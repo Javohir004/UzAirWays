@@ -22,7 +22,7 @@ public class UserHistoryService {
         if (userId == null) {
             throw new CustomException("userId cannot be null",4011, HttpStatus.NOT_FOUND);
         }
-        return bookingRepository.findByUserIdAndIsActiveTrue(userId);
+        return bookingRepository.findActiveBookingsByUserId(userId);
     }
 
 }
