@@ -49,7 +49,7 @@ public class AboutUsService {
     }
 
     public List<AboutUsResponse> findAll() {
-        List<AboutUs> activeAboutUs = repo.getByAndIsActiveTrue();
+        List<AboutUs> activeAboutUs = repo.getByIsActiveTrue();
         return activeAboutUs.stream()
                 .map(this::mapToAboutUsResponse)
                 .collect(Collectors.toList());
