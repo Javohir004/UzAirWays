@@ -6,4 +6,8 @@ public enum ClassType {
         BUSINESS,
         FIRST
 
+
+
+
+
 }
