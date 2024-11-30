@@ -112,15 +112,19 @@ public class UserService {
     @Transactional
     public User update(UUID id, UserRequest userRequest) {
         User user = findByIdJ(id);
+        if (userRequest.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        }
         user.setUsername(userRequest.getUsername() != null ? userRequest.getUsername() : user.getUsername());
         user.setSurname(userRequest.getSurname() != null ? userRequest.getSurname() : user.getSurname());
-        user.setPassword(userRequest.getPassword() != null ? userRequest.getPassword() : user.getPassword());
         user.setEmail(userRequest.getEmail() != null ? userRequest.getEmail() : user.getEmail());
         user.setPhoneNumber(userRequest.getPhoneNumber() != null ? userRequest.getPhoneNumber() : user.getPhoneNumber());
         user.setRole(userRequest.getRole() != null ? userRequest.getRole() : user.getRole());
         user.setBirthDate(userRequest.getBirthDate() != null ? userRequest.getBirthDate() : user.getBirthDate());
         user.setAddress(userRequest.getAddress() != null ? userRequest.getAddress() : user.getAddress());
         user.setPassportSeries(userRequest.getPassportSeries() != null ? userRequest.getPassportSeries() : user.getPassportSeries());
+
+        // Saqlash
         return userRepository.save(user);
     }
 
