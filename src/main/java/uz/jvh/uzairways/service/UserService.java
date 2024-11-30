@@ -8,12 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
+import uz.jvh.uzairways.domain.entity.Booking;
 import uz.jvh.uzairways.domain.entity.User;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 import uz.jvh.uzairways.domain.exception.CustomException;
+import uz.jvh.uzairways.respository.BookingRepository;
 import uz.jvh.uzairways.respository.UserRepository;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final BookingRepository bookingRepository;
 
     @Transactional
     public void save(User user) {
@@ -44,13 +46,19 @@ public class UserService {
     }
 
     @Transactional
-    public User deleteUser(UUID userId) {
+    public void deleteUser(UUID userId) {
         User user = userRepository.findById(userId).
                 orElseThrow(() -> new CustomException("Username  not found", 4002, HttpStatus.NOT_FOUND));
 
+        List<Booking> bookings = bookingRepository.findActiveBookingsByUserId(userId);
+        bookings.forEach(booking -> {
+            booking.setActive(false);
+            bookingRepository.save(booking);
+        });
+
         user.setActive(false);
         userRepository.save(user);
-        return user;
+        userRepository.flush();
     }
 
 
