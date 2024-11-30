@@ -2,6 +2,7 @@ package uz.jvh.uzairways.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
@@ -26,36 +27,41 @@ public class UserController {
         return userService.update(id, userRequest);
     }
 
-
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all-user")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.findAllJ();
         return ResponseEntity.ok(users);
     }
 
+//    @PreAuthorize("hasRole('OWNER')")
     @GetMapping("/User-role/{role}/owner")
     public ResponseEntity<List<User>> getUsersByRole(@PathVariable UserRole role) {
         List<User> users = userService.findByRole(role);
         return ResponseEntity.ok(users);
     }
 
+//    @PreAuthorize("hasRole('OWNER')")
     @PostMapping("/create-admin")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userCreateDTO) {
         return ResponseEntity.ok(authService.save(userCreateDTO));
     }
 
+//    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("Foydalanuvchi muvaffaqiyatli o'chirildi.");
     }
 
+//    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
     @GetMapping("/find-by-id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable UUID userId) {
         User user = userService.findByIdJ(userId);
         return ResponseEntity.ok(user);
     }
 
+//    @PreAuthorize("hasRole('USER')")
     @GetMapping("/my-balance")
     public ResponseEntity<Double> getUserBalance(@RequestParam UUID userId) {
         Double userBalance = userService.getUserBalance(userId);

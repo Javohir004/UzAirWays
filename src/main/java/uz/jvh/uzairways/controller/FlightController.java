@@ -26,12 +26,12 @@ public class FlightController {
 
     private final FlightService flightService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create-flight")
     public ResponseEntity<FlightResponse> createFlight(@RequestBody FlightDTO flightDto) {
         return ResponseEntity.ok(flightService.saveFlight(flightDto));
     }
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/all-flight")
     public ResponseEntity<List<FlightResponse>> getAllFlights() {
         List<FlightResponse> flights = flightService.getAllFlights();
@@ -46,7 +46,7 @@ public class FlightController {
         return ResponseEntity.ok(flightById);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get-available-airplanes")
     public ResponseEntity<List<AirPlaneResponse>> getAvailableAirplanes(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS") LocalDateTime departureTime ,
                                                                         @RequestParam Airport flightAirport) {
@@ -56,14 +56,14 @@ public class FlightController {
         return ResponseEntity.ok(availableAirplanes);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteFlight(@PathVariable UUID id) {
         flightService.deleteFlight(id);
         return ResponseEntity.ok("Parvoz o'chirildi");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/tickets-class-type/{id}")
     public ResponseEntity<List<TicketDetailsResponse>> getAllTicketDetailsByClassType(@PathVariable UUID id,
                                                                                       @RequestParam ClassType classType) {
@@ -71,7 +71,7 @@ public class FlightController {
             return ResponseEntity.ok(allTicketDetailsByClassType);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update-flight/{flightId}")
     public ResponseEntity<Void> updateFlight(@PathVariable UUID flightId, @RequestBody FlightDTO flightDto) {
         flightService.updateFlight(flightId, flightDto);
