@@ -81,7 +81,7 @@ public class BookingService {
         }
         user.setBalance(user.getBalance() - totalPrice);
 
-        Optional<User> ownerOptional = userRepository.findByRole(UserRole.OWNER);
+        Optional<User> ownerOptional = userRepository.findUserByRoleAndIsActiveTrue(UserRole.OWNER);
         if (ownerOptional.isEmpty()) {
             throw new CustomException("User not found", 4002, HttpStatus.NOT_FOUND);
         }

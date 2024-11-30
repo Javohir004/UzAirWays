@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface AboutUsEntityRepo extends JpaRepository<AboutUs , UUID> {
 
-    List<AboutUs> getByIsActiveTrue();
+    List<AboutUs> getByAndIsActiveTrue();
 }

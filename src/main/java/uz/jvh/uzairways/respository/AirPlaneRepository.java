@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface AirPlaneRepository extends JpaRepository<AirPlane, UUID> {
 
-    Optional<AirPlane> findById(UUID id);
+    Optional<AirPlane> findByIdAndIsActiveTrue(UUID id);
 
     List<AirPlane> findAllByIsActiveTrue();
 }

@@ -18,9 +18,11 @@ public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 
     List<Ticket> findByFlight_DepartureTimeAfter(LocalDateTime now);
 
-    List<Ticket> findAllByFlightIdAndClassTypeAndIsBronFalse(UUID flightId, ClassType classType);
+    List<Ticket> findAllByFlightIdAndClassTypeAndIsBronFalseAndIsActiveTrue(UUID flightId, ClassType classType);
 
-    List<Ticket> findAllByIsBronAndFlight(Boolean isBron, Flight flight);
+    List<Ticket> findAllByIsBronAndFlightAndIsActiveTrue(Boolean isBron, Flight flight);
 
+    List<Ticket> findAllIsActiveTrue();
 
+    Optional<Ticket> findByIdAndIsActiveTrue(UUID id);
 }
