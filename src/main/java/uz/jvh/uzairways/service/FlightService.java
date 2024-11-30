@@ -1,6 +1,4 @@
 package uz.jvh.uzairways.service;
-
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -49,7 +47,7 @@ public class FlightService {
                 flight.getArrivalTime().isBefore(flight.getDepartureTime())) {       //Jo'nash va kelish vaqtlari to'g'ri ekanligiga
             throw new CustomException("Departure time must be before arrival time !",4014,HttpStatus.BAD_REQUEST);
         }
-        if (flightRepository.existsByDepartureAirportAndArrivalAirportAndDepartureTimeAndArrivalTime(
+        if (flightRepository.existsByDepartureAirportAndArrivalAirportAndDepartureTimeAndArrivalTimeAndIsActiveTrue(
                 flight.getDepartureAirport(),
                 flight.getArrivalAirport(),
                 flight.getDepartureTime(),
@@ -60,7 +58,7 @@ public class FlightService {
         AirPlane airPlane = airPlaneRepository.findById(flight.getAirplane())
                 .orElseThrow(() -> new CustomException("Airplane not found",4002, HttpStatus.NOT_FOUND));
 
-        if (flightRepository.existsByAirplaneAndDepartureTimeAndArrivalTime(
+        if (flightRepository.existsByAirplaneAndDepartureTimeAndArrivalTimeAndIsActiveTrue(
                 airPlane,
                 flight.getDepartureTime(),
                 flight.getArrivalTime())) {               //Samolyot shu sanada va vaqtda boshqa reysda band emasliginiga
@@ -107,14 +105,15 @@ public class FlightService {
     }
 
     public void deleteFlight(UUID id) {
-        Flight byFlightId = flightRepository.findFlightById(id);
+        Flight byFlightId = flightRepository.findFlightByIdAndIsActiveTrue(id)
+                .orElseThrow(() -> new CustomException("Flight not found",4002, HttpStatus.NOT_FOUND));
         byFlightId.setActive(false);
         flightRepository.save(byFlightId);
     }
 
     @Transactional
     public void updateFlight(UUID flightId, FlightDTO flightDTO) {
-        Flight flight = flightRepository.findById(flightId)
+        Flight flight = flightRepository.findFlightByIdAndIsActiveTrue(flightId)
                 .orElseThrow(() -> new CustomException("Flight not found",4002, HttpStatus.NOT_FOUND));
 
         if (flightDTO.getFlightNumber() != null) {
@@ -140,7 +139,7 @@ public class FlightService {
     }
 
     public List<FlightResponse> getAllFlights() {
-        List<Flight> allByOrderByCreatedDesc = flightRepository.findAllByOrderByCreatedDesc();
+        List<Flight> allByOrderByCreatedDesc = flightRepository.findAllByOrderByCreatedDescAndIsActiveTrue();
         return allByOrderByCreatedDesc.stream().map(flight ->
                         mapToFlightResponse(flight))
                 .collect(Collectors.toList());
@@ -153,14 +152,14 @@ public class FlightService {
     }
 
     public List<AirPlaneResponse> getAvailableAircrafts(LocalDateTime departureTime , Airport flyingAirport) {
-        List<AirPlane> availableAirplanes = flightRepository.findAvailableAirplanes(departureTime, flyingAirport);
+        List<AirPlane> availableAirplanes = flightRepository.findAvailableAirplanesAndIsActiveTrue(departureTime, flyingAirport);
         return availableAirplanes.stream()
                 .map(airPlane -> airPlaneService.mapToResponse(airPlane))
                 .collect(Collectors.toList());
     }
 
     public List<TicketDetailsResponse> getAllTicketDetailsByClassType(UUID flightId, ClassType classType) {
-        List<Ticket> tickets = ticketRepository.findAllByFlightIdAndClassTypeAndIsBronFalse(flightId, classType);
+        List<Ticket> tickets = ticketRepository.findAllByFlightIdAndClassTypeAndIsBronFalseAndIsActiveTrue(flightId, classType);
         return tickets.stream()
                 .map(ticket -> new TicketDetailsResponse(
                         ticket.getFlight().getId(),

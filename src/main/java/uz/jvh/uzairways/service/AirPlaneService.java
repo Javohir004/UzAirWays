@@ -41,7 +41,7 @@ public class AirPlaneService {
     }
 
     public AirPlaneResponse findById(UUID id) {
-        AirPlane airPlane = airPlaneRepository.findById(id)
+        AirPlane airPlane = airPlaneRepository.findByIdAndIsActiveTrue(id)
                 .orElseThrow(() -> new CustomException("AirPlane with ID " + id + " not found",4002, HttpStatus.NOT_FOUND));
         return mapToResponse(airPlane);
     }

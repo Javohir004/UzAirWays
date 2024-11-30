@@ -26,7 +26,7 @@ public class TicketService {
 
 
     public List<TicketResponse> getAllTickets() {
-        List<Ticket> all = ticketRepository.findAll();
+        List<Ticket> all = ticketRepository.findAllIsActiveTrue();
         return all.stream()
                 .map(ticket -> mapToTicketResponse(ticket))  // Pass ticket to the mapToTicketResponse method
                 .collect(Collectors.toList());  // Collect the results into a list
@@ -34,7 +34,7 @@ public class TicketService {
 
 
     public TicketResponse getTicketById(UUID id) {
-        Ticket ticket = ticketRepository.findById(id)
+        Ticket ticket = ticketRepository.findByIdAndIsActiveTrue(id)
                 .orElseThrow(() -> new CustomException("Chipta topilmadi: " + id, 4002, HttpStatus.NOT_FOUND));
         return mapToTicketResponse(ticket);
     }
@@ -79,13 +79,13 @@ public class TicketService {
             throw new CustomException("Passengers must be less than 5", 4002, HttpStatus.BAD_REQUEST);
         }
 
-        Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
+        Flight flight = flightRepository.findFirstByDepartureAirportAndArrivalAirportAndDepartureTimeAndIsActiveTrue(
                         request.getDepartureAirport(),
                         request.getArrivalAirport(),
                         request.getDepartureTime())
                 .orElseThrow(() -> new CustomException("Flight not found", 4041, HttpStatus.NOT_FOUND));
 
-        List<Ticket> availableTickets = ticketRepository.findAllByIsBronAndFlight(
+        List<Ticket> availableTickets = ticketRepository.findAllByIsBronAndFlightAndIsActiveTrue(
                 false,
                 flight
         );

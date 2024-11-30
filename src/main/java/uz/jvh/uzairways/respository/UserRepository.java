@@ -20,5 +20,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     List<User>findAllByIsActiveTrue();
 
-    Optional<User> findByRole(UserRole role);
+    Optional<User> findUserByRoleAndIsActiveTrue(UserRole role);
 }

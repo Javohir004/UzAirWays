@@ -16,13 +16,13 @@ import java.util.UUID;
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, UUID> {
 
-    Flight findFlightById(UUID flightId);
+    Optional<Flight> findFlightByIdAndIsActiveTrue(UUID flightId);
 
 
    /** bu yerda kirib kelgan departure vaqti flight dataBazasidagi flight larning arrival vaqtidan katta bo'lishi kerak
     * va arrival airaporti kirib kelgan departure airaportiga teng bo'lishi kerak**/
     @Query("SELECT f.airplane FROM Flight f WHERE f.arrivalTime < :departureTime AND f.arrivalAirport = :flyingAirport")
-    List<AirPlane> findAvailableAirplanes(@Param("departureTime") LocalDateTime departureTime,
+    List<AirPlane> findAvailableAirplanesAndIsActiveTrue(@Param("departureTime") LocalDateTime departureTime,
                                           @Param("flyingAirport") Airport flyingAirport);
 
 
@@ -32,7 +32,7 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
             "AND f.arrivalAirport = :arrivalAirport " +
             "AND f.departureTime >= :startTime " +
             "ORDER BY f.departureTime ASC")
-    Optional<Flight> findFirstByDepartureAirportAndArrivalAirportAndDepartureTime(
+    Optional<Flight> findFirstByDepartureAirportAndArrivalAirportAndDepartureTimeAndIsActiveTrue(
             @Param("departureAirport") Airport departureAirport,
             @Param("arrivalAirport") Airport arrivalAirport,
             @Param("startTime") LocalDateTime startTime);
@@ -40,7 +40,7 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
 
  boolean existsByFlightNumber(String flightNumber);
 
-    boolean existsByAirplaneAndDepartureTimeAndArrivalTime(
+    boolean existsByAirplaneAndDepartureTimeAndArrivalTimeAndIsActiveTrue(
             AirPlane airplane, LocalDateTime departureTime, LocalDateTime arrivalTime
 
     );
@@ -48,7 +48,7 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
     /**Bu metod Flight jadvallari orasida departureAirport, arrivalAirport, departureTime, va arrivalTime
     qiymatlari berilgan qiymatlarga teng bo‘lgan yozuv bor-yo‘qligini tekshiradi.
       */
-    boolean existsByDepartureAirportAndArrivalAirportAndDepartureTimeAndArrivalTime(
+    boolean existsByDepartureAirportAndArrivalAirportAndDepartureTimeAndArrivalTimeAndIsActiveTrue(
             Airport departureAirport,
             Airport arrivalAirport,
             LocalDateTime departureTime,
@@ -56,7 +56,7 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
     );
 
     @Query("SELECT f FROM Flight f ORDER BY f.created DESC")
-    List<Flight> findAllByOrderByCreatedDesc();
+    List<Flight> findAllByOrderByCreatedDescAndIsActiveTrue();
 
 
 }
