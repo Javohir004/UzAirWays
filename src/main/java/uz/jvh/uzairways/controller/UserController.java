@@ -67,4 +67,11 @@ public class UserController {
         Double userBalance = userService.getUserBalance(userId);
         return ResponseEntity.ok(userBalance);
     }
+
+    //    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/add-balance")
+    public ResponseEntity<Double> addUserBalance(@RequestParam UUID userId , @RequestParam Double balance) {
+        Double userBalance = userService.AddBalance(userId, balance);
+        return ResponseEntity.ok(userBalance);
+    }
 }

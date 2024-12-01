@@ -133,4 +133,13 @@ public class UserService {
         return user.getBalance();
     }
 
+    public Double AddBalance(UUID id ,Double balance) {
+        User user = userRepository.findById(id).
+                orElseThrow(() -> new CustomException("User  not found", 4002, HttpStatus.NOT_FOUND));
+        user.setBalance(user.getBalance() + balance);
+        userRepository.save(user);
+        return user.getBalance();
+    }
+
+
 }
