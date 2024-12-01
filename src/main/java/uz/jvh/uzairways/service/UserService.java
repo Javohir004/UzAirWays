@@ -133,13 +133,37 @@ public class UserService {
         return user.getBalance();
     }
 
-    public Double AddBalance(UUID id ,Double balance) {
-        User user = userRepository.findById(id).
-                orElseThrow(() -> new CustomException("User  not found", 4002, HttpStatus.NOT_FOUND));
-        user.setBalance(user.getBalance() + balance);
+    @Transactional
+    public Double addBalance(UUID id, Double balance) {
+
+        final double MIN_BALANCE = 1000.0;
+        final double MAX_BALANCE = 100_000_000.0;
+
+        if (balance == null || balance < MIN_BALANCE || balance > MAX_BALANCE) {
+            throw new CustomException(
+                    "Balance must be between " + MIN_BALANCE + " and " + MAX_BALANCE,
+                    4003,
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new CustomException("User not found", 4002, HttpStatus.NOT_FOUND));
+
+        double updatedBalance = user.getBalance() + balance;
+        if (updatedBalance > MAX_BALANCE) {
+            throw new CustomException(
+                    "Total balance cannot exceed " + MAX_BALANCE,
+                    4004,
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        user.setBalance(updatedBalance);
         userRepository.save(user);
         return user.getBalance();
     }
+
 
 
 }
