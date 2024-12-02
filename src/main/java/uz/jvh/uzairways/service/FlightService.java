@@ -142,7 +142,10 @@ public class FlightService {
     }
 
     public List<FlightResponse> getAllFlights() {
-        List<Flight> allByOrderByCreatedDesc = flightRepository.findAllByOrderByCreatedDescAndIsActiveTrue();
+
+        LocalDateTime today = LocalDateTime.now();
+
+        List<Flight> allByOrderByCreatedDesc = flightRepository.findAllByDepartureDateAfterAndIsActiveTrue(today);
         return allByOrderByCreatedDesc.stream().map(flight ->
                         mapToFlightResponse(flight))
                 .collect(Collectors.toList());
