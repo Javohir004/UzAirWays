@@ -3,7 +3,6 @@ package uz.jvh.uzairways.domain.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-import lombok.Builder.Default;
 import uz.jvh.uzairways.domain.enumerators.UserRole;
 
 import java.time.LocalDate;
@@ -46,6 +45,5 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String passportSeries;
-
 
 }
