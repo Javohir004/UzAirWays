@@ -136,7 +136,7 @@ public class UserService {
     @Transactional
     public Double addBalance(UUID id, Double balance) {
 
-        final double MIN_BALANCE = 1000.0;
+        final double MIN_BALANCE = 50.0;
         final double MAX_BALANCE = 100_000_000.0;
 
         if (balance == null || balance < MIN_BALANCE || balance > MAX_BALANCE) {
