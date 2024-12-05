@@ -55,8 +55,9 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
             LocalDateTime arrivalTime
     );
 
-    @Query("SELECT f FROM Flight f ORDER BY f.created DESC")
-    List<Flight> findAllByOrderByCreatedDescAndIsActiveTrue();
+    @Query("SELECT f FROM Flight f WHERE f.departureTime > :departureTime AND f.isActive = true ORDER BY f.created DESC")
+    List<Flight> findAllByDepartureDateAfterAndIsActiveTrue(@Param("departureTime") LocalDateTime departureTime);
+
 
 
 }

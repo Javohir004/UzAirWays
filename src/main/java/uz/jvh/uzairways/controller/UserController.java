@@ -70,7 +70,7 @@ public class UserController {
     //    @PreAuthorize("hasRole('USER')")
     @PostMapping("/add-balance")
     public ResponseEntity<Double> addUserBalance(@RequestParam UUID userId , @RequestParam Double balance) {
-        Double userBalance = userService.AddBalance(userId, balance);
+        Double userBalance = userService.addBalance(userId, balance);
         return ResponseEntity.ok(userBalance);
     }
 }
