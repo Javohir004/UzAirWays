@@ -1,5 +1,10 @@
 package uz.jvh.uzairways.domain.enumerators;
 
+import uz.jvh.uzairways.domain.DTO.response.AirportInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public enum Airport {
     TASHKENT("https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
     SAMARKAND("https://images.pexels.com/photos/302769/pexels-photo-302769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
@@ -32,6 +37,16 @@ public enum Airport {
         }
         return null; // Return null if not found
     }
+
+
+    public static List<AirportInfo> getAllAirportsWithImages() {
+        List<AirportInfo> airports = new ArrayList<>();
+        for (Airport airport : values()) {
+            airports.add(new AirportInfo(airport.name(), airport.getImageUrl()));
+        }
+        return airports;
+    }
+
 }
 
 

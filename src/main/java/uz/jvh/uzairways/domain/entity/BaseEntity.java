@@ -16,11 +16,14 @@ import java.util.UUID;
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     protected UUID id;
+
     @CreationTimestamp
     protected LocalDateTime created;
+
     @UpdateTimestamp
     protected LocalDateTime modified;
 
