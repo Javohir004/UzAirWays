@@ -2,7 +2,7 @@ package uz.jvh.uzairways.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.jvh.uzairways.domain.DTO.request.LoginDto;
@@ -37,7 +37,7 @@ public class AuthService {
             throw new CustomException("Invalid username or password", 4019, HttpStatus.UNAUTHORIZED);
         }
         String token = jwtTokenUtil.generateToken(user.getUsername());
-        return new JwtResponse(token, user.getId());
+        return new JwtResponse(token, user.getId(),user.getRole());
     }
 
 
