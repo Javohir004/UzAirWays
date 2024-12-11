@@ -133,6 +133,7 @@ public class UserService {
         return user.getBalance();
     }
 
+
     @Transactional
     public Double addBalance(UUID id, Double balance) {
 

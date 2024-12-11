@@ -48,11 +48,8 @@ public class QuestionAnswerService {
         return mapToAnswerResponse(questionAnswerEntity);
     }
 
-    /**
-     * bu faqat javob berilmagan savollarni olib keladi
-     **/
-    public List<AnswerResponse> findQuestions() {
-        List<QuestionAnswer> allByAnswerIsNull = questionAnswerRepo.findAllByAnswerIsNull();
+
+
     /** bu faqat javob berilmagan savollarni olib keladi**/
     public List<AnswerResponse> findQuestions(){
         List<QuestionAnswer> allByAnswerIsNull = questionAnswerRepo.findAllByAnswerIsNullOrderByCreatedDesc();
