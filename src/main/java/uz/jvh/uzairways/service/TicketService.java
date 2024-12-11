@@ -25,7 +25,7 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final FlightRepository flightRepository;
-    private final FlightService flightService;
+
 
 
     public List<TicketResponse> getAllTickets() {
@@ -69,10 +69,9 @@ public class TicketService {
 
    /** flight number ni qo'shdim va seat number ni qo'shdim **/
     public TicketResponse mapToTicketResponse(Ticket ticket) {
-        FlightResponse flightById = flightService.getFlightById(ticket.getFlight().getId());
         TicketResponse ticketResponse = new TicketResponse();
         ticketResponse.setSeatNumber(ticket.getSeatNumber());
-        ticketResponse.setFlightNumber(flightById.getFlightNumber());
+        ticketResponse.setFlightNumber(ticket.getFlight().getFlightNumber());
         ticketResponse.setTicketId(ticket.getId());
         ticketResponse.setPrice(ticket.getPrice());
         ticketResponse.setBron(ticket.isBron());
