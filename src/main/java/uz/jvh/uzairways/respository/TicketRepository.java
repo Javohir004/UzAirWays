@@ -22,9 +22,8 @@ public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 
     List<Ticket> findAllByIsBronAndFlightAndIsActiveTrueOrderByCreatedDesc(Boolean isBron, Flight flight);
 
-    List<Ticket> findAllIsActiveTrueOrderByCreatedDesc();
 
-    List<Ticket> findAllByIsActiveTrue();
+    List<Ticket> findAllByIsActiveTrueOrderByCreatedDesc();
 
     Optional<Ticket> findByIdAndIsActiveTrue(UUID id);
 }
