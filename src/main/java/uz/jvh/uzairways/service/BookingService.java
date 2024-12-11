@@ -98,6 +98,7 @@ public class BookingService {
      **/
     public List<TickedResponse> getBookingsByOwnerId(UUID ownerId) {
         List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrueOrderByCreatedDesc(ownerId);
+        List<Booking> bookings = bookingRepository.findActiveBookingsByUserId(ownerId);
 
         return bookings.stream()
                 .flatMap(booking -> booking.getTickets().stream().map(ticket -> toTickedResponse(ticket, booking)))
@@ -108,6 +109,7 @@ public class BookingService {
      * muddati o'tgan chiptalar yani history uchun
      **/
     public List<TickedResponse> getExpiredTicketsByUserId(UUID userId) {
+        List<Booking> bookings = bookingRepository.findActiveBookingsByUserId(userId);
         List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrueOrderByCreatedDesc(userId);
 
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -134,6 +136,7 @@ public class BookingService {
      **/
     public List<TickedResponse> getActiveTicketsByUserId(UUID userId) {
         List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrueOrderByCreatedDesc(userId);
+        List<Booking> bookings = bookingRepository.findActiveBookingsByUserId(userId);
 
         LocalDateTime currentDateTime = LocalDateTime.now();
 

@@ -2,7 +2,6 @@ package uz.jvh.uzairways.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.UserRequest;
 import uz.jvh.uzairways.domain.DTO.response.UserResponse;
@@ -65,6 +64,13 @@ public class UserController {
     @GetMapping("/my-balance")
     public ResponseEntity<Double> getUserBalance(@RequestParam UUID userId) {
         Double userBalance = userService.getUserBalance(userId);
+        return ResponseEntity.ok(userBalance);
+    }
+
+    //    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/add-balance")
+    public ResponseEntity<Double> addUserBalance(@RequestParam UUID userId , @RequestParam Double balance) {
+        Double userBalance = userService.addBalance(userId, balance);
         return ResponseEntity.ok(userBalance);
     }
 }

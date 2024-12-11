@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uz.jvh.uzairways.domain.enumerators.UserRole;
 
 import java.util.UUID;
 
@@ -14,4 +15,5 @@ import java.util.UUID;
 public class JwtResponse {
     private String token;
     private UUID userId;
+    private UserRole userRole;
 }

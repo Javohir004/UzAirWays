@@ -42,9 +42,9 @@ public class TicketController {
 
   //  @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete{id}")
-    public ResponseEntity<Void> deleteTicket(@PathVariable UUID id) {
+    public ResponseEntity<String> deleteTicket(@PathVariable UUID id) {
         ticketService.deleteTicket(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Foydalanuvchi muvaffaqiyatli o'chirildi");
     }
 
   //  @PreAuthorize("hasAnyRole('ADMIN','USER')")

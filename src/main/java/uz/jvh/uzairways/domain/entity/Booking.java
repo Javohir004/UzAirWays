@@ -18,7 +18,7 @@ import java.util.List;
 public class Booking extends BaseEntity {
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

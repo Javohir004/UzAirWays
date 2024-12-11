@@ -1,9 +1,10 @@
 package uz.jvh.uzairways.service;
 
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.AirPlaneDTO;
 import uz.jvh.uzairways.domain.DTO.response.AirPlaneResponse;
 import uz.jvh.uzairways.domain.entity.AirPlane;
@@ -27,6 +28,7 @@ public class AirPlaneService {
         return "success";
     }
 
+    @Transactional
     public void delete(UUID id) {
         AirPlane airPlane = airPlaneRepository.findById(id).orElseThrow(NoSuchElementException::new);
         airPlane.setActive(false);
@@ -41,7 +43,7 @@ public class AirPlaneService {
     }
 
     public AirPlaneResponse findById(UUID id) {
-        AirPlane airPlane = airPlaneRepository.findById(id)
+        AirPlane airPlane = airPlaneRepository.findByIdAndIsActiveTrue(id)
                 .orElseThrow(() -> new CustomException("AirPlane with ID " + id + " not found",4002, HttpStatus.NOT_FOUND));
         return mapToResponse(airPlane);
     }

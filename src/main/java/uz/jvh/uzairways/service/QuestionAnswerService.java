@@ -20,9 +20,10 @@ public class QuestionAnswerService {
 
     private final QuestionAnswerRepo questionAnswerRepo;
 
+    @Transactional
     public AnswerResponse save(QuestionRequest questionAnswer) {
         if (questionAnswer == null) {
-            throw new CustomException("QuestionRequest must not be null",4002, HttpStatus.NOT_FOUND);
+            throw new CustomException("QuestionRequest must not be null", 4002, HttpStatus.NOT_FOUND);
         }
 
         QuestionAnswer questionAnswerEntity = mapToQuestionAnswer(questionAnswer);
@@ -30,9 +31,10 @@ public class QuestionAnswerService {
         return mapToAnswerResponse(questionAnswerEntity);
     }
 
+    @Transactional
     public void delete(UUID id) {
         QuestionAnswer questionAnswer = questionAnswerRepo.findById(id)
-                .orElseThrow(() -> new CustomException("QuestionAnswer not found with id: " + id,4002,HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CustomException("QuestionAnswer not found with id: " + id, 4002, HttpStatus.NOT_FOUND));
         questionAnswer.setActive(false);
         questionAnswerRepo.save(questionAnswer);
     }
@@ -40,12 +42,17 @@ public class QuestionAnswerService {
     @Transactional
     public AnswerResponse update(QuestionRequest questionRequest, UUID questionId) {
         QuestionAnswer questionAnswerEntity = questionAnswerRepo.findById(questionId)
-                .orElseThrow(() -> new CustomException("QuestionAnswer not found with id: " + questionId,4002,HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CustomException("QuestionAnswer not found with id: " + questionId, 4002, HttpStatus.NOT_FOUND));
         questionAnswerEntity.setAnswer(questionRequest.getAnswer());
         questionAnswerRepo.save(questionAnswerEntity);
         return mapToAnswerResponse(questionAnswerEntity);
     }
 
+    /**
+     * bu faqat javob berilmagan savollarni olib keladi
+     **/
+    public List<AnswerResponse> findQuestions() {
+        List<QuestionAnswer> allByAnswerIsNull = questionAnswerRepo.findAllByAnswerIsNull();
     /** bu faqat javob berilmagan savollarni olib keladi**/
     public List<AnswerResponse> findQuestions(){
         List<QuestionAnswer> allByAnswerIsNull = questionAnswerRepo.findAllByAnswerIsNullOrderByCreatedDesc();
@@ -63,9 +70,9 @@ public class QuestionAnswerService {
     }
 
     public QuestionAnswer mapToQuestionAnswer(QuestionRequest questionAnswer) {
-     QuestionAnswer answer = new QuestionAnswer();
-     answer.setQuestion(questionAnswer.getQuestion());
-     return answer;
+        QuestionAnswer answer = new QuestionAnswer();
+        answer.setQuestion(questionAnswer.getQuestion());
+        return answer;
     }
 
     public AnswerResponse mapToAnswerResponse(QuestionAnswer questionAnswer) {

@@ -1,7 +1,6 @@
 package uz.jvh.uzairways.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.jvh.uzairways.domain.DTO.request.AboutUsRequest;
 import uz.jvh.uzairways.domain.DTO.response.AboutUsResponse;
