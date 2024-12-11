@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.jvh.uzairways.domain.DTO.request.ByTickedRequest;
 import uz.jvh.uzairways.domain.DTO.request.TicketDTO;
+import uz.jvh.uzairways.domain.DTO.response.FlightResponse;
 import uz.jvh.uzairways.domain.DTO.response.TicketResponse;
 import uz.jvh.uzairways.domain.entity.Flight;
 import uz.jvh.uzairways.domain.entity.Ticket;
@@ -21,12 +22,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TicketService {
+
     private final TicketRepository ticketRepository;
     private final FlightRepository flightRepository;
+    private final FlightService flightService;
 
 
     public List<TicketResponse> getAllTickets() {
-        List<Ticket> all = ticketRepository.findAllIsActiveTrue();
+        List<Ticket> all = ticketRepository.findAllIsActiveTrueOrderByCreatedDesc();
         return all.stream()
                 .map(ticket -> mapToTicketResponse(ticket))  // Pass ticket to the mapToTicketResponse method
                 .collect(Collectors.toList());  // Collect the results into a list
@@ -62,8 +65,12 @@ public class TicketService {
     }
 
 
+   /** flight number ni qo'shdim va seat number ni qo'shdim **/
     public TicketResponse mapToTicketResponse(Ticket ticket) {
+        FlightResponse flightById = flightService.getFlightById(ticket.getFlight().getId());
         TicketResponse ticketResponse = new TicketResponse();
+        ticketResponse.setSeatNumber(ticket.getSeatNumber());
+        ticketResponse.setFlightNumber(flightById.getFlightNumber());
         ticketResponse.setTicketId(ticket.getId());
         ticketResponse.setPrice(ticket.getPrice());
         ticketResponse.setBron(ticket.isBron());
@@ -85,7 +92,7 @@ public class TicketService {
                         request.getDepartureTime())
                 .orElseThrow(() -> new CustomException("Flight not found", 4041, HttpStatus.NOT_FOUND));
 
-        List<Ticket> availableTickets = ticketRepository.findAllByIsBronAndFlightAndIsActiveTrue(
+        List<Ticket> availableTickets = ticketRepository.findAllByIsBronAndFlightAndIsActiveTrueOrderByCreatedDesc(
                 false,
                 flight
         );

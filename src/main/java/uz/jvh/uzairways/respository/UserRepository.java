@@ -14,11 +14,19 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    List<User> findByRoleAndIsActiveTrue(UserRole role);
+//    List<User> findByRoleAndIsActiveTrue(UserRole role);
+
+    /** tartib bo'yicha chiqadi **/
+    List<User> findByRoleAndIsActiveTrueOrderByCreatedDesc(UserRole role);
+
 
     Optional<User> findByUsernameAndIsActiveTrue(String username);
 
-    List<User>findAllByIsActiveTrue();
+//    List<User>findAllByIsActiveTrue();
+
+    /** tartib bo'yicha chiqadi **/
+    List<User> findAllByIsActiveTrueOrderByCreatedDesc();
+
 
     Optional<User> findUserByRoleAndIsActiveTrue(UserRole role);
 }

@@ -22,4 +22,5 @@ public class TicketResponse {
     private Double price ;
     private ClassType classType;
     private boolean isBron;
+    private String seatNumber;
 }

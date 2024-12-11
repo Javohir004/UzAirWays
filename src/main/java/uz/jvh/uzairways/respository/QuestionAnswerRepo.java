@@ -11,8 +11,8 @@ import java.util.UUID;
 public interface QuestionAnswerRepo extends JpaRepository<QuestionAnswer, UUID> {
 
 
-    List<QuestionAnswer> findAllByIsActiveTrueAndQuestionIsNotNullAndAnswerIsNotNull();
+    List<QuestionAnswer> findAllByIsActiveTrueAndQuestionIsNotNullAndAnswerIsNotNullOrderByCreatedDesc();
 
 
-    List<QuestionAnswer> findAllByAnswerIsNull();
+    List<QuestionAnswer> findAllByAnswerIsNullOrderByCreatedDesc();
 }

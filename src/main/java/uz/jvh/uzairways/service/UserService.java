@@ -39,7 +39,7 @@ public class UserService {
 
 
     public List<User> findByRole(UserRole role) {
-        return userRepository.findByRoleAndIsActiveTrue(role);
+        return userRepository.findByRoleAndIsActiveTrueOrderByCreatedDesc(role);
     }
 
 
@@ -92,7 +92,7 @@ public class UserService {
     }
 
     public List<User> findAllJ() {
-        List<User> allUsers = userRepository.findAllByIsActiveTrue();
+        List<User> allUsers = userRepository.findAllByIsActiveTrueOrderByCreatedDesc();
 
         return allUsers.stream()
                 .filter(user -> user.getRole().equals(UserRole.USER))
