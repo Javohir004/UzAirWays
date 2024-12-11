@@ -48,18 +48,19 @@ public class QuestionAnswerService {
         return mapToAnswerResponse(questionAnswerEntity);
     }
 
-    /**
-     * bu faqat javob berilmagan savollarni olib keladi
-     **/
-    public List<AnswerResponse> findQuestions() {
-        List<QuestionAnswer> allByAnswerIsNull = questionAnswerRepo.findAllByAnswerIsNull();
+
+
+    /** bu faqat javob berilmagan savollarni olib keladi**/
+    public List<AnswerResponse> findQuestions(){
+        List<QuestionAnswer> allByAnswerIsNull = questionAnswerRepo.findAllByAnswerIsNullOrderByCreatedDesc();
         return allByAnswerIsNull.stream().
                 map(qa -> mapToAnswerResponse(qa))
                 .collect(Collectors.toList());
     }
 
     public List<AnswerResponse> findAll() {
-        List<QuestionAnswer> questionAnswers = questionAnswerRepo.findAllByIsActiveTrueAndQuestionIsNotNullAndAnswerIsNotNull();
+        List<QuestionAnswer> questionAnswers =
+                questionAnswerRepo.findAllByIsActiveTrueAndQuestionIsNotNullAndAnswerIsNotNullOrderByCreatedDesc();
         return questionAnswers.stream()
                 .map(this::mapToAnswerResponse)
                 .collect(Collectors.toList());

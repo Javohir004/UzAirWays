@@ -42,7 +42,7 @@ public class UserService {
 
 
     public List<User> findByRole(UserRole role) {
-        return userRepository.findByRoleAndIsActiveTrue(role);
+        return userRepository.findByRoleAndIsActiveTrueOrderByCreatedDesc(role);
     }
 
     @Transactional
@@ -101,7 +101,7 @@ public class UserService {
     }
 
     public List<User> findAllJ() {
-        List<User> allUsers = userRepository.findAllByIsActiveTrue();
+        List<User> allUsers = userRepository.findAllByIsActiveTrueOrderByCreatedDesc();
 
         return allUsers.stream()
                 .filter(user -> user.getRole().equals(UserRole.USER))
@@ -132,6 +132,7 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new CustomException("User  not found", 4002, HttpStatus.NOT_FOUND));
         return user.getBalance();
     }
+
 
     @Transactional
     public Double addBalance(UUID id, Double balance) {

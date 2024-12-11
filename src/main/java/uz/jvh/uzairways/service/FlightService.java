@@ -165,7 +165,8 @@ public class FlightService {
     }
 
     public List<TicketDetailsResponse> getAllTicketDetailsByClassType(UUID flightId, ClassType classType) {
-        List<Ticket> tickets = ticketRepository.findAllByFlightIdAndClassTypeAndIsBronFalseAndIsActiveTrue(flightId, classType);
+        List<Ticket> tickets =
+                ticketRepository.findAllByFlightIdAndClassTypeAndIsBronFalseAndIsActiveTrueOrderByCreatedDesc(flightId, classType);
         return tickets.stream()
                 .map(ticket -> new TicketDetailsResponse(
                         ticket.getFlight().getId(),

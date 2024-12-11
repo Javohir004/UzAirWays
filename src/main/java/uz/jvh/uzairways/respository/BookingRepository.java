@@ -16,6 +16,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
 //    List<Booking> findByUserIdAndIsActiveTrue(UUID userId);
 
+    List<Booking> findByUserIdAndIsActiveTrueOrderByCreatedDesc(UUID userId);
+
     @Query("SELECT b FROM Booking b WHERE b.user.id = :userId AND b.isActive = true")
     List<Booking> findActiveBookingsByUserId(@Param("userId") UUID userId);
 

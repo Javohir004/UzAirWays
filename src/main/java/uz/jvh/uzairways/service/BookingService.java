@@ -97,8 +97,7 @@ public class BookingService {
      * bu user ni barcha chiptalarini olib keladi
      **/
     public List<TickedResponse> getBookingsByOwnerId(UUID ownerId) {
-        List<Booking> bookings = bookingRepository.findActiveBookingsByUserId(ownerId);
-
+        List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrueOrderByCreatedDesc(ownerId);
         return bookings.stream()
                 .flatMap(booking -> booking.getTickets().stream().map(ticket -> toTickedResponse(ticket, booking)))
                 .collect(Collectors.toList());
@@ -108,7 +107,7 @@ public class BookingService {
      * muddati o'tgan chiptalar yani history uchun
      **/
     public List<TickedResponse> getExpiredTicketsByUserId(UUID userId) {
-        List<Booking> bookings = bookingRepository.findActiveBookingsByUserId(userId);
+        List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrueOrderByCreatedDesc(userId);
 
         LocalDateTime currentDateTime = LocalDateTime.now();
 
@@ -133,8 +132,8 @@ public class BookingService {
      * bronni ichidagi hali foydalanilmagan chiptalar
      **/
     public List<TickedResponse> getActiveTicketsByUserId(UUID userId) {
-        List<Booking> bookings = bookingRepository.findActiveBookingsByUserId(userId);
-
+        List<Booking> bookings = bookingRepository.findByUserIdAndIsActiveTrueOrderByCreatedDesc(userId);
+//        List<Booking> bookings = bookingRepository.findActiveBookingsByUserId(userId);
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         List<TickedResponse> activeTickets = new ArrayList<>();

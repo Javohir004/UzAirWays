@@ -67,7 +67,7 @@ public class AirPlaneService {
     }
 
     public List<AirPlaneResponse> findAll() {
-        List<AirPlane> all = airPlaneRepository.findAllByIsActiveTrue();
+        List<AirPlane> all = airPlaneRepository.findAllByIsActiveTrueOrderByCreatedDesc();
         return all.stream()
                 .map(this::mapToResponse)
                 .toList();
