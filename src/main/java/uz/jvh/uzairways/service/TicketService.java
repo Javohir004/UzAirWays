@@ -70,6 +70,7 @@ public class TicketService {
    /** flight number ni qo'shdim va seat number ni qo'shdim **/
     public TicketResponse mapToTicketResponse(Ticket ticket) {
         TicketResponse ticketResponse = new TicketResponse();
+        ticketResponse.setClassType(ticket.getClassType());
         ticketResponse.setSeatNumber(ticket.getSeatNumber());
         ticketResponse.setFlightNumber(ticket.getFlight().getFlightNumber());
         ticketResponse.setTicketId(ticket.getId());
