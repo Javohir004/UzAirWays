@@ -164,6 +164,7 @@ public class TicketService {
                 .map(ticket -> TicketResponse.builder()
                         .ticketId(ticket.getId())
                         .flightNumber(flight.getFlightNumber())
+                        .seatNumber(ticket.getSeatNumber())
                         .departureTime(flight.getDepartureTime())
                         .arrivalTime(flight.getArrivalTime()) // Flight'dan olish
                         .isBron(ticket.isBron())
