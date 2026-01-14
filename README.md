@@ -39,7 +39,6 @@ Booking Service – bron qilish logikasi
 Payment Service – to‘lovlar va refund jarayonlari
 Notification Service – xabarnomalar
 Gateway Service – yagona kirish nuqtasi
-Discovery Service – servislarni ro‘yxatdan o‘tkazish
 Config Service – markazlashgan konfiguratsiya
 
 🛠 Ishlatilgan texnologiyalar
