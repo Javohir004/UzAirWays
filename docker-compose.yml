@@ -7,7 +7,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/uz_air_ways
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 1483
+      SPRING_DATASOURCE_PASSWORD: 2023
     depends_on:
       - db
     networks:

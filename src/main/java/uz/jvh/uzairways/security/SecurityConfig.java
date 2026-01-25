@@ -1,6 +1,9 @@
 package uz.jvh.uzairways.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.twilio.http.HttpMethod;
+import org.springframework.http.HttpMethod;
+
 import jakarta.servlet.ServletOutputStream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -65,8 +69,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable() // Disable CSRF protection (ensure this is safe for your use case)
-                .cors().configurationSource(corsConfigurationSource()).and() // Enable CORS with custom configuration
+//                .cors().configurationSource(corsConfigurationSource()).and() // Enable CORS with custom configuration
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(
                         "/", // Public endpoints
                         "/api/auth/login/**",

@@ -31,6 +31,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6' // API
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.6' // Implementatsiya
     implementation 'io.jsonwebtoken:jjwt-jackson:0.12.6' // Jackson bilan ishlovchi kutubxona
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.6' // Jackson bilan ishlovchi kutubxona
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
