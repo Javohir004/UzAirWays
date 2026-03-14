@@ -1,55 +1,106 @@
-# ✈️ UzAirWays (airLane)
+# ✈️ UzAirWays — Airline Booking System
 
-UzAirWays — bu real aviakompaniya tizimiga o‘xshash tarzda ishlab chiqilgan onlayn aviabilet bron qilish tizimi bo‘lib,  
-foydalanuvchilarga parvoz yo‘nalishlari bo‘yicha chipta tanlash, bron qilish va bekor qilish imkonini beradi.  
-Project real serverga joylashtirilgan va 1 oy davomida ish holatida bo‘lgan.
-
----
-
-## 🎯 Asosiy imkoniyatlar
-- Onlayn chipta bron qilish
-- Parvozdan 24 soat oldin bronni bekor qilish
-- Bekor qilingan chiptalar uchun to‘lovni qaytarish
-- Parvozlar va to‘lovlar tarixini yuritish
-- Foydalanuvchi shikoyat va takliflarini boshqarish
+A production-ready airline ticket booking system built with **Java 17** and **Spring Boot**,
+deployed on a real server for 1 month. The system allows users to search flights, book tickets,
+cancel reservations, and manage payments.
 
 ---
 
-## 👥 Rollar va vakolatlar tizimda 3 ta asosiy rol mavjud
+## 🚀 Features
+
+- Flight search and ticket booking
+- Booking cancellation up to 24 hours before departure
+- Automatic refund processing for cancelled bookings
+- Flight and payment history tracking
+- User complaint and feedback management
+- Role-based access control (User / Admin / Owner)
+
+---
+
+## 👥 Roles
 
 ### 👤 User
-- Parvozlarni ko‘rish va chipta bron qilish
-- Parvozdan 24 soat oldin bronni bekor qilish
-- Shaxsiy pasport yoki ID karta ma’lumotlarini kiritish
-- Onlayn to‘lov qilish
-- O‘z bron va to‘lovlar tarixini ko‘rish
+- Browse flights and book tickets
+- Cancel bookings (up to 24h before departure)
+- Enter passport / ID card details
+- Simulated online payment
+- View personal booking and payment history
 
-### 🛠 Admin
-- Parvozlarni boshqarish va kuzatish
-- Ob-havo yoki texnik sabablarga ko‘ra:
-  - parvozni kechiktirish
-  - parvozni bekor qilish
-- Viloyatlar bo‘yicha yangi parvozlar yaratish
-- Foydalanuvchilardan kelgan shikoyat va takliflarni ko‘rib chiqish
+### 🛠️ Admin
+- Monitor and manage flights
+- Delay or cancel flights due to weather or technical issues
+- Create new flight routes by region
+- Review user complaints and feedback
 
 ### 👑 Owner
-- Barcha: userlar, adminlar, parvozlar, to‘lovlar tarixini ko‘rish
-- Admin qo‘shish va o‘chirish
-- Tizim ustidan to‘liq nazorat
+- Full system overview: users, admins, flights, payments
+- Add and remove admins
+- Complete control over the system
 
 ---
 
-## 🧩 Arxitektura (Monolith)
-Loyiha quyidagi servislar asosida ishlab chiqilgan:
-- User Service – foydalanuvchilar va autentifikatsiya
-- Flight Service – parvozlar va yo‘nalishlar
-- Booking Service – bron qilish logikasi
-- Payment Service – to‘lovlar va refund jarayonlari
-- Notification Service – xabarnomalar
-- Config Service – markazlashgan konfiguratsiya
+## 🏗️ Architecture — Microservices
+
+The system is built as a **microservice architecture**, with each service running independently:
+
+| Service | Responsibility |
+|---|---|
+| User Service | User management and authentication (JWT) |
+| Flight Service | Flights and routes |
+| Booking Service | Booking logic and cancellations |
+| Payment Service | Payment processing and refunds (simulated) |
+| Notification Service | Email / push notifications |
+| Config Service | Centralized configuration |
+
+All services communicate through **Spring Cloud Gateway** and are registered via **Eureka Service Discovery**.
 
 ---
 
-## 🛠 Ishlatilgan texnologiyalar
-Java 17, Spring Boot, Spring Cloud (Gateway, Eureka, Config), Spring Data JPA & Hibernate, PostgreSQL,  
-Kafka, Gradle, REST API, Swagger UI, JWT Authentication
+## 🛠️ Tech Stack
+
+| Category | Technologies |
+|---|---|
+| Language | Java 17 |
+| Framework | Spring Boot, Spring Cloud (Gateway, Eureka, Config) |
+| Security | Spring Security, JWT |
+| Database | PostgreSQL, Spring Data JPA, Hibernate |
+| Messaging | Kafka |
+| Build | Gradle |
+| DevOps | Docker, Docker Compose, GitHub Actions (CI/CD) |
+| API Docs | Swagger UI (OpenAPI) |
+
+---
+
+## ⚙️ CI/CD
+
+This project uses **GitHub Actions** for continuous integration and deployment:
+- Automated build and test on every push
+- Docker image build and push
+- Automatic deployment to the server
+
+---
+
+## 🐳 Running Locally
+
+```bash
+git clone https://github.com/Javohir004/UzAirWays.git
+cd UzAirWays
+docker-compose up --build
+```
+
+The application will start on `http://localhost:8080`
+
+Swagger UI: `http://localhost:8080/swagger-ui.html`
+
+---
+
+## 📌 Notes
+
+- Payment integration is simulated (mock) — not connected to a real payment gateway
+- Server deployment has been stopped; run locally using Docker Compose
+
+---
+
+## 📫 Contact
+
+- GitHub: [Javohir004](https://github.com/Javohir004)
